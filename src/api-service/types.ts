@@ -1,6 +1,16 @@
 
-export interface TeamSummary {
+export interface EntrySummary {
+  /**
+   * Unique entry id
+   */
+  id: number;
+  /**
+   * The name of the FPL managed team
+   */
   name: string;
+  /**
+   * Managers first name
+   */
   managerFirstName: string;
   managerLastName: string;
   regionName: string;
@@ -16,19 +26,42 @@ export interface TeamSummary {
   gameweekTransfersCost: number;
 }
 
-export interface TeamPick  {
+export interface EntryPick {
+  /**
+   * Players unique id
+   */
   id: number;
-  webName: string;
+  /**
+   * Players name
+   */
+  name: string;
+  /**
+   * Player type id
+   */
+  type: number;
   timesBenched: number;
   timesCaptained: number;
-  captainPoints: number;
   timesPlayed: number;
-  points: number;
+  timesInDreamteam: number;
+  totalMinutes: number;
+  totalPoints: number;
+  totalCaptainPoints: number;
+  totalAssists: number;
+  totalBonus: number;
+  totalCleanSheets: number;
+  totalGoalsConceded: number;
+  totalGoalsScored: number;
+  totalOwnGoals: number;
+  totalPenaltiesMissed: number;
+  totalPenaltiesSaved: number;
+  totalYellowCards: number;
+  totalRedCards: number;
+  totalSaves: number;
 }
 
-export interface TeamStatistics {
+export interface EntryStats {
   averageScore: number;
-  highestGameWeekRank: number;
+  highestGameweekRank: number;
   highestGameweekScore: number;
   lowestGameweekRank: number;
   lowestGameweekScore: number;
@@ -40,10 +73,7 @@ export interface TeamStatistics {
   totalCleanSheets: number;
   totalGoals: number;
   totalRedCards: number;
-  totalTransfers: number;
-  totalValue: number;
   totalYellowCards: number;
-  transferCost: number;
 }
 
 export interface PlayerStats {
@@ -52,7 +82,7 @@ export interface PlayerStats {
   bps: number;
   cleanSheets: number;
   creativity: number;
-  goals_conceded: number;
+  goalsConceded: number;
   goalsScored: number;
   ictIndex: number;
   inDreamteam: boolean;

@@ -1,61 +1,41 @@
 import 'mocha';
-import { players, teams } from '../src/index';
 
-describe('should return correct Team data', () => {
+import * as fplapi from '../src/index';
 
-  it('should return team', (done) => {
+describe('should return correct Entry data', () => {
 
-    teams.find(123).then((team) => {
-      // console.log('team', team);
+  const entryId = 545548;
+
+  it('should return entry summary', (done) => {
+    fplapi.entries.getSummary(entryId).then((data) => {
+      console.log('summary', data);
       done();
     });
 
   });
 
-  it('should return team picks', (done) => {
+  it('should return entry stats', (done) => {
 
-    teams.getPicks(132).then((picks) => {
-      // console.log('picks', picks);
+    fplapi.entries.getStats(entryId).then((data) => {
+      console.log('stats', data);
       done();
     });
 
   });
 
-  it('should return team stats', (done) => {
+  it('should return entry picks', (done) => {
 
-    teams.getStats(123).then((stats) => {
-      // console.log('stats', stats);
-      done();
-    });
+        fplapi.entries.getPicks(entryId).then((data) => {
+          console.log('pick 1', data[0]);
+          done();
+        });
 
-  });
+      });
 
-});
+  it('should return entry pick', (done) => {
 
-describe('should return correct Player data', () => {
-
-  it('should find a single player', (done) => {
-
-    players.find(1).then((player) => {
-      // console.log('player', player);
-      done();
-    });
-
-  });
-
-  it('should find all players', (done) => {
-
-    players.findAll().then((allPlayers) => {
-      // console.log('players', allPlayers);
-      done();
-    });
-
-  });
-
-  it('should find gameweekdata', (done) => {
-
-    players.getStatsForGameweek(1, 1).then((data) => {
-     // console.log('gameweek dara', data);
+    fplapi.entries.getPick(entryId, 38).then((data) => {
+      console.log('pick', data);
       done();
     });
 
