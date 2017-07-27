@@ -1,13 +1,13 @@
 import axios from 'axios';
 import * as _ from 'lodash';
-import * as NodeCache from 'node-cache';
 import * as types from './types';
 
-// cache
-export const datacache = new NodeCache();
+const cachios = require('cachios');
 
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
+
+const cachiosInstance = cachios.create(axios);
 
 /**
  * The Available end-points are:
@@ -157,26 +157,9 @@ export function getClassicLeagueStandings(leagueId: number): Promise<types.Leagu
  * @private
  */
 function getData(path: string, cacheForever?) {
-
-  const cachedata = datacache.get(path);
-
-  // return from cache
-  if (cachedata) {
-    return new Promise((resolve: any, reject: any) => {
-     // console.log(path + ' from data cache');
-      resolve(cachedata);
-    });
-  } else {
-
-    // return from request
-    return axios.get(path).then((response) => {
-     // console.log(path + ' from data request');
-      const data = response.data;
-      datacache.set(path, data);
-      return data;
-    }).catch((error) => {
-      return error;
-    });
-
-  }
+  return cachiosInstance.get(path).then((response) => {
+    return response.data;
+  }).catch((error) => {
+    return error;
+  });
 }

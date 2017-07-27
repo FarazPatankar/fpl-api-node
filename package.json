@@ -30,6 +30,7 @@
   "homepage": "https://github.com/tgreyuk/fpl-api-node#readme",
   "dependencies": {
     "axios": "^0.16.2",
+    "cachios": "^1.0.6",
     "lodash": "^4.17.4",
     "node-cache": "^4.1.1"
   },
