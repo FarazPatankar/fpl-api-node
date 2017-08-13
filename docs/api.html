@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+    crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container container-fluid pd-4">
+
+
+    <div class="row">
+      <div class="col-3" style="position:fixed">
+
+        <h2 class="mb-4 mt-3">fpl-api-node</h2>
+
+        <h5><a href="#entries">Entries</a></h5>
+        <ul class="nav flex-column mb-4">
+          <li class="nav-item"><a class="nav-link pl-0" href="#getSummary">getSummary()</a></li>
+          <li class="nav-item"><a class="nav-link pl-0" href="#getStats">getStats()</a></li>
+          <li class="nav-item"><a class="nav-link pl-0" href="#getPicks">getPicks()</a></li>
+          <li class="nav-item"><a class="nav-link pl-0" href="#getPick">getPick()</a></li>
+        </ul>
+
+      </div>
+      <div class="col-9 offset-3">
+
+        <h2 class="mt-3 mb-4" id="entries">Entries</h2> 
+        <div class="card mb-3">
+          <h5 class="card-header" id="getSummary">getSummary(entryId)</h5>
+          <div class="card-block">
+            <p class="lead"></p>
+            <div class="mb-4">
+              <code class="inverse">
+              fplapi.entries.getSummary(entryId).then( (data) => { //handle data });
+              </code>
+            </div>
+            <!--
+            <h6>Parameters:</h6>
+            <table class="table table-bordered mb-4">
+              <tr>
+                <th style="width:5%">entryId</th>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+            -->
+            <h6>Returns Promise&lt;json&gt;:</h6>
+            <table class="table table-striped table-bordered table-sm">
+
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Property</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>id</td>
+                  <td><code>number</code></td>
+                  <td>Unique entry id</td>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td><code>string</code></td>
+                  <td>The name of the FPL managed team</td>
+                </tr>
+                <tr>
+                  <td>managerFirstName</td>
+                  <td><code>string</code></td>
+                  <td>Managers first name</td>
+                </tr>
+                <tr>
+                  <td>managerLastName</td>
+                  <td><code>string</code></td>
+                  <td>Manager Last Name</td>
+                </tr>
+                <tr>
+                  <td>regionName</td>
+                  <td><code>string</code></td>
+                  <td>Region Name</td>
+                </tr>
+                <tr>
+                  <td>regionIso</td>
+                  <td><code>string</code></td>
+                  <td>Region Iso</td>
+                </tr>
+                <tr>
+                  <td>overallPoints</td>
+                  <td><code>number</code></td>
+                  <td>Overall Points</td>
+                </tr>
+                <tr>
+                  <td>overallRank</td>
+                  <td><code>number</code></td>
+                  <td>Overall Rank</td>
+                </tr>
+                <tr>
+                  <td>gameweekPoints</td>
+                  <td><code>number</code></td>
+                  <td>Gameweek Points</td>
+                </tr>
+                <tr>
+                  <td>gameweekRank</td>
+                  <td><code>number</code></td>
+                  <td>Gameweek Rank</td>
+                </tr>
+                <tr>
+                  <td>totalTransfers</td>
+                  <td><code>number</code></td>
+                  <td>Total Transfers</td>
+                </tr>
+                <tr>
+                  <td>moneyInBank</td>
+                  <td><code>number</code></td>
+                  <td>Money In Bank</td>
+                </tr>
+                <tr>
+                  <td>teamValue</td>
+                  <td><code>number</code></td>
+                  <td>Team Value</td>
+                </tr>
+                <tr>
+                  <td>gameweekTransfers</td>
+                  <td><code>number</code></td>
+                  <td>Gameweek Transfers</td>
+                </tr>
+                <tr>
+                  <td>gameweekTransfersCost</td>
+                  <td><code>number</code></td>
+                  <td>Gameweek Transfers Cost</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="card mb-3">
+          <h5 class="card-header" id="getStats">getStats(entryId)</h5>
+          <div class="card-block">
+            <p class="lead"></p>
+            <div class="mb-4">
+              <code class="inverse">
+              fplapi.entries.getStats(entryId).then( (data) => { //handle data });
+              </code>
+            </div>
+            <!--
+            <h6>Parameters:</h6>
+            <table class="table table-bordered mb-4">
+              <tr>
+                <th style="width:5%">entryId</th>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+            -->
+            <h6>Returns Promise&lt;json&gt;:</h6>
+            <table class="table table-striped table-bordered table-sm">
+
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Property</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>averageScore</td>
+                  <td><code>number</code></td>
+                  <td>Average Score</td>
+                </tr>
+                <tr>
+                  <td>highestGameweekRank</td>
+                  <td><code>number</code></td>
+                  <td>Highest Gameweek Rank</td>
+                </tr>
+                <tr>
+                  <td>highestGameweekScore</td>
+                  <td><code>number</code></td>
+                  <td>Highest Gameweek Score</td>
+                </tr>
+                <tr>
+                  <td>lowestGameweekRank</td>
+                  <td><code>number</code></td>
+                  <td>Lowest Gameweek Rank</td>
+                </tr>
+                <tr>
+                  <td>lowestGameweekScore</td>
+                  <td><code>number</code></td>
+                  <td>Lowest Gameweek Score</td>
+                </tr>
+                <tr>
+                  <td>overallPoints</td>
+                  <td><code>number</code></td>
+                  <td>Overall Points</td>
+                </tr>
+                <tr>
+                  <td>overallRank</td>
+                  <td><code>number</code></td>
+                  <td>Overall Rank</td>
+                </tr>
+                <tr>
+                  <td>rankPercentile</td>
+                  <td><code>string</code></td>
+                  <td>Rank Percentile</td>
+                </tr>
+                <tr>
+                  <td>totalAssists</td>
+                  <td><code>number</code></td>
+                  <td>Total Assists</td>
+                </tr>
+                <tr>
+                  <td>totalBonus</td>
+                  <td><code>number</code></td>
+                  <td>Total Bonus</td>
+                </tr>
+                <tr>
+                  <td>totalCleanSheets</td>
+                  <td><code>number</code></td>
+                  <td>Total Clean Sheets</td>
+                </tr>
+                <tr>
+                  <td>totalGoals</td>
+                  <td><code>number</code></td>
+                  <td>Total Goals</td>
+                </tr>
+                <tr>
+                  <td>totalRedCards</td>
+                  <td><code>number</code></td>
+                  <td>Total Red Cards</td>
+                </tr>
+                <tr>
+                  <td>totalYellowCards</td>
+                  <td><code>number</code></td>
+                  <td>Total Yellow Cards</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="card mb-3">
+          <h5 class="card-header" id="getPicks">getPicks(entryId)</h5>
+          <div class="card-block">
+            <p class="lead"></p>
+            <div class="mb-4">
+              <code class="inverse">
+              fplapi.entries.getPicks(entryId).then( (data) => { //handle data });
+              </code>
+            </div>
+            <!--
+            <h6>Parameters:</h6>
+            <table class="table table-bordered mb-4">
+              <tr>
+                <th style="width:5%">entryId</th>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+            -->
+          </div>
+        </div>
+        
+        <div class="card mb-3">
+          <h5 class="card-header" id="getPick">getPick(entryId, pickId)</h5>
+          <div class="card-block">
+            <p class="lead"></p>
+            <div class="mb-4">
+              <code class="inverse">
+              fplapi.entries.getPick(entryId, pickId).then( (data) => { //handle data });
+              </code>
+            </div>
+            <!--
+            <h6>Parameters:</h6>
+            <table class="table table-bordered mb-4">
+              <tr>
+                <th style="width:5%">entryId</th>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <th style="width:5%">pickId</th>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+            -->
+            <h6>Returns Promise&lt;json&gt;:</h6>
+            <table class="table table-striped table-bordered table-sm">
+
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Property</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>id</td>
+                  <td><code>number</code></td>
+                  <td>Players unique id</td>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td><code>string</code></td>
+                  <td>Players name</td>
+                </tr>
+                <tr>
+                  <td>type</td>
+                  <td><code>number</code></td>
+                  <td>Player type id</td>
+                </tr>
+                <tr>
+                  <td>timesBenched</td>
+                  <td><code>number</code></td>
+                  <td>Times Benched</td>
+                </tr>
+                <tr>
+                  <td>timesCaptained</td>
+                  <td><code>number</code></td>
+                  <td>Times Captained</td>
+                </tr>
+                <tr>
+                  <td>timesPlayed</td>
+                  <td><code>number</code></td>
+                  <td>Times Played</td>
+                </tr>
+                <tr>
+                  <td>timesInDreamteam</td>
+                  <td><code>number</code></td>
+                  <td>Times In Dreamteam</td>
+                </tr>
+                <tr>
+                  <td>totalMinutes</td>
+                  <td><code>number</code></td>
+                  <td>Total Minutes</td>
+                </tr>
+                <tr>
+                  <td>totalPoints</td>
+                  <td><code>number</code></td>
+                  <td>Total Points</td>
+                </tr>
+                <tr>
+                  <td>totalCaptainPoints</td>
+                  <td><code>number</code></td>
+                  <td>Total Captain Points</td>
+                </tr>
+                <tr>
+                  <td>totalAssists</td>
+                  <td><code>number</code></td>
+                  <td>Total Assists</td>
+                </tr>
+                <tr>
+                  <td>totalBonus</td>
+                  <td><code>number</code></td>
+                  <td>Total Bonus</td>
+                </tr>
+                <tr>
+                  <td>totalCleanSheets</td>
+                  <td><code>number</code></td>
+                  <td>Total Clean Sheets</td>
+                </tr>
+                <tr>
+                  <td>totalGoalsConceded</td>
+                  <td><code>number</code></td>
+                  <td>Total Goals Conceded</td>
+                </tr>
+                <tr>
+                  <td>totalGoalsScored</td>
+                  <td><code>number</code></td>
+                  <td>Total Goals Scored</td>
+                </tr>
+                <tr>
+                  <td>totalOwnGoals</td>
+                  <td><code>number</code></td>
+                  <td>Total Own Goals</td>
+                </tr>
+                <tr>
+                  <td>totalPenaltiesMissed</td>
+                  <td><code>number</code></td>
+                  <td>Total Penalties Missed</td>
+                </tr>
+                <tr>
+                  <td>totalPenaltiesSaved</td>
+                  <td><code>number</code></td>
+                  <td>Total Penalties Saved</td>
+                </tr>
+                <tr>
+                  <td>totalYellowCards</td>
+                  <td><code>number</code></td>
+                  <td>Total Yellow Cards</td>
+                </tr>
+                <tr>
+                  <td>totalRedCards</td>
+                  <td><code>number</code></td>
+                  <td>Total Red Cards</td>
+                </tr>
+                <tr>
+                  <td>totalSaves</td>
+                  <td><code>number</code></td>
+                  <td>Total Saves</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+                                 
+      </div>
+    </div>
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+      crossorigin="anonymous"></script>
+</body>
+
+</html>

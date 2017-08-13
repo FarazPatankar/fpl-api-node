@@ -1,8 +1,9 @@
 node_modules
 .DS_Store
 dist/
+dist-tasks/
 out/
-docs/
 npm-debug.log*
 _README.md
+tmp/
 
