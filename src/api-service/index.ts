@@ -6,11 +6,11 @@ export function fromCache(cacheKey: string, callback: () => Promise<any>): Promi
   return new Promise((resolve: any, reject: any) => {
     const cacheValue = apicache.get(cacheKey);
     if (cacheValue) {
-    //  console.log(`${cacheKey} from api cache`);
+      console.log(`${cacheKey} from api cache`);
       resolve(cacheValue);
     } else {
       callback().then((data) => {
-     //   console.log(`${cacheKey} from api request`);
+        console.log(`${cacheKey} from api request`);
         apicache.set(cacheKey, data);
         resolve(data);
       });

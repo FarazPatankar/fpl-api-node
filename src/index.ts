@@ -1,5 +1,6 @@
+import { fromCache } from './api-service';
+import * as dataService from './data-service';
+import * as entries from './entries';
 
-import * as players from './players';
-import * as teams from './teams';
 
-export {players, teams};
+export {entries};
