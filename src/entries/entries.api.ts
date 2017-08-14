@@ -1,24 +1,22 @@
 import * as async from 'async';
 import * as _ from 'lodash';
-import { fromCache } from './api-service';
-import { EntryPick, EntryStats, EntrySummary } from './api-service/types';
+import * as dataService from '../data-service';
+import * as dataTypes from '../data-service/types';
+import * as apiTypes from './entries.types';
 
-import * as dataService from './data-service';
+import { fromCache } from '../utils/cache-manager';
 
-import * as dataTypes from './data-service/types';
-
-export function getSummary(entryId): Promise<EntrySummary> {
+export function getSummary(entryId): Promise<apiTypes.EntrySummary> {
   return fromCache(`entry-summary-${entryId}`, () => {
     return new Promise((resolve: any, reject: any) => {
       dataService.getEntry(entryId).then((data) => {
         resolve(toSummary(data));
-
       });
     });
   });
 }
 
-export function getStats(entryId): Promise<EntryStats> {
+export function getStats(entryId): Promise<apiTypes.EntryStats> {
   return fromCache(`entry-stats-${entryId}`, () => {
     return new Promise((resolve: any, reject: any) => {
       Promise.all([dataService.getEntry(entryId), getPicks(entryId)]).then((data) => {
@@ -28,7 +26,7 @@ export function getStats(entryId): Promise<EntryStats> {
   });
 }
 
-export function getPicks(entryId): Promise<EntryPick[]> {
+export function getPicks(entryId): Promise<apiTypes.EntryPick[]> {
   return fromCache(`entry-picks-${entryId}`, () => {
     return new Promise((resolve: any, reject: any) => {
       dataService.getEntry(entryId).then((data) => {
@@ -40,15 +38,15 @@ export function getPicks(entryId): Promise<EntryPick[]> {
   });
 }
 
-export function getPick(entryId, pickId): Promise<EntryPick> {
-    return new Promise((resolve: any, reject: any) => {
-      getPicks(entryId).then((picks) => {
-        resolve(_.find(picks, {id: parseInt(pickId, 10)}));
-      });
+export function getPick(entryId, pickId): Promise<apiTypes.EntryPick> {
+  return new Promise((resolve: any, reject: any) => {
+    getPicks(entryId).then((picks) => {
+      resolve(_.find(picks, { id: parseInt(pickId, 10) }));
+    });
   });
 }
 
-function toSummary(data: dataTypes.Entry): EntrySummary {
+function toSummary(data: dataTypes.Entry): apiTypes.EntrySummary {
   const entry = data.entry;
   return {
     id: entry.id,
@@ -69,7 +67,7 @@ function toSummary(data: dataTypes.Entry): EntrySummary {
   };
 }
 
-function toStats(teamData: dataTypes.Entry, picks): Promise<EntryStats> {
+function toStats(teamData: dataTypes.Entry, picks): Promise<apiTypes.EntryStats> {
 
   return new Promise((resolve, reject) => {
 
@@ -86,11 +84,6 @@ function toStats(teamData: dataTypes.Entry, picks): Promise<EntryStats> {
       let highestGameweekScore = 0;
       let lowestGameweekScore = 200;
       let averageScore = 0;
-
-      // transfers
-      const totalTransfers = teamData.entry.total_transfers;
-      let transferCost = 0;
-      const totalValue = (teamData.entry.value + teamData.entry.bank) / 10;
 
       teamData.history.forEach((event) => {
 
@@ -114,9 +107,6 @@ function toStats(teamData: dataTypes.Entry, picks): Promise<EntryStats> {
           highestGameweekScore = score;
         }
 
-        // transfers
-        transferCost = transferCost + event.event_transfers_cost;
-
       });
 
       averageScore = overallPoints / teamData.entry.current_event;
@@ -128,7 +118,7 @@ function toStats(teamData: dataTypes.Entry, picks): Promise<EntryStats> {
       let totalYellowCards = 0;
       let totalRedCards = 0;
       let totalCleanSheets = 0;
-      picks.forEach((player: EntryPick) => {
+      picks.forEach((player: apiTypes.EntryPick) => {
         totalGoals = totalGoals + (player.totalGoalsScored > 0 ? player.totalGoalsScored : 0);
         totalAssists = totalAssists + (player.totalAssists > 0 ? player.totalAssists : 0);
         totalBonus = totalBonus + (player.totalBonus > 0 ? player.totalBonus : 0);
@@ -160,7 +150,7 @@ function toStats(teamData: dataTypes.Entry, picks): Promise<EntryStats> {
   });
 }
 
-function toPicks(entry: dataTypes.Entry): Promise<EntryPick[]> {
+function toPicks(entry: dataTypes.Entry): Promise<apiTypes.EntryPick[]> {
 
   return new Promise((resolve, reject) => {
 
@@ -190,8 +180,6 @@ function toPicks(entry: dataTypes.Entry): Promise<EntryPick[]> {
             const players = _.toArray(_.mapValues(groupedPlayers, (value, playerKey) => {
 
               const player = _.reduce(value, (result, pick: dataTypes.EntryPick) => {
-
-                const type = pick.element_type;
 
                 if (pick.is_captain) {
                   result.timesCaptained = result.timesCaptained + 1;
@@ -257,7 +245,7 @@ function toPicks(entry: dataTypes.Entry): Promise<EntryPick[]> {
               return { ...player, ...elementDetails };
 
             }));
-            resolve(players as EntryPick[]);
+            resolve(players as apiTypes.EntryPick[]);
           }
         });
       }

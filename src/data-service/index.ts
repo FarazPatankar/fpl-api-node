@@ -1,10 +1,7 @@
 import axios from 'axios';
-import * as cachios from 'cachios';
 import * as _ from 'lodash';
+import { fromCache } from '../utils/cache-manager';
 import * as types from './types';
-
-// set cachios instance - cache everything for 2 hours for now
-const cachiosInstance = cachios.create(axios, {stdTTL: 7200});
 
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
@@ -96,7 +93,7 @@ export function getElements(): Promise<types.Element[]> {
 export function getElementById(id: number): Promise<types.Element> {
   return new Promise((resolve, reject) => {
     getElements().then((elements) => {
-      const element = _.find(elements, {id});
+      const element = _.find(elements, { id });
       resolve(element);
     });
   });
@@ -156,10 +153,12 @@ export function getClassicLeagueStandings(leagueId: number): Promise<types.Leagu
  * @returns {Promise}
  * @private
  */
-function getData(path: string, cacheForever?) {
-  return cachiosInstance.get(path).then((response) => {
-    return response.data;
-  }).catch((error) => {
-    return error;
+function getData(path: string) {
+  return fromCache(path, () => {
+    return axios.get(path).then((response) => {
+      return response.data;
+    }).catch((error) => {
+      return error;
+    });
   });
 }

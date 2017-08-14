@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "test": "mocha -r ts-node/register test/specs.ts --timeout 15000 --slow 0",
-    "prepare":"rm -rf dist && tsc -p src/tsconfig.json",
+    "prepare": "rm -rf dist && tsc -p src/tsconfig.json",
     "prepublish": "npm run prepare && npm run lint && npm run test"
   },
   "repository": {
@@ -30,7 +30,6 @@
   "homepage": "https://github.com/tgreyuk/fpl-api-node#readme",
   "dependencies": {
     "axios": "^0.16.2",
-    "cachios": "^1.0.6",
     "lodash": "^4.17.4",
     "node-cache": "^4.1.1"
   },
