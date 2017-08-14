@@ -8,7 +8,6 @@
     "dist/"
   ],
   "scripts": {
-    "docs": "tsc -p tasks/tsconfig.json && ts-node tasks/docs/index.ts",
     "lint": "tslint --project tsconfig.json",
     "test": "mocha -r ts-node/register test/specs.ts --timeout 15000 --slow 0",
     "prepublish": "rm -rf dist && tsc -p src/tsconfig.json"

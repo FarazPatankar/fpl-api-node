@@ -23,9 +23,18 @@ describe('should return correct Entry data', () => {
 
   });
 
+  it('should return entry picks', (done) => {
+
+        fplapi.entries.getPicks(entryId).then((data) => {
+          console.log('pick 1', data[0]);
+          done();
+        });
+
+      });
+
   it('should return entry pick', (done) => {
 
-    fplapi.entries.getPick(2345, 34).then((data) => {
+    fplapi.entries.getPick(entryId, 38).then((data) => {
       console.log('pick', data);
       done();
     });
