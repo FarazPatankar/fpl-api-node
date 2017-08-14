@@ -11,8 +11,6 @@
     "noEmitHelpers": true,
     "noImplicitAny": false,
     "noUnusedLocals": false,
-    "outDir": "../dist",
-    "rootDir": "./",
     "sourceMap": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
