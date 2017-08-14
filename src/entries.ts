@@ -23,7 +23,6 @@ export function getStats(entryId): Promise<EntryStats> {
     return new Promise((resolve: any, reject: any) => {
       Promise.all([dataService.getEntry(entryId), getPicks(entryId)]).then((data) => {
         resolve(toStats(data[0], data[1]));
-
       });
     });
   });
@@ -44,7 +43,6 @@ export function getPicks(entryId): Promise<EntryPick[]> {
 export function getPick(entryId, pickId): Promise<EntryPick> {
     return new Promise((resolve: any, reject: any) => {
       getPicks(entryId).then((picks) => {
-        console.log('get pick', pickId);
         resolve(_.find(picks, {id: parseInt(pickId, 10)}));
       });
   });
@@ -72,8 +70,6 @@ function toSummary(data: dataTypes.Entry): EntrySummary {
 }
 
 function toStats(teamData: dataTypes.Entry, picks): Promise<EntryStats> {
-
-  console.log('toStats');
 
   return new Promise((resolve, reject) => {
 
@@ -176,7 +172,7 @@ function toPicks(entry: dataTypes.Entry): Promise<EntryPick[]> {
         resolve([]);
       } else {
 
-        async.each(entry.history, (event, callback) => {
+        async.each(entry.history, (event: dataTypes.EntryHistory, callback) => {
 
           dataService.getEntryEvent(entry.entry.id, event.event).then((result) => {
             picks.push(result.picks);

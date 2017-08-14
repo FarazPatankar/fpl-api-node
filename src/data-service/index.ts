@@ -3,10 +3,11 @@ import * as cachios from 'cachios';
 import * as _ from 'lodash';
 import * as types from './types';
 
+// set cachios instance - cache everything for 2 hours for now
+const cachiosInstance = cachios.create(axios, {stdTTL: 7200});
+
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
-
-const cachiosInstance = cachios.create(axios);
 
 /**
  * The Available end-points are:
