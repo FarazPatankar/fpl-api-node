@@ -29,17 +29,18 @@
   },
   "homepage": "https://github.com/tgreyuk/fpl-api-node#readme",
   "dependencies": {
+    "async": "^2.5.0",
     "axios": "^0.16.2",
     "lodash": "^4.17.4",
     "node-cache": "^4.1.1",
     "tslib": "^1.7.1"
   },
   "devDependencies": {
+    "@types/async": "^2.0.40",
     "@types/chai": "^4.0.1",
     "@types/lodash": "^4.14.71",
     "@types/mocha": "^2.2.41",
     "@types/node-cache": "^4.1.0",
-    "async": "^2.5.0",
     "chai": "^4.1.0",
     "mocha": "^3.4.2",
     "ts-node": "^3.3.0",
