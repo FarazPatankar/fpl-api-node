@@ -1,8 +1,7 @@
 import axios from 'axios';
+import * as cachios from 'cachios';
 import * as _ from 'lodash';
 import * as types from './types';
-
-const cachios = require('cachios');
 
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';

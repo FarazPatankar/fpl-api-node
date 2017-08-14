@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "test": "mocha -r ts-node/register test/specs.ts --timeout 15000 --slow 0",
-    "prepublish": "rm -rf dist && tsc -p src/tsconfig.json"
+    "prepare":"rm -rf dist && tsc",
+    "prepublish": "npm run prepare && npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
@@ -35,16 +36,13 @@
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",
-    "@types/handlebars": "^4.0.35",
     "@types/lodash": "^4.14.71",
     "@types/mocha": "^2.2.41",
     "@types/node-cache": "^4.1.0",
     "async": "^2.5.0",
     "chai": "^4.1.0",
-    "handlebars": "^4.0.10",
     "mocha": "^3.4.2",
     "ts-node": "^3.3.0",
-    "ts-simple-ast": "^0.48.2",
     "tslint": "^5.5.0",
     "typescript": "^2.4.2"
   }
