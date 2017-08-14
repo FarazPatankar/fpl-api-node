@@ -1,7 +1,6 @@
 # fpl-api-node (Season 2017-18)
 
 [![npm](https://img.shields.io/npm/v/fpl-api-node.svg)](https://www.npmjs.com/package/fpl-api-node)
-[![npm](https://img.shields.io/apm/l/vim-mode.svg)]()
 
 **Please note this library is currently being re-written in anticipation for the 2017-2018 season.**
 
@@ -14,6 +13,9 @@ npm install fpl-api-node --save
 ```
 
 ### Typescript
+
+The package includes TypeScript definitions
+
 ```js
 import * as fplapi from 'fpl-api-node';
 ```
@@ -23,6 +25,18 @@ import * as fplapi from 'fpl-api-node';
 ```js
 const fplapi = require('fpl-api-node');
 ```
+
+## Usage
+
+### Entries
+
+```js
+fplapi.entries.getSummary(545548).then((data)=>{
+    // handle data
+    console.log(data);
+});
+```
+
 
 ## API
 
