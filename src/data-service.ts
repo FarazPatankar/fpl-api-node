@@ -1,6 +1,5 @@
 import axios from 'axios';
-import * as _ from 'lodash';
-import { fromCache } from '../utils/cache-manager';
+import { fromCache } from './cache-manager';
 import * as types from './types';
 
 // set axios defaults
@@ -22,23 +21,13 @@ axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
  */
 
 /**
- * All static game data:
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/bootstrap-static
- * @returns {Promise}
- */
-export function getBootstrapData(): Promise<types.BootstrappedData> {
-  return getData('/bootstrap-static');
-}
-
-/**
  * Entry History:
  * A promise that if fulfilled returns an object
  * mapped to https://fantasy.premierleague.com/drf/entry/${id}/history
  * @param entryId Entry id
  * @returns {Promise}
  */
-export function getEntry(entryId: number): Promise<types.Entry> {
+export function getEntryHistory(entryId: number): Promise<types.EntryHistory> {
   return getData(`/entry/${entryId}/history`);
 }
 
@@ -67,39 +56,9 @@ export function getEntryTransfers(entryId: number): Promise<types.EntryTransfers
 }
 
 /**
- * Teams (Premier Leaugue clubs):
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/teams
- * @returns {Promise}
+ * Returns the total number of entries
  */
-export function getTeams(): Promise<types.TeamData[]> {
-  return getData('/teams');
-}
-
-/**
- * Elements (players):
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/elements
- * @returns {Promise}
- */
-export function getElements(): Promise<types.Element[]> {
-  return new Promise((resolve, reject) => {
-    getBootstrapData().then((data) => {
-      resolve(data.elements);
-    });
-  });
-}
-
-export function getElementById(id: number): Promise<types.Element> {
-  return new Promise((resolve, reject) => {
-    getElements().then((elements) => {
-      const element = _.find(elements, { id });
-      resolve(element);
-    });
-  });
-}
-
-export function getTotalPlayers(): Promise<number> {
+export function getTotalEntries(): Promise<number> {
   return new Promise((resolve, reject) => {
     getBootstrapData().then((data) => {
       resolve(data['total-players']);
@@ -117,13 +76,13 @@ export function getElementTypes(): Promise<types.ElementType[]> {
 }
 
 /**
- * Game settings:
+ * Teams (Premier Leaugue clubs):
  * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/game-settings
+ * mapped to https://fantasy.premierleague.com/drf/teams
  * @returns {Promise}
  */
-export function getGameSettings(): Promise<types.GameSettings> {
-  return getData('game-settings');
+export function getTeams(): Promise<types.Team[]> {
+  return getData('/teams');
 }
 
 /**
@@ -132,7 +91,7 @@ export function getGameSettings(): Promise<types.GameSettings> {
  * mapped to https://fantasy.premierleague.com/drf/event/${eventNumber}/live
  * @returns {Promise}
  */
-export function getEvent(eventNumber: number): Promise<types.Event> {
+export function getEventLive(eventNumber: number): Promise<types.LiveEvent> {
   return getData(`/event/${eventNumber}/live`);
 }
 
@@ -145,6 +104,15 @@ export function getEvent(eventNumber: number): Promise<types.Event> {
  */
 export function getClassicLeagueStandings(leagueId: number): Promise<types.League> {
   return getData(`/leagues-classic-standings/${leagueId}`);
+}
+
+/**
+ * All static game data:
+ * A promise that if fulfilled returns an object mapped to https://fantasy.premierleague.com/drf/bootstrap-static
+ * @returns {Promise}
+ */
+export function getBootstrapData(): Promise<types.BootstrappedData> {
+  return getData('/bootstrap-static');
 }
 
 /**

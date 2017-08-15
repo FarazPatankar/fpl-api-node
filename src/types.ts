@@ -1,23 +1,17 @@
 
 // all static data
 export interface BootstrappedData {
-  phases: GamePhase[];
+  phases: Phase[];
   elements: Element[];
-  'game-settings': Game;
   'total-players': number;
-  teams: TeamData[];
+  teams: Team[];
   element_types: ElementType[];
-  events: GameEvent[];
+  events: Event[];
 }
 
 // game interfaces
 
-export interface GameSettings {
-  game: Game;
-  element_type: GameElement;
-}
-
-export interface GameEvent {
+export interface Event {
   id: number;
   name: string;
   deadline_time: Date;
@@ -34,120 +28,14 @@ export interface GameEvent {
   is_next: boolean;
 }
 
-export interface Game {
-  scoring_ea_index: number;
-  league_prefix_public: string;
-  bps_tackles: number;
-  league_h2h_tiebreak: string;
-  scoring_long_play: number;
-  bps_recoveries_limit: number;
-  facebook_app_id: string;
-  bps_tackled: number;
-  bps_errors_leading_to_goal: number;
-  bps_yellow_cards: number;
-  ui_el_hide_currency_qi: boolean;
-  scoring_bonus: number;
-  transfers_cost: number;
-  default_formation: number[][];
-  bps_long_play: number;
-  bps_long_play_limit: number;
-  scoring_assists: number;
-  scoring_long_play_limit: number;
-  fifa_league_id: number;
-  league_size_classic_max: number;
-  scoring_red_cards: number;
-  scoring_creativity: number;
-  game_timezone: string;
-  static_game_url: string;
-  currency_symbol: string;
-  bps_target_missed: number;
-  bps_penalties_saved: number;
-  support_email_address: string;
-  cup_start_event_id: number;
-  scoring_penalties_saved: number;
-  scoring_threat: number;
-  scoring_saves: number;
-  league_join_private_max: number;
-  scoring_short_play: number;
-  sys_use_event_live_api: boolean;
-  scoring_concede_limit: number;
-  bps_key_passes: number;
-  bps_clearances_blocks_interceptions: number;
-  bps_pass_percentage_90: number;
-  bps_big_chances_missed: number;
-  league_max_ko_rounds_h2h: number;
-  bps_open_play_crosses: number;
-  league_points_h2h_win: number;
-  bps_saves: number;
-  bps_cbi_limit: number;
-  league_size_h2h_max: number;
-  sys_vice_captain_enabled: boolean;
-  squad_squadplay: number;
-  bps_fouls: number;
-  squad_squadsize: number;
-  ui_selection_short_team_names: boolean;
-  transfers_sell_on_fee: number;
-  transfers_type: string;
-  scoring_ict_index: number;
-  bps_pass_percentage_80: number;
-  bps_own_goals: number;
-  scoring_yellow_cards: number;
-  bps_pass_percentage_70: number;
-  ui_show_home_away: boolean;
-  ui_el_hide_currency_sy: boolean;
-  bps_assists: number;
-  squad_team_limit: number;
-  league_points_h2h_draw: number;
-  transfers_limit: number;
-  bps_dribbles: number;
-  perform_league_id: number;
-  bps_offside: number;
-  sys_cdn_cache_enabled: boolean;
-  currency_multiplier: number;
-  bps_red_cards: number;
-  bps_winning_goals: number;
-  league_join_public_max: number;
-  formations: GameFormations;
-  league_points_h2h_lose: number;
-  currency_decimal_places: number;
-  bps_errors_leading_to_goal_attempt: number;
-  ui_selection_price_gap: number;
-  bps_big_chances_created: number;
-  ui_selection_player_limit: number;
-  bps_attempted_passes_limit: number;
-  scoring_penalties_missed: number;
-  photo_base_url: string;
-  scoring_bps: number;
-  scoring_influence: number;
-  bps_penalties_conceded: number;
-  scoring_own_goals: number;
-  squad_total_spend: number;
-  bps_short_play: number;
-  ui_element_wrap: number;
-  bps_recoveries: number;
-  bps_penalties_missed: number;
-  scoring_saves_limit: number;
-}
-
-export interface GameElement {
-  scoring_clean_sheets: number;
-  squad_min_play: number;
-  scoring_goals_conceded: number;
-  scoring_goals_scored: number;
-  squad_max_play: number;
-  bps_goals_scored: number;
-  bps_clean_sheets: number;
-  squad_select: number;
-}
-
-export interface GamePhase {
+export interface Phase {
   id: number;
   name: string;
   start_event: number;
   stop_event: number;
 }
 
-export interface GameFormations {
+export interface Formations {
   '1-5-2-3': number[][];
   '1-5-3-2': number[][];
   '1-3-5-2': number[][];
@@ -229,7 +117,7 @@ export interface ElementType {
 }
 
 // team interfaces
-export interface TeamData {
+export interface Team {
   id: number;
   current_event_fixture: TeamFixture[];
   next_event_fixture: TeamFixture[];
@@ -293,10 +181,10 @@ export interface LeagueDetails {
 export interface LeagueStandings {
   has_next: boolean;
   number: number;
-  results: IApiLeaguePositions[];
+  results: LeagueResult[];
 }
 
-export interface IApiLeaguePositions {
+export interface LeagueResult {
   id: number;
   entry_name: string;
   event_total: number;
@@ -316,16 +204,49 @@ export interface IApiLeaguePositions {
 // entry interfaces
 
 export interface Entry {
+  id: number;
+  player_first_name: string;
+  player_last_name: string;
+  player_region_id: number;
+  player_region_name: string;
+  player_region_short_iso: string;
+  summary_overall_points: number;
+  summary_overall_rank: number;
+  summary_event_points: number;
+  summary_event_rank: number;
+  joined_seconds: number;
+  current_event: number;
+  total_transfers: number;
+  total_loans: number;
+  total_loans_active: number;
+  transfers_or_loans: string;
+  deleted: boolean;
+  email: boolean;
+  joined_time: Date;
+  name: string;
+  bank: number;
+  value: number;
+  kit: string;
+  event_transfers: number;
+  event_transfers_cost: number;
+  extra_free_transfers: number;
+  strategy?: any;
+  favourite_team?: any;
+  started_event: number;
+  player: number;
+}
+
+export interface EntryHistory {
   chips: EntryChip[];
-  entry: EntryDetails;
+  entry: Entry;
   leagues: EntryLeagues;
   season: EntrySeason[];
-  history: EntryHistory[];
+  history: EntryEventHistory[];
 }
 
 export interface EntryEvent {
   leagues: EntryLeagues;
-  entry_history: EntryHistory;
+  entry_history: EntryEventHistory;
   ce: number;
   automatic_subs: EntryAutomaticSub[];
   fixtures: Fixture[];
@@ -335,7 +256,7 @@ export interface EntryEvent {
   own_entry: boolean;
   state: EntryState;
   points: number;
-  entry: EntryDetails;
+  entry: Entry;
   active_chip: string;
 }
 
@@ -359,7 +280,7 @@ export interface EntryPick {
   explain: any[][];
   is_sub: boolean;
   element_type: number;
-  stats: Stats;
+  stats: ElementStats;
   multiplier: number;
 }
 
@@ -369,39 +290,6 @@ export interface EntryAutomaticSub {
   element_out: number;
   entry: number;
   event: number;
-}
-
-export interface EntryDetails {
-  id: number;
-  player_first_name: string;
-  player_last_name: string;
-  player_region_id: number;
-  player_region_name: string;
-  player_region_short_iso: string;
-  summary_overall_points: number;
-  summary_overall_rank: number;
-  summary_event_points: number;
-  summary_event_rank?: any;
-  joined_seconds: number;
-  current_event: number;
-  total_transfers: number;
-  total_loans: number;
-  total_loans_active: number;
-  transfers_or_loans: string;
-  deleted: boolean;
-  email: boolean;
-  joined_time: Date;
-  name: string;
-  bank: number;
-  value: number;
-  kit: string;
-  event_transfers: number;
-  event_transfers_cost: number;
-  extra_free_transfers: number;
-  strategy?: any;
-  favourite_team?: any;
-  started_event: number;
-  player: number;
 }
 
 export interface EntryLeague {
@@ -455,7 +343,7 @@ export interface EntrySeason {
   player: number;
 }
 
-export interface EntryHistory {
+export interface EntryEventHistory {
   id: number;
   movement: string;
   points: number;
@@ -504,7 +392,7 @@ export interface EntryTransferHistory {
 
 // stats
 
-export interface Stats {
+export interface ElementStats {
   yellow_cards: number;
   own_goals: number;
   creativity: number;
@@ -524,7 +412,6 @@ export interface Stats {
   penalties_saved: number;
   in_dreamteam: boolean;
   minutes: number;
-  [key: string]: number | boolean;
 }
 
 // fixture
@@ -573,24 +460,18 @@ export interface FixtureStatValue {
   element: number;
 }
 
-// event
-
-export interface Event {
+export interface LiveEvent {
   fixtures: Fixture[];
-  elements: EventElements;
-}
-
-export interface EventElements {
-  [key: number]: {
-    explain: EventElementsExplain[];
-    stats: Stats;
-  };
-}
-
-export interface EventElementsExplain {
-  [key: string]: {
-    points: number;
-    name: string;
-    value: number;
+  elements: {
+    [key: number]: {
+      explain: Array<{
+        [key: string]: {
+          points: number;
+          name: string;
+          value: number;
+        };
+      }>;
+      stats: ElementStats;
+    };
   };
 }
