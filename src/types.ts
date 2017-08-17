@@ -5,7 +5,7 @@ export interface BootstrappedData {
   elements: Player[];
   'total-players': number;
   teams: Team[];
-  element_types: ElementType[];
+  element_types: PlayerType[];
   events: Gameweek[];
 }
 
@@ -108,7 +108,7 @@ export interface Player {
   team: number;
 }
 
-export interface ElementType {
+export interface PlayerType {
   id: number;
   singular_name: string;
   singular_name_short: string;
@@ -153,14 +153,14 @@ export interface TeamFixture {
 }
 
 // league interfaces
-export interface League {
+export interface LeagueRoot {
   new_entries: LeagueStandings;
-  league: LeagueDetails;
+  league: League;
   standings: LeagueStandings;
   update_status: number;
 }
 
-export interface LeagueDetails {
+export interface League {
   id: number;
   leagueban_set: any[];
   name: string;

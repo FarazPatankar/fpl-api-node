@@ -84,19 +84,79 @@ fplapi.findEntryTransferHistory(entryId).then((data) => console.log(data));
 Promise.&lt;[EntryTransferHistory](#type_EntryTransferHistory)[]&gt;
 
 ___
-<a name="findPlayers"></a>
-### findPlayers
+<a name="findGameweek"></a>
+### findGameweek
 
-Returns a collection of all players.
+Returns a specific gameweek
 
-#### ►  findPlayers():```Promise```.&lt;[Player](#type_Player)[]&gt;
+#### ►  findGameweek(gameweek):```Promise```.&lt;[Gameweek](#type_Gameweek)&gt;
 
 ```js
-fplapi.findPlayers().then((data) => console.log(data));
+fplapi.findGameweek(gameweek).then((data) => console.log(data));
+```
+#### Parameters:
+
+|Name|Type|
+|---|---|
+|gameweek|number|
+
+#### Returns:
+Promise.&lt;[Gameweek](#type_Gameweek)&gt;
+
+___
+<a name="findGameweeks"></a>
+### findGameweeks
+
+Returns a collection of all gameweeks
+
+#### ►  findGameweeks():```Promise```.&lt;[Gameweek](#type_Gameweek)[]&gt;
+
+```js
+fplapi.findGameweeks().then((data) => console.log(data));
 ```
 
 #### Returns:
-Promise.&lt;[Player](#type_Player)[]&gt;
+Promise.&lt;[Gameweek](#type_Gameweek)[]&gt;
+
+___
+<a name="findLeague"></a>
+### findLeague
+
+Returns specified league details
+
+#### ►  findLeague(leagueId):```Promise```.&lt;[League](#type_League)&gt;
+
+```js
+fplapi.findLeague(leagueId).then((data) => console.log(data));
+```
+#### Parameters:
+
+|Name|Type|
+|---|---|
+|leagueId|number|
+
+#### Returns:
+Promise.&lt;[League](#type_League)&gt;
+
+___
+<a name="findLeagueResults"></a>
+### findLeagueResults
+
+Returns specified league standings (top 50)
+
+#### ►  findLeagueResults(leagueId):```Promise```.&lt;[LeagueResult](#type_LeagueResult)[]&gt;
+
+```js
+fplapi.findLeagueResults(leagueId).then((data) => console.log(data));
+```
+#### Parameters:
+
+|Name|Type|
+|---|---|
+|leagueId|number|
+
+#### Returns:
+Promise.&lt;[LeagueResult](#type_LeagueResult)[]&gt;
 
 ___
 <a name="findPlayer"></a>
@@ -140,54 +200,19 @@ fplapi.findPlayerStatsByGameweek(playerId, gameweek).then((data) => console.log(
 Promise.&lt;[PlayerStats](#type_PlayerStats)&gt;
 
 ___
-<a name="findGameweeks"></a>
-### findGameweeks
+<a name="findPlayers"></a>
+### findPlayers
 
-Returns a collection of all gameweeks
+Returns a collection of all players.
 
-#### ►  findGameweeks():```Promise```.&lt;[Gameweek](#type_Gameweek)[]&gt;
+#### ►  findPlayers():```Promise```.&lt;[Player](#type_Player)[]&gt;
 
 ```js
-fplapi.findGameweeks().then((data) => console.log(data));
+fplapi.findPlayers().then((data) => console.log(data));
 ```
 
 #### Returns:
-Promise.&lt;[Gameweek](#type_Gameweek)[]&gt;
-
-___
-<a name="findGameweek"></a>
-### findGameweek
-
-Returns a specific gameweek
-
-#### ►  findGameweek(gameweek):```Promise```.&lt;[Gameweek](#type_Gameweek)&gt;
-
-```js
-fplapi.findGameweek(gameweek).then((data) => console.log(data));
-```
-#### Parameters:
-
-|Name|Type|
-|---|---|
-|gameweek|number|
-
-#### Returns:
-Promise.&lt;[Gameweek](#type_Gameweek)&gt;
-
-___
-<a name="findTeams"></a>
-### findTeams
-
-Returns a collection of all teams
-
-#### ►  findTeams():```Promise```.&lt;[Team](#type_Team)[]&gt;
-
-```js
-fplapi.findTeams().then((data) => console.log(data));
-```
-
-#### Returns:
-Promise.&lt;[Team](#type_Team)[]&gt;
+Promise.&lt;[Player](#type_Player)[]&gt;
 
 ___
 <a name="findTeam"></a>
@@ -208,6 +233,56 @@ fplapi.findTeam(teamId).then((data) => console.log(data));
 
 #### Returns:
 Promise.&lt;[Team](#type_Team)&gt;
+
+___
+<a name="findTeams"></a>
+### findTeams
+
+Returns a collection of all teams
+
+#### ►  findTeams():```Promise```.&lt;[Team](#type_Team)[]&gt;
+
+```js
+fplapi.findTeams().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise.&lt;[Team](#type_Team)[]&gt;
+
+___
+<a name="getPlayerType"></a>
+### getPlayerType
+
+Returns a specified player type
+
+#### ►  getPlayerType(typeId):```Promise```.&lt;[PlayerType](#type_PlayerType)&gt;
+
+```js
+fplapi.getPlayerType(typeId).then((data) => console.log(data));
+```
+#### Parameters:
+
+|Name|Type|
+|---|---|
+|typeId|number|
+
+#### Returns:
+Promise.&lt;[PlayerType](#type_PlayerType)&gt;
+
+___
+<a name="getPlayerTypes"></a>
+### getPlayerTypes
+
+Returns collection of player types
+
+#### ►  getPlayerTypes():```Promise```.&lt;[PlayerType](#type_PlayerType)[]&gt;
+
+```js
+fplapi.getPlayerTypes().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise.&lt;[PlayerType](#type_PlayerType)[]&gt;
 
 ___
 <a name="getTotalNumberOfEntries"></a>
@@ -355,6 +430,51 @@ ___
 <a href="#top">Back to top</a> 
 ___  
 
+<a name="type_League"></a>
+
+### League
+
+|Property|Type|Description
+|---|---|---|
+|id|```number```|Id
+|name|```string```|Name
+|short_name|```string```|Short Name
+|created|```Date```|Created
+|closed|```boolean```|Closed
+|forum_disabled|```boolean```|Forum Disabled
+|make_code_public|```boolean```|Make Code Public
+|league_type|```string```|League Type
+|_scoring|```string```|Scoring
+|reprocess_standings|```boolean```|Reprocess Standings
+|start_event|```number```|Start Event
+
+<a href="#top">Back to top</a> 
+___  
+
+<a name="type_LeagueResult"></a>
+
+### LeagueResult
+
+|Property|Type|Description
+|---|---|---|
+|id|```number```|Id
+|entry_name|```string```|Entry Name
+|event_total|```number```|Event Total
+|player_name|```string```|Player Name
+|movement|```string```|Movement
+|own_entry|```boolean```|Own Entry
+|rank|```number```|Rank
+|last_rank|```number```|Last Rank
+|rank_sort|```number```|Rank Sort
+|total|```number```|Total
+|entry|```number```|Entry
+|league|```number```|League
+|start_event|```number```|Start Event
+|stop_event|```number```|Stop Event
+
+<a href="#top">Back to top</a> 
+___  
+
 <a name="type_Player"></a>
 
 ### Player
@@ -447,6 +567,21 @@ ___
 |penalties_saved|```number```|Penalties Saved
 |in_dreamteam|```boolean```|In Dreamteam
 |minutes|```number```|Minutes
+
+<a href="#top">Back to top</a> 
+___  
+
+<a name="type_PlayerType"></a>
+
+### PlayerType
+
+|Property|Type|Description
+|---|---|---|
+|id|```number```|Id
+|singular_name|```string```|Singular Name
+|singular_name_short|```string```|Singular Name Short
+|plural_name|```string```|Plural Name
+|plural_name_short|```string```|Plural Name Short
 
 <a href="#top">Back to top</a> 
 ___  

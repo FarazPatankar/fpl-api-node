@@ -79,7 +79,7 @@ function getData(file, ns) {
       returnType,
     });
   });
-
+  methods.sort(sortByName);
   dataTypes.sort(sortByName);
   return { methods, dataTypes };
 }

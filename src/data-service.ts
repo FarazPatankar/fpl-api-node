@@ -57,17 +57,6 @@ export function getEntryTransfers(entryId: number): Promise<types.EntryTransfers
 }
 
 /**
- * Returns the total number of entries
- */
-export function getTotalEntries(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    getBootstrapData().then((data) => {
-      resolve(data['total-players']);
-    });
-  });
-}
-
-/**
  * Element types: A promise that if fulfilled returns an object
  * mapped to https://fantasy.premierleague.com/drf/elements
  * @returns {Promise}
@@ -81,7 +70,7 @@ export function getElements(): Promise<types.Player[]> {
  * mapped to https://fantasy.premierleague.com/drf/elements-types
  * @returns {Promise}
  */
-export function getElementTypes(): Promise<types.ElementType[]> {
+export function getElementTypes(): Promise<types.PlayerType[]> {
   return getData('/element-types');
 }
 
@@ -121,7 +110,7 @@ export function getEventLive(eventNumber: number): Promise<types.LiveEvent> {
  * @param leagueId League id
  * @returns {Promise}
  */
-export function getClassicLeagueStandings(leagueId: number): Promise<types.League> {
+export function getClassicLeagueStandings(leagueId: number): Promise<types.LeagueRoot> {
   return getData(`/leagues-classic-standings/${leagueId}`);
 }
 
