@@ -15,14 +15,17 @@ ___
 {{comment}}
 
 ```js
-fplapi.{{name}}({{#each params}}{{name}}{{#unless @last}}, {{/unless}}{{/each}}).then( data => doSomething(data) );
+fplapi.{{name}}({{#each params}}{{name}}{{#unless @last}}, {{/unless}}{{/each}}).then((data) => console.log(data));
 ```
-
+{{#if hasParams}}
 #### Parameters:
 
+|Name|Type|
+|---|---|
 {{#each params}}
-{{name}}
+|{{name}}|{{type}}|
 {{/each}}
+{{/if}}
 
 #### Returns:
 {{#if isObject}}

@@ -14,4 +14,26 @@ describe('should return correct Entry data', () => {
     });
   });
 
+  it('should return entry event', (done) => {
+    fplapi.getEntryEvent(entryId, 1).then((data) => {
+      expect(data.entry).to.equal(entryId);
+      expect(data.total_points).to.equal(69);
+      done();
+    });
+  });
+
+  it('should return entry picks', (done) => {
+    fplapi.getEntryPicksForEvent(entryId, 1).then((data) => {
+      expect(data[0].element).to.equal(421);
+      done();
+    });
+  });
+
+  it('should return entry transfer history', (done) => {
+    fplapi.getEntryTransferHistory(entryId).then((data) => {
+      // console.log(data);
+      done();
+    });
+  });
+
 });

@@ -3,62 +3,72 @@
 ## Methods
 
 * [getEntry](#getEntry)
-* [getEntryEventHistory](#getEntryEventHistory)
-* [getEntryEventPicks](#getEntryEventPicks)
+* [getEntryEvent](#getEntryEvent)
+* [getEntryPicksForEvent](#getEntryPicksForEvent)
 * [getEntryTransferHistory](#getEntryTransferHistory)
-* [getTotalNumberOfEntries](#getTotalNumberOfEntries)
 * [getElements](#getElements)
 * [getElement](#getElement)
+* [getEvents](#getEvents)
+* [getEvent](#getEvent)
+* [getTeams](#getTeams)
+* [getTeam](#getTeam)
+* [getTotalNumberOfEntries](#getTotalNumberOfEntries)
 ___
 
 <a name="getEntry"></a>
 ### ►  getEntry(entryId)
 
-Returns an entry
+********
+Entries
+*******
+Returns entry summary
 
 ```js
-fplapi.getEntry(entryId).then( data => doSomething(data) );
+fplapi.getEntry(entryId).then((data) => console.log(data));
 ```
-
 #### Parameters:
 
-entryId
+|Name|Type|
+|---|---|
+|entryId|number|
 
 #### Returns:
 Promise&lt;Json&gt;: See <a href="#object-Entry">Entry</a> for data structure.
 
 ___
-<a name="getEntryEventHistory"></a>
-### ►  getEntryEventHistory(entryId, eventNumber)
+<a name="getEntryEvent"></a>
+### ►  getEntryEvent(entryId, eventNumber)
 
-Returns entry event data
+Returns event details for an entry
 
 ```js
-fplapi.getEntryEventHistory(entryId, eventNumber).then( data => doSomething(data) );
+fplapi.getEntryEvent(entryId, eventNumber).then((data) => console.log(data));
 ```
-
 #### Parameters:
 
-entryId
-eventNumber
+|Name|Type|
+|---|---|
+|entryId|number|
+|eventNumber|number|
 
 #### Returns:
-Promise&lt;Json&gt;: See <a href="#object-EntryEventHistory">EntryEventHistory</a> for data structure.
+Promise&lt;Json&gt;: See <a href="#object-EntryEvent">EntryEvent</a> for data structure.
 
 ___
-<a name="getEntryEventPicks"></a>
-### ►  getEntryEventPicks(entryId, eventNumber)
+<a name="getEntryPicksForEvent"></a>
+### ►  getEntryPicksForEvent(entryId, eventNumber)
 
-Returns pick for a particular event
+Returns picks for a specified event
 
 ```js
-fplapi.getEntryEventPicks(entryId, eventNumber).then( data => doSomething(data) );
+fplapi.getEntryPicksForEvent(entryId, eventNumber).then((data) => console.log(data));
 ```
-
 #### Parameters:
 
-entryId
-eventNumber
+|Name|Type|
+|---|---|
+|entryId|number|
+|eventNumber|number|
 
 #### Returns:
 Promise&lt;Json&gt;: See <a href="#object-EntryPick">EntryPick[]</a> for data structure.
@@ -70,64 +80,134 @@ ___
 Returns transfer history of an entry
 
 ```js
-fplapi.getEntryTransferHistory(entryId).then( data => doSomething(data) );
+fplapi.getEntryTransferHistory(entryId).then((data) => console.log(data));
 ```
-
 #### Parameters:
 
-entryId
+|Name|Type|
+|---|---|
+|entryId|number|
 
 #### Returns:
 Promise&lt;Json&gt;: See <a href="#object-EntryTransferHistory">EntryTransferHistory[]</a> for data structure.
 
 ___
-<a name="getTotalNumberOfEntries"></a>
-### ►  getTotalNumberOfEntries()
-
-Returns the total number of entries
-
-```js
-fplapi.getTotalNumberOfEntries().then( data => doSomething(data) );
-```
-
-#### Parameters:
-
-
-#### Returns:
-Promise&lt;number&gt;
-
-___
 <a name="getElements"></a>
 ### ►  getElements()
 
+********
+Elements
+*******
 Geta all elements
 
 ```js
-fplapi.getElements().then( data => doSomething(data) );
+fplapi.getElements().then((data) => console.log(data));
 ```
-
-#### Parameters:
-
 
 #### Returns:
 Promise&lt;Json&gt;: See <a href="#object-Element">Element[]</a> for data structure.
 
 ___
 <a name="getElement"></a>
-### ►  getElement(id)
+### ►  getElement(elementId)
 
 Returns a specific element
 
 ```js
-fplapi.getElement(id).then( data => doSomething(data) );
+fplapi.getElement(elementId).then((data) => console.log(data));
 ```
-
 #### Parameters:
 
-id
+|Name|Type|
+|---|---|
+|elementId|number|
 
 #### Returns:
 Promise&lt;Json&gt;: See <a href="#object-Element">Element</a> for data structure.
+
+___
+<a name="getEvents"></a>
+### ►  getEvents()
+
+********
+Elements
+*******
+Geta all events
+
+```js
+fplapi.getEvents().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise&lt;Json&gt;: See <a href="#object-Event">Event[]</a> for data structure.
+
+___
+<a name="getEvent"></a>
+### ►  getEvent(eventNumber)
+
+Returns a specific event
+
+```js
+fplapi.getEvent(eventNumber).then((data) => console.log(data));
+```
+#### Parameters:
+
+|Name|Type|
+|---|---|
+|eventNumber|number|
+
+#### Returns:
+Promise&lt;Json&gt;: See <a href="#object-Event">Event</a> for data structure.
+
+___
+<a name="getTeams"></a>
+### ►  getTeams()
+
+********
+Teams
+*******
+Geta all events
+
+```js
+fplapi.getTeams().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise&lt;Json&gt;: See <a href="#object-Team">Team[]</a> for data structure.
+
+___
+<a name="getTeam"></a>
+### ►  getTeam(teamId)
+
+Returns a specific event
+
+```js
+fplapi.getTeam(teamId).then((data) => console.log(data));
+```
+#### Parameters:
+
+|Name|Type|
+|---|---|
+|teamId|number|
+
+#### Returns:
+Promise&lt;Json&gt;: See <a href="#object-Team">Team</a> for data structure.
+
+___
+<a name="getTotalNumberOfEntries"></a>
+### ►  getTotalNumberOfEntries()
+
+********
+Utils
+*******
+Returns the total number of entries
+
+```js
+fplapi.getTotalNumberOfEntries().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise&lt;number&gt;
 
 ___
 
@@ -136,9 +216,12 @@ ___
 * [Element](#Element)
 * [ElementStats](#ElementStats)
 * [Entry](#Entry)
-* [EntryEventHistory](#EntryEventHistory)
+* [EntryEvent](#EntryEvent)
 * [EntryPick](#EntryPick)
 * [EntryTransferHistory](#EntryTransferHistory)
+* [Event](#Event)
+* [Team](#Team)
+* [TeamFixture](#TeamFixture)
 
 
 <a name="object-Element"></a>
@@ -272,8 +355,8 @@ ___
 <a href="#top">Back to top</a> 
 ___  
 
-<a name="object-EntryEventHistory"></a>
-### EntryEventHistory
+<a name="object-EntryEvent"></a>
+### EntryEvent
 
 |Property|Type|Description
 |---|---|---|
@@ -328,6 +411,75 @@ ___
 |element_out|number|Element Out
 |entry|number|Entry
 |event|number|Event
+
+<a href="#top">Back to top</a> 
+___  
+
+<a name="object-Event"></a>
+### Event
+
+|Property|Type|Description
+|---|---|---|
+|id|number|Id
+|name|string|Name
+|deadline_time|Date|Deadline Time
+|average_entry_score|number|Average Entry Score
+|finished|boolean|Finished
+|data_checked|boolean|Data Checked
+|highest_scoring_entry|number|Highest Scoring Entry
+|deadline_time_epoch|number|Deadline Time Epoch
+|deadline_time_game_offset|number|Deadline Time Game Offset
+|deadline_time_formatted|string|Deadline Time Formatted
+|highest_score|number|Highest Score
+|is_previous|boolean|Is Previous
+|is_current|boolean|Is Current
+|is_next|boolean|Is Next
+
+<a href="#top">Back to top</a> 
+___  
+
+<a name="object-Team"></a>
+### Team
+
+|Property|Type|Description
+|---|---|---|
+|id|number|Id
+|current_event_fixture|TeamFixture[]|Current Event Fixture
+|next_event_fixture|TeamFixture[]|Next Event Fixture
+|name|string|Name
+|code|number|Code
+|short_name|string|Short Name
+|unavailable|boolean|Unavailable
+|strength|number|Strength
+|position|number|Position
+|played|number|Played
+|win|number|Win
+|loss|number|Loss
+|draw|number|Draw
+|points|number|Points
+|link_url|string|Link Url
+|strength_overall_home|number|Strength Overall Home
+|strength_overall_away|number|Strength Overall Away
+|strength_attack_home|number|Strength Attack Home
+|strength_attack_away|number|Strength Attack Away
+|strength_defence_home|number|Strength Defence Home
+|strength_defence_away|number|Strength Defence Away
+|team_division|number|Team Division
+
+<a href="#top">Back to top</a> 
+___  
+
+<a name="object-TeamFixture"></a>
+### TeamFixture
+
+|Property|Type|Description
+|---|---|---|
+|is_home|boolean|Is Home
+|month|number|Month
+|event_day|number|Event Day
+|id|number|Id
+|day|number|Day
+|opponent|number|Opponent
 
 <a href="#top">Back to top</a> 
 ___  

@@ -15,6 +15,7 @@ axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
  * https://fantasy.premierleague.com/drf/teams
  * https://fantasy.premierleague.com/drf/elements
  * https://fantasy.premierleague.com/drf/elements-types
+ * https://fantasy.premierleague.com/drf/events
  * https://fantasy.premierleague.com/drf/game-settings
  * https://fantasy.premierleague.com/drf/event/${eventNumber}/live
  * https://fantasy.premierleague.com/drf/leagues-classic-standings/${id}
@@ -27,7 +28,7 @@ axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
  * @param entryId Entry id
  * @returns {Promise}
  */
-export function getEntryHistory(entryId: number): Promise<types.EntryHistory> {
+export function getEntryHistory(entryId: number): Promise<types.EntryRoot> {
   return getData(`/entry/${entryId}/history`);
 }
 
@@ -40,7 +41,7 @@ export function getEntryHistory(entryId: number): Promise<types.EntryHistory> {
  * @param eventNumber The event / gameweek number
  * @returns {Promise}
  */
-export function getEntryEvent(entryId: number, eventNumber: number): Promise<types.EntryEvent> {
+export function getEntryEvent(entryId: number, eventNumber: number): Promise<types.EntryEventRoot> {
   return getData(`/entry/${entryId}/event/${eventNumber}`);
 }
 
@@ -68,11 +69,29 @@ export function getTotalEntries(): Promise<number> {
 
 /**
  * Element types: A promise that if fulfilled returns an object
+ * mapped to https://fantasy.premierleague.com/drf/elements
+ * @returns {Promise}
+ */
+export function getElements(): Promise<types.Element[]> {
+  return getData('/elements');
+}
+
+/**
+ * Element types: A promise that if fulfilled returns an object
  * mapped to https://fantasy.premierleague.com/drf/elements-types
  * @returns {Promise}
  */
 export function getElementTypes(): Promise<types.ElementType[]> {
   return getData('/element-types');
+}
+
+/**
+ * Element types: A promise that if fulfilled returns an object
+ * mapped to https://fantasy.premierleague.com/drf/events
+ * @returns {Promise}
+ */
+export function getEvents(): Promise<types.Event[]> {
+  return getData('/events');
 }
 
 /**

@@ -17,7 +17,7 @@ npm install fpl-api-node --save
 ```js
 import * as fplapi from 'fpl-api-node';
 
-fplapi.getEntry(entryId).then( data => doSomething(data) );
+fplapi.getEntry(entryId).then((data) => console.log(data));
 ```
 
 ## Methods

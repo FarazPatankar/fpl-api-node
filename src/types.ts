@@ -236,17 +236,17 @@ export interface Entry {
   player: number;
 }
 
-export interface EntryHistory {
+export interface EntryRoot {
   chips: EntryChip[];
   entry: Entry;
   leagues: EntryLeagues;
   season: EntrySeason[];
-  history: EntryEventHistory[];
+  history: EntryEvent[];
 }
 
-export interface EntryEvent {
+export interface EntryEventRoot {
   leagues: EntryLeagues;
-  entry_history: EntryEventHistory;
+  entry_history: EntryEvent;
   ce: number;
   automatic_subs: EntryAutomaticSub[];
   fixtures: Fixture[];
@@ -343,7 +343,7 @@ export interface EntrySeason {
   player: number;
 }
 
-export interface EntryEventHistory {
+export interface EntryEvent {
   id: number;
   movement: string;
   points: number;
