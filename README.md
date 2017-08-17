@@ -2,9 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/fpl-api-node.svg)](https://www.npmjs.com/package/fpl-api-node)
 
-**Please note this library is currently being re-written in anticipation for the 2017-2018 season.**
-
-A node API wrapper for the Fantasy Premier League (fantasy.premierleague.com) web apis. 
+A simple node API wrapper for the Fantasy Premier League (fantasy.premierleague.com) web apis. 
 
 ## Installation
 
@@ -17,11 +15,10 @@ npm install fpl-api-node --save
 ```js
 import * as fplapi from 'fpl-api-node';
 
-fplapi.getEntry(entryId).then((data) => console.log(data));
+fplapi.findEntry(entryId).then((data) => console.log(data));
 ```
 
-## Methods
+## Documentation
 
-API to follow shortly
+Please refer to the [Wiki for API docs](https://github.com/tgreyuk/fpl-api-node/wiki/API).
 
-<!--Please read [API documentation](API.md) for available methods.-->
