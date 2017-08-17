@@ -32,6 +32,19 @@ export function findEntryGameweek(entryId: number, gameweek: number): Promise<ty
 }
 
 /**
+ * Returns a collection of completed gameweeks
+ * @param entryId
+ * @param gameweek
+ */
+export function findEntryGameweeks(entryId: number): Promise<types.EntryGameweek[]> {
+  return new Promise((resolve, reject) => {
+    dataService.getEntryHistory(entryId).then((data) => {
+      resolve(data.history);
+    });
+  });
+}
+
+/**
  * Returns a collection of picks for a specified gameweek
  * @param entryId
  * @param gameweek

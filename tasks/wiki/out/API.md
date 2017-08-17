@@ -43,6 +43,26 @@ fplapi.findEntryGameweek(entryId, gameweek).then((data) => console.log(data));
 Promise.&lt;[EntryGameweek](#type_EntryGameweek)&gt;
 
 ___
+<a name="findEntryGameweeks"></a>
+### findEntryGameweeks
+
+Returns a collection of completed gameweeks
+
+#### ►  findEntryGameweeks(entryId):```Promise```.&lt;[EntryGameweek](#type_EntryGameweek)[]&gt;
+
+```js
+fplapi.findEntryGameweeks(entryId).then((data) => console.log(data));
+```
+#### Parameters:
+
+|Name|Type|
+|---|---|
+|entryId|number|
+
+#### Returns:
+Promise.&lt;[EntryGameweek](#type_EntryGameweek)[]&gt;
+
+___
 <a name="findEntryPicksByGameweek"></a>
 ### findEntryPicksByGameweek
 

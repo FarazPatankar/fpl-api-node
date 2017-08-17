@@ -16,6 +16,13 @@ describe('should return correct Entry data', () => {
     });
   });
 
+  it('should find Gameweeks', (done) => {
+    fplapi.findEntryGameweeks(entryId).then((data) => {
+      expect(data[0].points).to.equal(69);
+      done();
+    });
+  });
+
   it('should return entry gameweek', (done) => {
     fplapi.findEntryGameweek(entryId, 1).then((data) => {
       expect(data.entry).to.equal(entryId);

@@ -2,6 +2,7 @@
 
 * [findEntry](https://github.com/tgreyuk/fpl-api-node/wiki/API#findEntry)
 * [findEntryGameweek](https://github.com/tgreyuk/fpl-api-node/wiki/API#findEntryGameweek)
+* [findEntryGameweeks](https://github.com/tgreyuk/fpl-api-node/wiki/API#findEntryGameweeks)
 * [findEntryPicksByGameweek](https://github.com/tgreyuk/fpl-api-node/wiki/API#findEntryPicksByGameweek)
 * [findEntryTransferHistory](https://github.com/tgreyuk/fpl-api-node/wiki/API#findEntryTransferHistory)
 * [findGameweek](https://github.com/tgreyuk/fpl-api-node/wiki/API#findGameweek)
