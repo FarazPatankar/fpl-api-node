@@ -2,16 +2,16 @@
 // all static data
 export interface BootstrappedData {
   phases: Phase[];
-  elements: Element[];
+  elements: Player[];
   'total-players': number;
   teams: Team[];
   element_types: ElementType[];
-  events: Event[];
+  events: Gameweek[];
 }
 
 // game interfaces
 
-export interface Event {
+export interface Gameweek {
   id: number;
   name: string;
   deadline_time: Date;
@@ -48,7 +48,7 @@ export interface Formations {
 }
 
 // element interfaces
-export interface Element {
+export interface Player {
   id: number;
   photo: string;
   web_name: string;
@@ -241,12 +241,12 @@ export interface EntryRoot {
   entry: Entry;
   leagues: EntryLeagues;
   season: EntrySeason[];
-  history: EntryEvent[];
+  history: EntryGameweek[];
 }
 
 export interface EntryEventRoot {
   leagues: EntryLeagues;
-  entry_history: EntryEvent;
+  entry_history: EntryGameweek;
   ce: number;
   automatic_subs: EntryAutomaticSub[];
   fixtures: Fixture[];
@@ -280,7 +280,7 @@ export interface EntryPick {
   explain: any[][];
   is_sub: boolean;
   element_type: number;
-  stats: ElementStats;
+  stats: PlayerStats;
   multiplier: number;
 }
 
@@ -343,7 +343,7 @@ export interface EntrySeason {
   player: number;
 }
 
-export interface EntryEvent {
+export interface EntryGameweek {
   id: number;
   movement: string;
   points: number;
@@ -392,7 +392,7 @@ export interface EntryTransferHistory {
 
 // stats
 
-export interface ElementStats {
+export interface PlayerStats {
   yellow_cards: number;
   own_goals: number;
   creativity: number;
@@ -471,7 +471,7 @@ export interface LiveEvent {
           value: number;
         };
       }>;
-      stats: ElementStats;
+      stats: PlayerStats;
     };
   };
 }

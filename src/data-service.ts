@@ -72,7 +72,7 @@ export function getTotalEntries(): Promise<number> {
  * mapped to https://fantasy.premierleague.com/drf/elements
  * @returns {Promise}
  */
-export function getElements(): Promise<types.Element[]> {
+export function getElements(): Promise<types.Player[]> {
   return getData('/elements');
 }
 
@@ -90,7 +90,7 @@ export function getElementTypes(): Promise<types.ElementType[]> {
  * mapped to https://fantasy.premierleague.com/drf/events
  * @returns {Promise}
  */
-export function getEvents(): Promise<types.Event[]> {
+export function getEvents(): Promise<types.Gameweek[]> {
   return getData('/events');
 }
 

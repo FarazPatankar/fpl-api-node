@@ -10,11 +10,11 @@ export function fromCache(cacheKey: string, callback: () => Promise<any>): Promi
   return new Promise((resolve: any, reject: any) => {
     const cacheValue = cache.get(cacheKey);
     if (cacheValue) {
-      console.log(`${cacheKey} from cache`);
+      // console.log(`${cacheKey} from cache`);
       resolve(cacheValue);
     } else {
       callback().then((data) => {
-        console.log(`${cacheKey} from request`);
+        // console.log(`${cacheKey} from request`);
         cache.set(cacheKey, data);
         resolve(data);
       });

@@ -3,169 +3,150 @@ import * as dataService from './data-service';
 import * as types from './types';
 
 /**
- * ********
- * Entries
- * *******
- */
-
-/**
- * Returns entry summary
+ * Returns entry summary.
  * @param entryId The unique id of entry
  */
-export function getEntry(entryId: number): Promise<types.Entry> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryHistory(entryId).then((data) => {
-      resolve(data.entry);
+export function findEntry(entryId: number): Promise<types.Entry> {
+    return new Promise((resolve, reject) => {
+        dataService.getEntryHistory(entryId).then((data) => {
+            resolve(data.entry);
+        });
     });
-  });
 }
 
 /**
- * Returns event details for an entry
+ * Returns a details of a specified gameweek
  * @param entryId
- * @param eventNumber
+ * @param gameweek
  */
-export function getEntryEvent(entryId: number, eventNumber: number): Promise<types.EntryEvent> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryEvent(entryId, eventNumber).then((data) => {
-      resolve(data.entry_history);
+export function findEntryGameweek(entryId: number, gameweek: number): Promise<types.EntryGameweek> {
+    return new Promise((resolve, reject) => {
+        dataService.getEntryEvent(entryId, gameweek).then((data) => {
+            resolve(data.entry_history);
+        });
     });
-  });
 }
 
 /**
- * Returns picks for a specified event
+ * Returns a collection of picks for a specified gameweek
  * @param entryId
- * @param eventNumber
+ * @param gameweek
  */
-export function getEntryPicksForEvent(entryId: number, eventNumber: number): Promise<types.EntryPick[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryEvent(entryId, eventNumber).then((data) => {
-      resolve(data.picks);
+export function findEntryPicksByGameweek(entryId: number, gameweek: number): Promise<types.EntryPick[]> {
+    return new Promise((resolve, reject) => {
+        dataService.getEntryEvent(entryId, gameweek).then((data) => {
+            resolve(data.picks);
+        });
     });
-  });
 }
 
 /**
  * Returns transfer history of an entry
  * @param entryId
  */
-export function getEntryTransferHistory(entryId: number): Promise<types.EntryTransferHistory[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryTransfers(entryId).then((data) => {
-      resolve(data.history);
+export function findEntryTransferHistory(entryId: number): Promise<types.EntryTransferHistory[]> {
+    return new Promise((resolve, reject) => {
+        dataService.getEntryTransfers(entryId).then((data) => {
+            resolve(data.history);
+        });
     });
-  });
 }
 
 /**
- * ********
- * Elements
- * *******
+ * Returns a collection of all players.
  */
-
-/**
- * Geta all elements
- */
-export function getElements(): Promise<types.Element[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getElements().then((data) => {
-      resolve(data);
+export function findPlayers(): Promise<types.Player[]> {
+    return new Promise((resolve, reject) => {
+        dataService.getElements().then((data) => {
+            resolve(data);
+        });
     });
-  });
 }
 
 /**
- * Returns a specific element
+ * Returns stats for a specified player.
  */
-export function getElement(elementId: number): Promise<types.Element> {
-  return new Promise((resolve, reject) => {
-    getElements().then((elements) => {
-      const match = elements.find((element) => {
-        return element.id === elementId;
-      });
-      resolve(match);
+export function findPlayer(playerId: number): Promise<types.Player> {
+    return new Promise((resolve, reject) => {
+        dataService.getElements().then((elements) => {
+            const match = elements.find((element) => {
+                return element.id === playerId;
+            });
+            resolve(match);
+        });
     });
-  });
 }
 
 /**
- * ********
- * Elements
- * *******
+ * Returns a stats for a specified gameweek
  */
-
-/**
- * Geta all events
- */
-export function getEvents(): Promise<types.Event[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getEvents().then((data) => {
-      resolve(data);
+export function findPlayerStatsByGameweek(playerId: number, gameweek: number): Promise<types.PlayerStats> {
+    return new Promise((resolve, reject) => {
+        dataService.getEventLive(gameweek).then((data) => {
+            resolve(data.elements[playerId].stats);
+        });
     });
-  });
 }
 
 /**
- * Returns a specific event
- * @param eventNumber
+ * Returns a collection of all gameweeks
  */
-export function getEvent(eventNumber: number): Promise<types.Event> {
-  return new Promise((resolve, reject) => {
-    dataService.getEvents().then((events) => {
-      const match = events.find((event) => {
-        return event.id === eventNumber;
-      });
-      resolve(match);
+export function findGameweeks(): Promise<types.Gameweek[]> {
+    return new Promise((resolve, reject) => {
+        dataService.getEvents().then((data) => {
+            resolve(data);
+        });
     });
-  });
 }
 
 /**
- * ********
- * Teams
- * *******
+ * Returns a specific gameweek
+ * @param gameweek
  */
-
-/**
- * Geta all events
- */
-export function getTeams(): Promise<types.Team[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getTeams().then((data) => {
-      resolve(data);
+export function findGameweek(gameweek: number): Promise<types.Gameweek> {
+    return new Promise((resolve, reject) => {
+        dataService.getEvents().then((events) => {
+            const match = events.find((event) => {
+                return event.id === gameweek;
+            });
+            resolve(match);
+        });
     });
-  });
 }
 
 /**
- * Returns a specific event
+ * Returns a collection of all teams
+ */
+export function findTeams(): Promise<types.Team[]> {
+    return new Promise((resolve, reject) => {
+        dataService.getTeams().then((data) => {
+            resolve(data);
+        });
+    });
+}
+
+/**
+ * Returns a specified team
  * @param teamId
  */
-export function getTeam(teamId: number): Promise<types.Team> {
-  return new Promise((resolve, reject) => {
-    dataService.getTeams().then((teams) => {
-      const match = teams.find((team) => {
-        return team.id === teamId;
-      });
-      resolve(match);
+export function findTeam(teamId: number): Promise<types.Team> {
+    return new Promise((resolve, reject) => {
+        dataService.getTeams().then((teams) => {
+            const match = teams.find((team) => {
+                return team.id === teamId;
+            });
+            resolve(match);
+        });
     });
-  });
 }
-
-/**
- * ********
- * Utils
- * *******
- */
 
 /**
  * Returns the total number of entries
  */
 export function getTotalNumberOfEntries(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      resolve(data['total-players']);
+    return new Promise((resolve, reject) => {
+        dataService.getBootstrapData().then((data) => {
+            resolve(data['total-players']);
+        });
     });
-  });
 }
