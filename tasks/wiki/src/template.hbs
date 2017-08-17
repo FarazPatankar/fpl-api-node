@@ -1,18 +1,16 @@
-# fpl-api-node (Season 2017-18)
+
+{{#if methods}}  
 
 ## Methods
 
 {{#each methods}} 
-* [{{name}}](#{{name}})
-{{/each}}
-___
-
-{{#each methods}} 
 <a name="{{name}}"></a>
 {{#if name}}
-### ►  {{name}}({{#each params}}{{name}}{{#unless @last}}, {{/unless}}{{/each}})
+### {{name}}
 
 {{comment}}
+
+#### ►  {{name}}({{#each params}}{{name}}{{#unless @last}}, {{/unless}}{{/each}}):```Promise```.{{{displayedReturnType}}}
 
 ```js
 fplapi.{{name}}({{#each params}}{{name}}{{#unless @last}}, {{/unless}}{{/each}}).then((data) => console.log(data));
@@ -29,7 +27,7 @@ fplapi.{{name}}({{#each params}}{{name}}{{#unless @last}}, {{/unless}}{{/each}})
 
 #### Returns:
 {{#if isObject}}
-Promise&lt;Json&gt;: See <a href="#object-{{returnAnchor}}">{{returnInterfaceName}}</a> for data structure.
+Promise.{{{displayedReturnType}}}
 {{else}}
 {{returnType}}
 {{/if}}
@@ -37,25 +35,26 @@ Promise&lt;Json&gt;: See <a href="#object-{{returnAnchor}}">{{returnInterfaceNam
 {{/if}} 
 ___
 {{/each}}
+{{/if}}
 
-## Data structures
+{{#if dataTypes}}
 
-{{#each dataTypes}} 
-* [{{name}}](#{{name}})
-{{/each}}
+## Data Types
 
 {{#each dataTypes}}
 
-<a name="object-{{anchor}}"></a>
+<a name="{{anchorName}}"></a>
+
 ### {{name}}
 
 |Property|Type|Description
 |---|---|---|
 {{#each data}}
-|{{name}}|{{type}}|{{description}}
+|{{name}}|{{{displayType}}}|{{description}}
 {{/each}}
 
 <a href="#top">Back to top</a> 
 ___  
 {{/each}}
+{{/if}}
 

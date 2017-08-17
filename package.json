@@ -8,7 +8,7 @@
     "dist/"
   ],
   "scripts": {
-    "generate-api": "ts-node tasks/api-generator/index.ts",
+    "generateWiki": "ts-node tasks/wiki/src/index.ts",
     "lint": "tslint --project tsconfig.json",
     "test": "mocha -r ts-node/register test/specs.ts --timeout 15000 --slow 0",
     "prepare": "rm -rf dist && tsc -p src/tsconfig.json",
