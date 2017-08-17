@@ -78,6 +78,12 @@ describe('should return correct Gamweek data', () => {
       done();
     });
   });
+  it('should find Gameweek player stats', (done) => {
+    fplapi.findGameweekPlayerStats(1).then((data) => {
+      expect(data[1].total_points).to.equal(1);
+      done();
+    });
+  });
 });
 
 // Teams

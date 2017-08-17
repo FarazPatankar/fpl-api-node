@@ -460,18 +460,24 @@ export interface FixtureStatValue {
   element: number;
 }
 
-export interface LiveEvent {
+export interface LiveGameweek {
   fixtures: Fixture[];
-  elements: {
-    [key: number]: {
-      explain: Array<{
-        [key: string]: {
-          points: number;
-          name: string;
-          value: number;
-        };
-      }>;
-      stats: PlayerStats;
-    };
+  elements: GameweekPlayers;
+}
+
+export interface GameweekPlayers {
+  [key: number]: {
+    explain: Array<{
+      [key: string]: {
+        points: number;
+        name: string;
+        value: number;
+      };
+    }>;
+    stats: PlayerStats;
   };
+}
+
+export interface PlayerStatsMap {
+  [key: number]: PlayerStats;
 }

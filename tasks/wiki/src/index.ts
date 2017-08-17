@@ -95,45 +95,59 @@ function setDataType(dataTypes, matchedInterface: any, filename, inttype?) {
 
   const data: any = [];
 
-  // iterate over interface properties
-  matchedInterface.getProperties().forEach((prop) => {
+  let description;
 
-    // try {
+  // need to refactor hardcoded interface name
+  if (matchedInterface.getName() === 'PlayerStatsMap') {
 
-    // set param type definition and description
-    const typeDef = prop.getName();
-
-    // set description
-    const description = prop.getDocumentationComment() || _.startCase(prop.getName());
-
-    // set property type as a string
-    const propType = prop.getType().getText();
-
-    if (propType.includes('any')) {
-      return;
-    }
-
-    // set property type label
-    const propLabel = propType;
-
-    // if type is an object change label
-
-    // const isArray = propType.includes('[]');
-    // propLabel = 'Object' + (isArray ? '[]' : '');
-
-    let displayType = '```' + propLabel + '```';
-
-    // first determine if the object is an available interface
-    const typeInterface = getInterface(filename, propType.replace('[]', ''));
-    if (typeInterface) {
-      setDataType(dataTypes, typeInterface, filename, typeDef);
-      displayType = `[${_.startCase(typeInterface.getName())}](#${getTypeAnchorName(typeInterface)})`;
-    }
-
+    description = 'An object map of player id keys';
     // set the element
-    data.push({ displayType, name: typeDef, description });
+    const typeInterface = getInterface(filename, 'PlayerStats');
+    setDataType(dataTypes, typeInterface, filename, 'PlayerStats');
+    data.push({ displayType: getDisplayType(typeInterface), name: '[key: number]', description });
+  } else {
 
-  });
+    // iterate over interface properties
+    matchedInterface.getProperties().forEach((prop) => {
+
+      // try {
+
+      // set param type definition and description
+      const typeDef = prop.getName();
+
+      // set description
+      description = prop.getDocumentationComment() || _.startCase(prop.getName());
+
+      // set property type as a string
+      const propType = prop.getType().getText();
+
+      if (propType.includes('any')) {
+        return;
+      }
+
+      // set property type label
+      const propLabel = propType;
+
+      // if type is an object change label
+
+      // const isArray = propType.includes('[]');
+      // propLabel = 'Object' + (isArray ? '[]' : '');
+
+      let displayType = '```' + propLabel + '```';
+
+      // first determine if the object is an available interface
+      const typeInterface = getInterface(filename, propType.replace('[]', ''));
+      if (typeInterface) {
+        setDataType(dataTypes, typeInterface, filename, typeDef);
+        displayType = getDisplayType(typeInterface);
+      }
+
+      // set the element
+      data.push({ displayType, name: typeDef, description });
+
+    });
+
+  }
 
   const inArray = dataTypes.find((dataType) => {
     return dataType.name === matchedInterface.getName();
@@ -148,6 +162,10 @@ function setDataType(dataTypes, matchedInterface: any, filename, inttype?) {
     });
   }
 
+}
+
+function getDisplayType(typeInterface) {
+  return `[${typeInterface.getName()}](#${getTypeAnchorName(typeInterface)})`;
 }
 
 function getTypeAnchorName(matchedInterface) {

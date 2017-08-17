@@ -104,6 +104,26 @@ fplapi.findGameweek(gameweek).then((data) => console.log(data));
 Promise.&lt;[Gameweek](#type_Gameweek)&gt;
 
 ___
+<a name="findGameweekPlayerStats"></a>
+### findGameweekPlayerStats
+
+Returns a specific gameweek
+
+#### ►  findGameweekPlayerStats(gameweek):```Promise```.&lt;[PlayerStatsMap](#type_PlayerStatsMap)&gt;
+
+```js
+fplapi.findGameweekPlayerStats(gameweek).then((data) => console.log(data));
+```
+#### Parameters:
+
+|Name|Type|
+|---|---|
+|gameweek|number|
+
+#### Returns:
+Promise.&lt;[PlayerStatsMap](#type_PlayerStatsMap)&gt;
+
+___
 <a name="findGameweeks"></a>
 ### findGameweeks
 
@@ -381,7 +401,7 @@ ___
 |has_played|```boolean```|Has Played
 |is_sub|```boolean```|Is Sub
 |element_type|```number```|Element Type
-|stats|[Player Stats](#type_PlayerStats)|Stats
+|stats|[PlayerStats](#type_PlayerStats)|Stats
 |multiplier|```number```|Multiplier
 
 <a href="#top">Back to top</a> 
@@ -571,6 +591,17 @@ ___
 <a href="#top">Back to top</a> 
 ___  
 
+<a name="type_PlayerStatsMap"></a>
+
+### PlayerStatsMap
+
+|Property|Type|Description
+|---|---|---|
+|[key: number]|[PlayerStats](#type_PlayerStats)|An object map of player id keys
+
+<a href="#top">Back to top</a> 
+___  
+
 <a name="type_PlayerType"></a>
 
 ### PlayerType
@@ -593,8 +624,8 @@ ___
 |Property|Type|Description
 |---|---|---|
 |id|```number```|Id
-|current_event_fixture|[Team Fixture](#type_TeamFixture)|Current Event Fixture
-|next_event_fixture|[Team Fixture](#type_TeamFixture)|Next Event Fixture
+|current_event_fixture|[TeamFixture](#type_TeamFixture)|Current Event Fixture
+|next_event_fixture|[TeamFixture](#type_TeamFixture)|Next Event Fixture
 |name|```string```|Name
 |code|```number```|Code
 |short_name|```string```|Short Name

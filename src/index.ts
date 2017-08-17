@@ -126,6 +126,21 @@ export function findGameweek(gameweek: number): Promise<types.Gameweek> {
   });
 }
 
+/**
+ * Returns a specific gameweek
+ * @param gameweek
+ */
+export function findGameweekPlayerStats(gameweek: number): Promise<types.PlayerStatsMap> {
+  return new Promise((resolve, reject) => {
+    dataService.getEventLive(gameweek).then((data) => {
+      const playerStatsMap = Object.keys(data.elements).map((key) => {
+        return data.elements[key].stats;
+      });
+      resolve(playerStatsMap);
+    });
+  });
+}
+
 // *************
 // Team methods
 // *************

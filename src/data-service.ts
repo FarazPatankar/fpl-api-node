@@ -99,7 +99,7 @@ export function getTeams(): Promise<types.Team[]> {
  * mapped to https://fantasy.premierleague.com/drf/event/${eventNumber}/live
  * @returns {Promise}
  */
-export function getEventLive(eventNumber: number): Promise<types.LiveEvent> {
+export function getEventLive(eventNumber: number): Promise<types.LiveGameweek> {
   return getData(`/event/${eventNumber}/live`);
 }
 
