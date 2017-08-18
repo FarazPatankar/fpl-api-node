@@ -13,7 +13,7 @@ const indexFile = ast.getOrAddSourceFileFromFilePath('./src/index.ts');
 const indexData = getData(indexFile, 'entry');
 
 // write pages
-writePage('API', indexData, 'template.hbs');
+writePage('Home', indexData, 'template.hbs');
 writePage('_Sidebar', indexData, 'sidebar.hbs');
 
 /**
