@@ -51,7 +51,7 @@ describe('should return correct Entry data', () => {
 
 describe('should return correct Player data', () => {
   it('should return all players entry', (done) => {
-    fplapi.findPlayers().then((data) => {
+    fplapi.findAllPlayers().then((data) => {
       expect(data[0].web_name).to.equal('Ospina');
       done();
     });
@@ -74,7 +74,7 @@ describe('should return correct Player data', () => {
 
 describe('should return correct Gamweek data', () => {
   it('should find Gameweeks', (done) => {
-    fplapi.findGameweeks().then((data) => {
+    fplapi.findAllGameweeks().then((data) => {
       expect(data[0].id).to.equal(1);
       done();
     });
@@ -97,7 +97,7 @@ describe('should return correct Gamweek data', () => {
 
 describe('should return correct Team data', () => {
   it('should find Teams', (done) => {
-    fplapi.findTeams().then((data) => {
+    fplapi.findAllTeams().then((data) => {
       expect(data[0].name).to.equal('Arsenal');
       done();
     });
@@ -133,12 +133,6 @@ describe('should return utils', () => {
   it('should get Total Number Of Entries', (done) => {
     fplapi.getTotalNumberOfEntries().then((data) => {
       expect(data).to.be.a('number');
-      done();
-    });
-  });
-  it('should get Player types', (done) => {
-    fplapi.getPlayerTypes().then((data) => {
-      expect(data[0].singular_name).to.equal('Goalkeeper');
       done();
     });
   });

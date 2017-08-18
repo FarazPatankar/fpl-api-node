@@ -76,7 +76,7 @@ export function findEntryTransferHistory(entryId: number): Promise<types.EntryTr
 /**
  * Returns a collection of all players.
  */
-export function findPlayers(): Promise<types.Player[]> {
+export function findAllPlayers(): Promise<types.Player[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data.elements);
@@ -89,7 +89,7 @@ export function findPlayers(): Promise<types.Player[]> {
  */
 export function findPlayer(playerId: number): Promise<types.Player> {
   return new Promise((resolve, reject) => {
-    findPlayers().then((elements) => {
+    findAllPlayers().then((elements) => {
       const match = elements.find((element) => {
         return element.id === playerId;
       });
@@ -116,7 +116,7 @@ export function findPlayerStatsByGameweek(playerId: number, gameweek: number): P
 /**
  * Returns a collection of all gameweeks
  */
-export function findGameweeks(): Promise<types.Gameweek[]> {
+export function findAllGameweeks(): Promise<types.Gameweek[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data.events);
@@ -130,7 +130,7 @@ export function findGameweeks(): Promise<types.Gameweek[]> {
  */
 export function findGameweek(gameweek: number): Promise<types.Gameweek> {
   return new Promise((resolve, reject) => {
-    findGameweeks().then((events) => {
+    findAllGameweeks().then((events) => {
       const match = events.find((event) => {
         return event.id === gameweek;
       });
@@ -161,7 +161,7 @@ export function findGameweekPlayerStats(gameweek: number): Promise<types.PlayerS
 /**
  * Returns a collection of all teams
  */
-export function findTeams(): Promise<types.Team[]> {
+export function findAllTeams(): Promise<types.Team[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data.teams);
@@ -175,7 +175,7 @@ export function findTeams(): Promise<types.Team[]> {
  */
 export function findTeam(teamId: number): Promise<types.Team> {
   return new Promise((resolve, reject) => {
-    findTeams().then((teams) => {
+    findAllTeams().then((teams) => {
       const match = teams.find((team) => {
         return team.id === teamId;
       });
@@ -228,23 +228,12 @@ export function getTotalNumberOfEntries(): Promise<number> {
 }
 
 /**
- * Returns collection of player types
- */
-export function getPlayerTypes(): Promise<types.PlayerType[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      resolve(data.element_types);
-    });
-  });
-}
-
-/**
  * Returns a specified player type
  */
 export function getPlayerType(typeId: number): Promise<types.PlayerType> {
   return new Promise((resolve, reject) => {
-    getPlayerTypes().then((playerTypes) => {
-      const match = playerTypes.find((playerType) => {
+    dataService.getElementTypes().then((data) => {
+      const match = data.find((playerType) => {
         return playerType.id === typeId;
       });
       resolve(match);

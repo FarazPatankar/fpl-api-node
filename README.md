@@ -18,9 +18,24 @@ npm install fpl-api-node --save
 import * as fplapi from 'fpl-api-node';
 
 fplapi.findEntry(entryId).then((data) => console.log(data));
+
 ```
 
-## Documentation
+## API
 
-Please refer to the [Wiki for further documentation](https://github.com/tgreyuk/fpl-api-node/wiki).
+Please refer to the [Wiki for API docs](https://github.com/tgreyuk/fpl-api-node/wiki).
+
+## Other 
+
+### TypeScript
+
+fpl-api-node is packaged with [TypeScript](http://www.typescriptlang.org/) definitions.
+
+### Caching
+
+There is in-built request caching currently set to 2 hours but looking at options to make this more intelligent.
+
+
+
+
 

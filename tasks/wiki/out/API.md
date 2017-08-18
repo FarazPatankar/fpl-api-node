@@ -2,6 +2,51 @@
 
 ## Methods
 
+<a name="findAllGameweeks"></a>
+### findAllGameweeks
+
+Returns a collection of all gameweeks
+
+#### ►  findAllGameweeks():```Promise```.&lt;[Gameweek](#type_Gameweek)[]&gt;
+
+```js
+fplapi.findAllGameweeks().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise.&lt;[Gameweek](#type_Gameweek)[]&gt;
+
+___
+<a name="findAllPlayers"></a>
+### findAllPlayers
+
+Returns a collection of all players.
+
+#### ►  findAllPlayers():```Promise```.&lt;[Player](#type_Player)[]&gt;
+
+```js
+fplapi.findAllPlayers().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise.&lt;[Player](#type_Player)[]&gt;
+
+___
+<a name="findAllTeams"></a>
+### findAllTeams
+
+Returns a collection of all teams
+
+#### ►  findAllTeams():```Promise```.&lt;[Team](#type_Team)[]&gt;
+
+```js
+fplapi.findAllTeams().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise.&lt;[Team](#type_Team)[]&gt;
+
+___
 <a name="findEntry"></a>
 ### findEntry
 
@@ -144,21 +189,6 @@ fplapi.findGameweekPlayerStats(gameweek).then((data) => console.log(data));
 Promise.&lt;[PlayerStatsMap](#type_PlayerStatsMap)&gt;
 
 ___
-<a name="findGameweeks"></a>
-### findGameweeks
-
-Returns a collection of all gameweeks
-
-#### ►  findGameweeks():```Promise```.&lt;[Gameweek](#type_Gameweek)[]&gt;
-
-```js
-fplapi.findGameweeks().then((data) => console.log(data));
-```
-
-#### Returns:
-Promise.&lt;[Gameweek](#type_Gameweek)[]&gt;
-
-___
 <a name="findLeague"></a>
 ### findLeague
 
@@ -240,21 +270,6 @@ fplapi.findPlayerStatsByGameweek(playerId, gameweek).then((data) => console.log(
 Promise.&lt;[PlayerStats](#type_PlayerStats)&gt;
 
 ___
-<a name="findPlayers"></a>
-### findPlayers
-
-Returns a collection of all players.
-
-#### ►  findPlayers():```Promise```.&lt;[Player](#type_Player)[]&gt;
-
-```js
-fplapi.findPlayers().then((data) => console.log(data));
-```
-
-#### Returns:
-Promise.&lt;[Player](#type_Player)[]&gt;
-
-___
 <a name="findTeam"></a>
 ### findTeam
 
@@ -275,21 +290,6 @@ fplapi.findTeam(teamId).then((data) => console.log(data));
 Promise.&lt;[Team](#type_Team)&gt;
 
 ___
-<a name="findTeams"></a>
-### findTeams
-
-Returns a collection of all teams
-
-#### ►  findTeams():```Promise```.&lt;[Team](#type_Team)[]&gt;
-
-```js
-fplapi.findTeams().then((data) => console.log(data));
-```
-
-#### Returns:
-Promise.&lt;[Team](#type_Team)[]&gt;
-
-___
 <a name="getPlayerType"></a>
 ### getPlayerType
 
@@ -308,21 +308,6 @@ fplapi.getPlayerType(typeId).then((data) => console.log(data));
 
 #### Returns:
 Promise.&lt;[PlayerType](#type_PlayerType)&gt;
-
-___
-<a name="getPlayerTypes"></a>
-### getPlayerTypes
-
-Returns collection of player types
-
-#### ►  getPlayerTypes():```Promise```.&lt;[PlayerType](#type_PlayerType)[]&gt;
-
-```js
-fplapi.getPlayerTypes().then((data) => console.log(data));
-```
-
-#### Returns:
-Promise.&lt;[PlayerType](#type_PlayerType)[]&gt;
 
 ___
 <a name="getTotalNumberOfEntries"></a>
