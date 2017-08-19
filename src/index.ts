@@ -14,6 +14,8 @@ export function findEntry(entryId: number): Promise<types.Entry> {
   return new Promise((resolve, reject) => {
     dataService.getEntryHistory(entryId).then((data) => {
       resolve(data.entry);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -27,6 +29,8 @@ export function findEntryGameweek(entryId: number, gameweek: number): Promise<ty
   return new Promise((resolve, reject) => {
     dataService.getEntryEvent(entryId, gameweek).then((data) => {
       resolve(data.entry_history);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -40,6 +44,8 @@ export function findEntryGameweeks(entryId: number): Promise<types.EntryGameweek
   return new Promise((resolve, reject) => {
     dataService.getEntryHistory(entryId).then((data) => {
       resolve(data.history);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -53,6 +59,8 @@ export function findEntryPicksByGameweek(entryId: number, gameweek: number): Pro
   return new Promise((resolve, reject) => {
     dataService.getEntryEvent(entryId, gameweek).then((data) => {
       resolve(data.picks);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -65,6 +73,8 @@ export function findEntryTransferHistory(entryId: number): Promise<types.EntryTr
   return new Promise((resolve, reject) => {
     dataService.getEntryTransfers(entryId).then((data) => {
       resolve(data.history);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -80,6 +90,8 @@ export function findAllPlayers(): Promise<types.Player[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data.elements);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -94,6 +106,8 @@ export function findPlayer(playerId: number): Promise<types.Player> {
         return element.id === playerId;
       });
       resolve(match);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -105,6 +119,8 @@ export function findPlayerStatsByGameweek(playerId: number, gameweek: number): P
   return new Promise((resolve, reject) => {
     dataService.getEventLive(gameweek).then((data) => {
       resolve(data.elements[playerId].stats);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -120,6 +136,8 @@ export function findAllGameweeks(): Promise<types.Gameweek[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data.events);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -135,6 +153,8 @@ export function findGameweek(gameweek: number): Promise<types.Gameweek> {
         return event.id === gameweek;
       });
       resolve(match);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -150,6 +170,8 @@ export function findGameweekPlayerStats(gameweek: number): Promise<types.PlayerS
         return data.elements[key].stats;
       });
       resolve(playerStatsMap);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -165,6 +187,8 @@ export function findAllTeams(): Promise<types.Team[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data.teams);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -180,6 +204,8 @@ export function findTeam(teamId: number): Promise<types.Team> {
         return team.id === teamId;
       });
       resolve(match);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -196,6 +222,8 @@ export function findLeague(leagueId: number): Promise<types.League> {
   return new Promise((resolve, reject) => {
     dataService.getClassicLeagueStandings(leagueId).then((data) => {
       resolve(data.league);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -208,6 +236,8 @@ export function findLeagueResults(leagueId: number): Promise<types.LeagueResult[
   return new Promise((resolve, reject) => {
     dataService.getClassicLeagueStandings(leagueId).then((data) => {
       resolve(data.standings.results);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -223,6 +253,8 @@ export function getTotalNumberOfEntries(): Promise<number> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data['total-players']);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }
@@ -237,6 +269,8 @@ export function getPlayerType(typeId: number): Promise<types.PlayerType> {
         return playerType.id === typeId;
       });
       resolve(match);
+    }).catch((e) => {
+      reject(e);
     });
   });
 }

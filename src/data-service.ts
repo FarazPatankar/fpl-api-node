@@ -4,6 +4,7 @@ import * as types from './types';
 
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
+axios.defaults.timeout = 5000;
 
 /**
  * The Available end-points are:
@@ -20,6 +21,17 @@ axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
  * https://fantasy.premierleague.com/drf/event/${eventNumber}/live
  * https://fantasy.premierleague.com/drf/leagues-classic-standings/${id}
  */
+
+/**
+ * Entry
+ * A promise that if fulfilled returns an object
+ * mapped to https://fantasy.premierleague.com/drf/entry/${id}
+ * @param entryId Entry id
+ * @returns {Promise}
+ */
+export function getEntry(entryId: number): Promise<types.Entry> {
+  return getData(`/entry/${entryId}`);
+}
 
 /**
  * Entry History:
@@ -132,9 +144,13 @@ export function getBootstrapData(): Promise<types.BootstrappedData> {
 function getData(path: string) {
   return fromCache(path, () => {
     return axios.get(path).then((response) => {
+      if (typeof response.data !== 'object') {
+        // if the game is being updated then the /updating holding page is returned
+        throw new Error('fplapi: unable to retrieve data from fpl - the game is most likely being updated');
+      }
       return response.data;
-    }).catch((error) => {
-      return error;
+    }).catch(() => {
+      throw new Error('fplapi: did not receive a response from fpl - incorrect params were most likely provided');
     });
   });
 }

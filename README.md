@@ -27,13 +27,14 @@ Please refer to the [Wiki for API docs](https://github.com/tgreyuk/fpl-api-node/
 
 ## Other 
 
-### TypeScript
-
-fpl-api-node is packaged with [TypeScript](http://www.typescriptlang.org/) definitions.
-
 ### Caching
 
 There is in-built request caching currently set to 2 hours but looking at options to make this more intelligent.
+
+
+### TypeScript
+
+fpl-api-node is packaged with [TypeScript](http://www.typescriptlang.org/) definitions.
 
 
 

@@ -17,6 +17,8 @@ export function fromCache(cacheKey: string, callback: () => Promise<any>): Promi
         // console.log(`${cacheKey} from request`);
         cache.set(cacheKey, data);
         resolve(data);
+      }).catch((e) => {
+        reject(e);
       });
     }
   });
