@@ -12,10 +12,10 @@ A simple node API wrapper for the Fantasy Premier League (fantasy.premierleague.
 npm install fpl-api-node --save
 ```
 
-## Usage
+## Getting started
 
 ```js
-import * as fplapi from 'fpl-api-node';
+const fplapi = require('fpl-api-node');
 
 fplapi.findEntry(entryId).then((data) => console.log(data));
 
@@ -23,20 +23,20 @@ fplapi.findEntry(entryId).then((data) => console.log(data));
 
 ## API
 
-Please refer to the [Wiki for API docs](https://github.com/tgreyuk/fpl-api-node/wiki).
+Please refer to the [Wiki for API doc and available methods](https://github.com/tgreyuk/fpl-api-node/wiki).
 
 ## Other 
-
-### Caching
-
-There is in-built request caching currently set to 2 hours but looking at options to make this more intelligent.
-
 
 ### TypeScript
 
 fpl-api-node is packaged with [TypeScript](http://www.typescriptlang.org/) definitions.
 
+```js
+import * as fplapi from 'fpl-api-node';
 
+```
 
+### Caching
 
+There is in-built http request caching currently set to 2 hours but looking at options to make this more intelligent / configurable.
 
