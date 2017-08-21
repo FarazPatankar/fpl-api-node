@@ -10,9 +10,9 @@
   "scripts": {
     "generateWiki": "ts-node tasks/wiki/src/index.ts",
     "lint": "tslint --project tsconfig.json",
+    "report-coverage": "codecov",
     "test": "nyc mocha -r ts-node/register test/specs.ts --timeout 5000 --slow 0",
-    "prepare": "rm -rf dist && tsc -p src/tsconfig.json",
-    "prepublishOnly": "npm run prepare && npm run lint && npm run test"
+    "prepare": "rm -rf dist && tsc -p src/tsconfig.json && npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
@@ -44,6 +44,7 @@
     "@types/node-cache": "^4.1.0",
     "@types/sinon": "^2.3.3",
     "chai": "^4.1.1",
+    "codecov": "^2.3.0",
     "handlebars": "^4.0.10",
     "lodash": "^4.17.4",
     "mocha": "^3.5.0",
