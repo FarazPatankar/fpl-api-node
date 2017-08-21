@@ -11,7 +11,7 @@ node_js:
 before_script:
   - npm prune
 script:
-  - npm prepare
+  - npm run prepare
 after_success:
   - npm run report-coverage
 branches:
