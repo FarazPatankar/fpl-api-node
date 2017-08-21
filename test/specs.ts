@@ -1,6 +1,16 @@
 import { expect } from 'chai';
 import 'mocha';
+
 import * as fplapi from '../src/index';
+
+// helper methods
+function catchError(p, done) {
+  p.then((data) => {
+    done(new Error('An error was expected'));
+  }).catch((e) => {
+    done();
+  });
+}
 
 // Entries
 
@@ -8,7 +18,7 @@ describe('should return correct Entry data', () => {
 
   const entryId = 545548;
 
-  it('should return entry', (done) => {
+  it('should findEntry()', (done) => {
     fplapi.findEntry(entryId).then((data) => {
       expect(data.player_first_name).to.equal('Tom');
       expect(data.player_last_name).to.equal('Grey');
@@ -18,7 +28,11 @@ describe('should return correct Entry data', () => {
     });
   });
 
-  it('should find Gameweeks', (done) => {
+  it('should catch error on findEntry()', (done) => {
+    catchError(fplapi.findEntry(0), done);
+  });
+
+  it('should findEntryGameweeks()', (done) => {
     fplapi.findEntryGameweeks(entryId).then((data) => {
       expect(data[0].points).to.equal(69);
       done();
@@ -27,7 +41,11 @@ describe('should return correct Entry data', () => {
     });
   });
 
-  it('should return entry gameweek', (done) => {
+  it('should catch error on findEntryGameweeks()', (done) => {
+    catchError(fplapi.findEntryGameweeks(0), done);
+  });
+
+  it('should findEntryGameweek()', (done) => {
     fplapi.findEntryGameweek(entryId, 1).then((data) => {
       expect(data.entry).to.equal(entryId);
       expect(data.total_points).to.equal(69);
@@ -37,7 +55,11 @@ describe('should return correct Entry data', () => {
     });
   });
 
-  it('should return entry picks', (done) => {
+  it('should catch error on findEntryGameweek()', (done) => {
+    catchError(fplapi.findEntryGameweek(0, 0), done);
+  });
+
+  it('should findEntryPicksByGameweek()', (done) => {
     fplapi.findEntryPicksByGameweek(entryId, 1).then((data) => {
       expect(data[0].element).to.equal(421);
       done();
@@ -46,7 +68,11 @@ describe('should return correct Entry data', () => {
     });
   });
 
-  it('should return entry transfer history', (done) => {
+  it('should catch error on findEntryPicksByGameweek()', (done) => {
+    catchError(fplapi.findEntryPicksByGameweek(0, 0), done);
+  });
+
+  it('should findEntryTransferHistory', (done) => {
     fplapi.findEntryTransferHistory(entryId).then((data) => {
       expect(data[0].element_in).to.equal(106);
       done();
@@ -55,12 +81,8 @@ describe('should return correct Entry data', () => {
     });
   });
 
-  it('should catch error correctly', (done) => {
-    fplapi.findEntry(0).then((data) => {
-      done(new Error('An error was expected'));
-    }).catch((e) => {
-      done();
-    });
+  it('should catch error on findEntryGameweek()', (done) => {
+    catchError(fplapi.findEntryTransferHistory(0), done);
   });
 
 });
@@ -68,15 +90,17 @@ describe('should return correct Entry data', () => {
 // Players
 
 describe('should return correct Player data', () => {
-  it('should return all players entry', (done) => {
-    fplapi.findAllPlayers().then((data) => {
+
+  it('should getAllPlayers()', (done) => {
+    fplapi.getAllPlayers().then((data) => {
       expect(data[0].web_name).to.equal('Ospina');
       done();
     }).catch((e) => {
       done(new Error(e));
     });
   });
-  it('should find Player', (done) => {
+
+  it('should findPlayer()', (done) => {
     fplapi.findPlayer(2).then((data) => {
       expect(data.web_name).to.equal('Cech');
       done();
@@ -84,7 +108,12 @@ describe('should return correct Player data', () => {
       done(new Error(e));
     });
   });
-  it('should find Player Stats By Gameweek', (done) => {
+
+  it('should catch error on findPlayer()', (done) => {
+    catchError(fplapi.findPlayer(999), done);
+  });
+
+  it('should findPlayerStatsByGameweek()', (done) => {
     fplapi.findPlayerStatsByGameweek(38, 1).then((data) => {
       expect(data.total_points).to.equal(3);
       done();
@@ -92,20 +121,26 @@ describe('should return correct Player data', () => {
       done(new Error(e));
     });
   });
+
+  it('should catch error on findPlayerStatsByGameweek()', (done) => {
+    catchError(fplapi.findPlayerStatsByGameweek(0, 0), done);
+  });
 });
 
 // Gameweeks
 
 describe('should return correct Gamweek data', () => {
-  it('should find Gameweeks', (done) => {
-    fplapi.findAllGameweeks().then((data) => {
+
+  it('should getAllGameweeks', (done) => {
+    fplapi.getAllGameweeks().then((data) => {
       expect(data[0].id).to.equal(1);
       done();
     }).catch((e) => {
       done(new Error(e));
     });
   });
-  it('should find Gameweek', (done) => {
+
+  it('should find findGameweek()', (done) => {
     fplapi.findGameweek(1).then((data) => {
       expect(data.id).to.equal(1);
       done();
@@ -113,7 +148,12 @@ describe('should return correct Gamweek data', () => {
       done(new Error(e));
     });
   });
-  it('should find Gameweek player stats', (done) => {
+
+  it('should catch error on findGameweek()', (done) => {
+    catchError(fplapi.findGameweek(0), done);
+  });
+
+  it('should findGameweekPlayerStats()', (done) => {
     fplapi.findGameweekPlayerStats(1).then((data) => {
       expect(data[1].total_points).to.equal(1);
       done();
@@ -121,20 +161,25 @@ describe('should return correct Gamweek data', () => {
       done(new Error(e));
     });
   });
+
+  it('should catch error on findGameweekPlayerStats()', (done) => {
+    catchError(fplapi.findGameweekPlayerStats(0), done);
+  });
 });
 
 // Teams
 
 describe('should return correct Team data', () => {
-  it('should find Teams', (done) => {
-    fplapi.findAllTeams().then((data) => {
+  it('should getAllTeams()', (done) => {
+    fplapi.getAllTeams().then((data) => {
       expect(data[0].name).to.equal('Arsenal');
       done();
     }).catch((e) => {
       done(new Error(e));
     });
   });
-  it('should find a Team', (done) => {
+
+  it('should findTeam()', (done) => {
     fplapi.findTeam(1).then((data) => {
       expect(data.name).to.equal('Arsenal');
       done();
@@ -142,11 +187,16 @@ describe('should return correct Team data', () => {
       done(new Error(e));
     });
   });
+
+  it('should catch error on findTeam()', (done) => {
+    catchError(fplapi.findTeam(0), done);
+  });
+
 });
 
 // Leagues
 
-describe('should return correct League data', () => {
+describe('should findLeague()', () => {
   it('should find League', (done) => {
     fplapi.findLeague(313).then((data) => {
       expect(data.name).to.equal('Overall');
@@ -155,7 +205,12 @@ describe('should return correct League data', () => {
       done(new Error(e));
     });
   });
-  it('should find League Standings', (done) => {
+
+  it('should catch error on findLeague()', (done) => {
+    catchError(fplapi.findLeague(0), done);
+  });
+
+  it('should findLeagueResults()', (done) => {
     fplapi.findLeagueResults(313).then((data) => {
       expect(data.length).to.equal(50);
       done();
@@ -163,12 +218,17 @@ describe('should return correct League data', () => {
       done(new Error(e));
     });
   });
+
+  it('should catch error on findLeagueResults()', (done) => {
+    catchError(fplapi.findLeagueResults(0), done);
+  });
+
 });
 
 // Utils
 
 describe('should return utils', () => {
-  it('should get Total Number Of Entries', (done) => {
+  it('should getTotalNumberOfEntries()', (done) => {
     fplapi.getTotalNumberOfEntries().then((data) => {
       expect(data).to.be.a('number');
       done();
@@ -176,12 +236,17 @@ describe('should return utils', () => {
       done(new Error(e));
     });
   });
-  it('should get a Player type', (done) => {
-    fplapi.getPlayerType(4).then((data) => {
+
+  it('should findPlayerType()', (done) => {
+    fplapi.findPlayerType(4).then((data) => {
       expect(data.singular_name).to.equal('Forward');
       done();
     }).catch((e) => {
       done(new Error(e));
     });
+  });
+
+  it('should catch error on findPlayerType()', (done) => {
+    catchError(fplapi.findPlayerType(0), done);
   });
 });

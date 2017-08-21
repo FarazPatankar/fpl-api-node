@@ -23,17 +23,6 @@ axios.defaults.timeout = 5000;
  */
 
 /**
- * Entry
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/entry/${id}
- * @param entryId Entry id
- * @returns {Promise}
- */
-export function getEntry(entryId: number): Promise<types.Entry> {
-  return getData(`/entry/${entryId}`);
-}
-
-/**
  * Entry History:
  * A promise that if fulfilled returns an object
  * mapped to https://fantasy.premierleague.com/drf/entry/${id}/history
@@ -66,43 +55,6 @@ export function getEntryEvent(entryId: number, eventNumber: number): Promise<typ
  */
 export function getEntryTransfers(entryId: number): Promise<types.EntryTransfers> {
   return getData(`/entry/${entryId}/transfers`);
-}
-
-/**
- * Element types: A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/elements
- * @returns {Promise}
- */
-export function getElements(): Promise<types.Player[]> {
-  return getData('/elements');
-}
-
-/**
- * Element types: A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/elements-types
- * @returns {Promise}
- */
-export function getElementTypes(): Promise<types.PlayerType[]> {
-  return getData('/element-types');
-}
-
-/**
- * Element types: A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/events
- * @returns {Promise}
- */
-export function getEvents(): Promise<types.Gameweek[]> {
-  return getData('/events');
-}
-
-/**
- * Teams (Premier Leaugue clubs):
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/teams
- * @returns {Promise}
- */
-export function getTeams(): Promise<types.Team[]> {
-  return getData('/teams');
 }
 
 /**
@@ -144,13 +96,11 @@ export function getBootstrapData(): Promise<types.BootstrappedData> {
 function getData(path: string) {
   return fromCache(path, () => {
     return axios.get(path).then((response) => {
-      if (typeof response.data !== 'object') {
-        // if the game is being updated then the /updating holding page is returned
-        throw new Error('fplapi: unable to retrieve data from fpl - the game is most likely being updated');
-      }
+      // console.log(path, 'got reponse');
       return response.data;
     }).catch(() => {
-      throw new Error('fplapi: did not receive a response from fpl - incorrect params were most likely provided');
+      // console.log(path, 'caught error');
+      throw new Error('fplapi: did not receive expected response');
     });
   });
 }

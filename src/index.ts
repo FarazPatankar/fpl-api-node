@@ -86,7 +86,7 @@ export function findEntryTransferHistory(entryId: number): Promise<types.EntryTr
 /**
  * Returns a collection of all players.
  */
-export function findAllPlayers(): Promise<types.Player[]> {
+export function getAllPlayers(): Promise<types.Player[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data.elements);
@@ -101,13 +101,15 @@ export function findAllPlayers(): Promise<types.Player[]> {
  */
 export function findPlayer(playerId: number): Promise<types.Player> {
   return new Promise((resolve, reject) => {
-    findAllPlayers().then((elements) => {
+    getAllPlayers().then((elements) => {
       const match = elements.find((element) => {
         return element.id === playerId;
       });
-      resolve(match);
-    }).catch((e) => {
-      reject(e);
+      if (match) {
+        resolve(match);
+      } else {
+        reject('fplapi: Player not found');
+      }
     });
   });
 }
@@ -132,7 +134,7 @@ export function findPlayerStatsByGameweek(playerId: number, gameweek: number): P
 /**
  * Returns a collection of all gameweeks
  */
-export function findAllGameweeks(): Promise<types.Gameweek[]> {
+export function getAllGameweeks(): Promise<types.Gameweek[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data.events);
@@ -148,13 +150,15 @@ export function findAllGameweeks(): Promise<types.Gameweek[]> {
  */
 export function findGameweek(gameweek: number): Promise<types.Gameweek> {
   return new Promise((resolve, reject) => {
-    findAllGameweeks().then((events) => {
+    getAllGameweeks().then((events) => {
       const match = events.find((event) => {
         return event.id === gameweek;
       });
-      resolve(match);
-    }).catch((e) => {
-      reject(e);
+      if (match) {
+        resolve(match);
+      } else {
+        reject('fplapi: Gameweek not found');
+      }
     });
   });
 }
@@ -183,7 +187,7 @@ export function findGameweekPlayerStats(gameweek: number): Promise<types.PlayerS
 /**
  * Returns a collection of all teams
  */
-export function findAllTeams(): Promise<types.Team[]> {
+export function getAllTeams(): Promise<types.Team[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
       resolve(data.teams);
@@ -199,13 +203,15 @@ export function findAllTeams(): Promise<types.Team[]> {
  */
 export function findTeam(teamId: number): Promise<types.Team> {
   return new Promise((resolve, reject) => {
-    findAllTeams().then((teams) => {
+    getAllTeams().then((teams) => {
       const match = teams.find((team) => {
         return team.id === teamId;
       });
-      resolve(match);
-    }).catch((e) => {
-      reject(e);
+      if (match) {
+        resolve(match);
+      } else {
+        reject('fplapi: Team not found');
+      }
     });
   });
 }
@@ -260,17 +266,32 @@ export function getTotalNumberOfEntries(): Promise<number> {
 }
 
 /**
- * Returns a specified player type
+ * Returns a collection of all player types in the game
  */
-export function getPlayerType(typeId: number): Promise<types.PlayerType> {
+export function getAllPlayerTypes(): Promise<types.PlayerType[]> {
   return new Promise((resolve, reject) => {
-    dataService.getElementTypes().then((data) => {
-      const match = data.find((playerType) => {
-        return playerType.id === typeId;
-      });
-      resolve(match);
+    dataService.getBootstrapData().then((data) => {
+      resolve(data.element_types);
     }).catch((e) => {
       reject(e);
+    });
+  });
+}
+
+/**
+ * Returns a specified player type
+ */
+export function findPlayerType(typeId: number): Promise<types.PlayerType> {
+  return new Promise((resolve, reject) => {
+    getAllPlayerTypes().then((playerTypes) => {
+      const match = playerTypes.find((playerType) => {
+        return playerType.id === typeId;
+      });
+      if (match) {
+        resolve(match);
+      } else {
+        reject('fplapi: Player type not found');
+      }
     });
   });
 }

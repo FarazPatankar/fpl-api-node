@@ -2,51 +2,6 @@
 
 ## Methods
 
-<a name="findAllGameweeks"></a>
-### findAllGameweeks
-
-Returns a collection of all gameweeks
-
-#### ►  findAllGameweeks():```Promise```.&lt;[Gameweek](#type_Gameweek)[]&gt;
-
-```js
-fplapi.findAllGameweeks().then((data) => console.log(data));
-```
-
-#### Returns:
-Promise.&lt;[Gameweek](#type_Gameweek)[]&gt;
-
-___
-<a name="findAllPlayers"></a>
-### findAllPlayers
-
-Returns a collection of all players.
-
-#### ►  findAllPlayers():```Promise```.&lt;[Player](#type_Player)[]&gt;
-
-```js
-fplapi.findAllPlayers().then((data) => console.log(data));
-```
-
-#### Returns:
-Promise.&lt;[Player](#type_Player)[]&gt;
-
-___
-<a name="findAllTeams"></a>
-### findAllTeams
-
-Returns a collection of all teams
-
-#### ►  findAllTeams():```Promise```.&lt;[Team](#type_Team)[]&gt;
-
-```js
-fplapi.findAllTeams().then((data) => console.log(data));
-```
-
-#### Returns:
-Promise.&lt;[Team](#type_Team)[]&gt;
-
-___
 <a name="findEntry"></a>
 ### findEntry
 
@@ -270,6 +225,26 @@ fplapi.findPlayerStatsByGameweek(playerId, gameweek).then((data) => console.log(
 Promise.&lt;[PlayerStats](#type_PlayerStats)&gt;
 
 ___
+<a name="findPlayerType"></a>
+### findPlayerType
+
+Returns a specified player type
+
+#### ►  findPlayerType(typeId):```Promise```.&lt;[PlayerType](#type_PlayerType)&gt;
+
+```js
+fplapi.findPlayerType(typeId).then((data) => console.log(data));
+```
+#### Parameters:
+
+|Name|Type|
+|---|---|
+|typeId|number|
+
+#### Returns:
+Promise.&lt;[PlayerType](#type_PlayerType)&gt;
+
+___
 <a name="findTeam"></a>
 ### findTeam
 
@@ -290,24 +265,64 @@ fplapi.findTeam(teamId).then((data) => console.log(data));
 Promise.&lt;[Team](#type_Team)&gt;
 
 ___
-<a name="getPlayerType"></a>
-### getPlayerType
+<a name="getAllGameweeks"></a>
+### getAllGameweeks
 
-Returns a specified player type
+Returns a collection of all gameweeks
 
-#### ►  getPlayerType(typeId):```Promise```.&lt;[PlayerType](#type_PlayerType)&gt;
+#### ►  getAllGameweeks():```Promise```.&lt;[Gameweek](#type_Gameweek)[]&gt;
 
 ```js
-fplapi.getPlayerType(typeId).then((data) => console.log(data));
+fplapi.getAllGameweeks().then((data) => console.log(data));
 ```
-#### Parameters:
-
-|Name|Type|
-|---|---|
-|typeId|number|
 
 #### Returns:
-Promise.&lt;[PlayerType](#type_PlayerType)&gt;
+Promise.&lt;[Gameweek](#type_Gameweek)[]&gt;
+
+___
+<a name="getAllPlayerTypes"></a>
+### getAllPlayerTypes
+
+Returns a collection of all player types in the game
+
+#### ►  getAllPlayerTypes():```Promise```.&lt;[PlayerType](#type_PlayerType)[]&gt;
+
+```js
+fplapi.getAllPlayerTypes().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise.&lt;[PlayerType](#type_PlayerType)[]&gt;
+
+___
+<a name="getAllPlayers"></a>
+### getAllPlayers
+
+Returns a collection of all players.
+
+#### ►  getAllPlayers():```Promise```.&lt;[Player](#type_Player)[]&gt;
+
+```js
+fplapi.getAllPlayers().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise.&lt;[Player](#type_Player)[]&gt;
+
+___
+<a name="getAllTeams"></a>
+### getAllTeams
+
+Returns a collection of all teams
+
+#### ►  getAllTeams():```Promise```.&lt;[Team](#type_Team)[]&gt;
+
+```js
+fplapi.getAllTeams().then((data) => console.log(data));
+```
+
+#### Returns:
+Promise.&lt;[Team](#type_Team)[]&gt;
 
 ___
 <a name="getTotalNumberOfEntries"></a>

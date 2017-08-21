@@ -1,8 +1,5 @@
 ## Methods
 
-* [findAllGameweeks](https://github.com/tgreyuk/fpl-api-node/wiki#findAllGameweeks)
-* [findAllPlayers](https://github.com/tgreyuk/fpl-api-node/wiki#findAllPlayers)
-* [findAllTeams](https://github.com/tgreyuk/fpl-api-node/wiki#findAllTeams)
 * [findEntry](https://github.com/tgreyuk/fpl-api-node/wiki#findEntry)
 * [findEntryGameweek](https://github.com/tgreyuk/fpl-api-node/wiki#findEntryGameweek)
 * [findEntryGameweeks](https://github.com/tgreyuk/fpl-api-node/wiki#findEntryGameweeks)
@@ -14,8 +11,12 @@
 * [findLeagueResults](https://github.com/tgreyuk/fpl-api-node/wiki#findLeagueResults)
 * [findPlayer](https://github.com/tgreyuk/fpl-api-node/wiki#findPlayer)
 * [findPlayerStatsByGameweek](https://github.com/tgreyuk/fpl-api-node/wiki#findPlayerStatsByGameweek)
+* [findPlayerType](https://github.com/tgreyuk/fpl-api-node/wiki#findPlayerType)
 * [findTeam](https://github.com/tgreyuk/fpl-api-node/wiki#findTeam)
-* [getPlayerType](https://github.com/tgreyuk/fpl-api-node/wiki#getPlayerType)
+* [getAllGameweeks](https://github.com/tgreyuk/fpl-api-node/wiki#getAllGameweeks)
+* [getAllPlayerTypes](https://github.com/tgreyuk/fpl-api-node/wiki#getAllPlayerTypes)
+* [getAllPlayers](https://github.com/tgreyuk/fpl-api-node/wiki#getAllPlayers)
+* [getAllTeams](https://github.com/tgreyuk/fpl-api-node/wiki#getAllTeams)
 * [getTotalNumberOfEntries](https://github.com/tgreyuk/fpl-api-node/wiki#getTotalNumberOfEntries)
 
 ## Data types

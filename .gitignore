@@ -4,4 +4,6 @@ dist/
 npm-debug.log*
 _README.md
 tmp/
+coverage
+.nyc_output
 
