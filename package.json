@@ -8,11 +8,12 @@
     "dist/"
   ],
   "scripts": {
-    "generateWiki": "ts-node tasks/wiki/src/index.ts",
     "lint": "tslint --project tsconfig.json",
     "report-coverage": "codecov",
     "test": "nyc mocha -r ts-node/register test/specs.ts --timeout 5000 --slow 0",
-    "prepare": "rm -rf dist && tsc -p src/tsconfig.json && npm run lint && npm run test"
+    "prepare": "rm -rf dist && tsc -p src/tsconfig.json",
+    "prepublishOnly":"npm run prepare && npm run lint && npm run test",
+    "wiki": "ts-node tasks/wiki/src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -37,10 +38,10 @@
     "node-cache": "^4.1.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.3",
-    "@types/handlebars": "^4.0.35",
-    "@types/lodash": "^4.14.73",
-    "@types/mocha": "^2.2.41",
+    "@types/chai": "^4.0.4",
+    "@types/handlebars": "^4.0.36",
+    "@types/lodash": "^4.14.74",
+    "@types/mocha": "^2.2.42",
     "@types/node-cache": "^4.1.0",
     "@types/sinon": "^2.3.3",
     "chai": "^4.1.1",
@@ -51,8 +52,13 @@
     "nyc": "^11.1.0",
     "sinon": "^3.2.1",
     "ts-node": "^3.3.0",
-    "ts-simple-ast": "^0.52.0",
+    "ts-simple-ast": "^0.54.0",
     "tslint": "^5.6.0",
     "typescript": "^2.4.2"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "ts-simple-ast"
+    ]
   }
 }
