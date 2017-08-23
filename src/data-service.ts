@@ -4,7 +4,6 @@ import * as types from './types';
 
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
-axios.defaults.timeout = 5000;
 
 /**
  * The Available end-points are:
