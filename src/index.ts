@@ -13,7 +13,7 @@ import * as types from './types';
 export function findEntry(entryId: number): Promise<types.Entry> {
   return new Promise((resolve, reject) => {
     dataService.getEntryHistory(entryId).then((data) => {
-      resolve(data.entry);
+      returnResponse(data.entry, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -27,8 +27,8 @@ export function findEntry(entryId: number): Promise<types.Entry> {
  */
 export function findEntryGameweek(entryId: number, gameweek: number): Promise<types.EntryGameweek> {
   return new Promise((resolve, reject) => {
-    dataService.getEntryEvent(entryId, gameweek).then((data) => {
-      resolve(data.entry_history);
+    dataService.getEntryEventPicks(entryId, gameweek).then((data) => {
+      returnResponse(data.entry_history, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -43,7 +43,7 @@ export function findEntryGameweek(entryId: number, gameweek: number): Promise<ty
 export function findEntryGameweeks(entryId: number): Promise<types.EntryGameweek[]> {
   return new Promise((resolve, reject) => {
     dataService.getEntryHistory(entryId).then((data) => {
-      resolve(data.history);
+      returnResponse(data.history, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -57,8 +57,8 @@ export function findEntryGameweeks(entryId: number): Promise<types.EntryGameweek
  */
 export function findEntryPicksByGameweek(entryId: number, gameweek: number): Promise<types.EntryPick[]> {
   return new Promise((resolve, reject) => {
-    dataService.getEntryEvent(entryId, gameweek).then((data) => {
-      resolve(data.picks);
+    dataService.getEntryEventPicks(entryId, gameweek).then((data) => {
+      returnResponse(data.picks, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -72,7 +72,7 @@ export function findEntryPicksByGameweek(entryId: number, gameweek: number): Pro
 export function findEntryTransferHistory(entryId: number): Promise<types.EntryTransferHistory[]> {
   return new Promise((resolve, reject) => {
     dataService.getEntryTransfers(entryId).then((data) => {
-      resolve(data.history);
+      returnResponse(data.history, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -89,7 +89,7 @@ export function findEntryTransferHistory(entryId: number): Promise<types.EntryTr
 export function getAllPlayers(): Promise<types.Player[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
-      resolve(data.elements);
+      returnResponse(data.elements, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -108,7 +108,7 @@ export function findPlayer(playerId: number): Promise<types.Player> {
       if (match) {
         resolve(match);
       } else {
-        reject('fplapi: Player not found');
+        reject('fpl-api-node: Player not found');
       }
     });
   });
@@ -120,7 +120,7 @@ export function findPlayer(playerId: number): Promise<types.Player> {
 export function findPlayerStatsByGameweek(playerId: number, gameweek: number): Promise<types.PlayerStats> {
   return new Promise((resolve, reject) => {
     dataService.getEventLive(gameweek).then((data) => {
-      resolve(data.elements[playerId].stats);
+      returnResponse(data.elements[playerId].stats, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -137,7 +137,7 @@ export function findPlayerStatsByGameweek(playerId: number, gameweek: number): P
 export function getAllGameweeks(): Promise<types.Gameweek[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
-      resolve(data.events);
+      returnResponse(data.events, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -157,7 +157,7 @@ export function findGameweek(gameweek: number): Promise<types.Gameweek> {
       if (match) {
         resolve(match);
       } else {
-        reject('fplapi: Gameweek not found');
+        reject('fpl-api-node: Gameweek not found');
       }
     });
   });
@@ -173,7 +173,7 @@ export function findGameweekPlayerStats(gameweek: number): Promise<types.PlayerS
       const playerStatsMap = Object.keys(data.elements).map((key) => {
         return data.elements[key].stats;
       });
-      resolve(playerStatsMap);
+      returnResponse(playerStatsMap, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -190,7 +190,7 @@ export function findGameweekPlayerStats(gameweek: number): Promise<types.PlayerS
 export function getAllTeams(): Promise<types.Team[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
-      resolve(data.teams);
+      returnResponse(data.teams, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -210,7 +210,7 @@ export function findTeam(teamId: number): Promise<types.Team> {
       if (match) {
         resolve(match);
       } else {
-        reject('fplapi: Team not found');
+        reject('fpl-api-node: Team not found');
       }
     });
   });
@@ -227,7 +227,7 @@ export function findTeam(teamId: number): Promise<types.Team> {
 export function findLeague(leagueId: number): Promise<types.League> {
   return new Promise((resolve, reject) => {
     dataService.getClassicLeagueStandings(leagueId).then((data) => {
-      resolve(data.league);
+      returnResponse(data.league, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -241,7 +241,7 @@ export function findLeague(leagueId: number): Promise<types.League> {
 export function findLeagueResults(leagueId: number): Promise<types.LeagueResult[]> {
   return new Promise((resolve, reject) => {
     dataService.getClassicLeagueStandings(leagueId).then((data) => {
-      resolve(data.standings.results);
+      returnResponse(data.standings.results, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -258,7 +258,7 @@ export function findLeagueResults(leagueId: number): Promise<types.LeagueResult[
 export function getTotalNumberOfEntries(): Promise<number> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
-      resolve(data['total-players']);
+      returnResponse(data['total-players'], resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -271,7 +271,7 @@ export function getTotalNumberOfEntries(): Promise<number> {
 export function getAllPlayerTypes(): Promise<types.PlayerType[]> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
-      resolve(data.element_types);
+      returnResponse(data.element_types, resolve, reject);
     }).catch((e) => {
       reject(e);
     });
@@ -290,8 +290,22 @@ export function findPlayerType(typeId: number): Promise<types.PlayerType> {
       if (match) {
         resolve(match);
       } else {
-        reject('fplapi: Player type not found');
+        reject('fpl-api-node: Player type not found');
       }
     });
   });
+}
+
+/**
+ * Catch undefined responses
+ * @param value
+ * @param resolve
+ * @param reject
+ */
+function returnResponse(value, resolve, reject) {
+  if (value) {
+    resolve(value);
+  } else {
+    reject('fpl-api-node: Data error');
+  }
 }

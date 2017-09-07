@@ -203,6 +203,22 @@ export interface LeagueResult {
 
 // entry interfaces
 
+export interface EntryRoot {
+  chips: EntryChip[];
+  entry: Entry;
+  leagues: EntryLeagues;
+  season: EntrySeason[];
+  history: EntryGameweek[];
+}
+
+export interface EntryPicksRoot {
+  active_chip: string;
+  automatic_subs: EntryAutomaticSub[];
+  entry_history: EntryGameweek;
+  event: Event;
+  picks: EntryPick[];
+}
+
 export interface Entry {
   id: number;
   player_first_name: string;
@@ -236,28 +252,12 @@ export interface Entry {
   player: number;
 }
 
-export interface EntryRoot {
-  chips: EntryChip[];
-  entry: Entry;
-  leagues: EntryLeagues;
-  season: EntrySeason[];
-  history: EntryGameweek[];
-}
-
-export interface EntryEventRoot {
-  leagues: EntryLeagues;
-  entry_history: EntryGameweek;
-  ce: number;
-  automatic_subs: EntryAutomaticSub[];
-  fixtures: Fixture[];
-  can_change_captain: boolean;
-  manager_subs: any[];
-  picks: EntryPick[];
-  own_entry: boolean;
-  state: EntryState;
-  points: number;
-  entry: Entry;
-  active_chip: string;
+export interface EntryPick {
+  element: number;
+  position: number;
+  is_captain: boolean;
+  is_vice_captain: boolean;
+  multiplier: number;
 }
 
 export interface EntryState {
@@ -266,22 +266,6 @@ export interface EntryState {
   event_day: number;
   deadline_time: Date;
   deadline_time_formatted: string;
-}
-
-export interface EntryPick {
-  element: number;
-  position: number;
-  is_captain: boolean;
-  is_vice_captain: boolean;
-  can_sub?: any;
-  points: number;
-  has_played: boolean;
-  can_captain?: any;
-  explain: any[][];
-  is_sub: boolean;
-  element_type: number;
-  stats: PlayerStats;
-  multiplier: number;
 }
 
 export interface EntryAutomaticSub {

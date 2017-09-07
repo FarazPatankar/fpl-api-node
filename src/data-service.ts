@@ -10,7 +10,7 @@ axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
  * https://fantasy.premierleague.com/drf/bootstrap-static
  * https://fantasy.premierleague.com/drf/entry/${id}
  * https://fantasy.premierleague.com/drf/entry/${id}/history
- * https://fantasy.premierleague.com/drf/entry/${id}/event/${eventNumber}
+ * https://fantasy.premierleague.com/drf/entry/${id}/event/{$eventNumber}/picks
  * https://fantasy.premierleague.com/drf/entry/${id}/transfers
  * https://fantasy.premierleague.com/drf/teams
  * https://fantasy.premierleague.com/drf/elements
@@ -23,8 +23,6 @@ axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
 
 /**
  * Entry History:
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/entry/${id}/history
  * @param entryId Entry id
  * @returns {Promise}
  */
@@ -33,22 +31,16 @@ export function getEntryHistory(entryId: number): Promise<types.EntryRoot> {
 }
 
 /**
- * Entry event:
- * Details of a particular event (or gameweek):
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/entry/${id}/event/${eventNumber}
- * @param entryId Entry id
- * @param eventNumber The event / gameweek number
- * @returns {Promise}
+ * Entry Picks:
+ * @param entryId
+ * @param eventNumber
  */
-export function getEntryEvent(entryId: number, eventNumber: number): Promise<types.EntryEventRoot> {
-  return getData(`/entry/${entryId}/event/${eventNumber}`);
+export function getEntryEventPicks(entryId: number, eventNumber: number): Promise<types.EntryPicksRoot> {
+  return getData(`entry/${entryId}/event/${eventNumber}/picks`);
 }
 
 /**
  * Entry transfers:
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/entry/${id}/transfers
  * @param entryId Entry id
  * @returns {Promise}
  */
@@ -58,8 +50,6 @@ export function getEntryTransfers(entryId: number): Promise<types.EntryTransfers
 
 /**
  * Event /gameweek details:
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/event/${eventNumber}/live
  * @returns {Promise}
  */
 export function getEventLive(eventNumber: number): Promise<types.LiveGameweek> {
@@ -68,8 +58,6 @@ export function getEventLive(eventNumber: number): Promise<types.LiveGameweek> {
 
 /**
  * Classic league standings:
- * A promise that if fulfilled returns an object
- * mapped to https://fantasy.premierleague.com/drf/leagues-classic-standings/${id}
  * @param leagueId League id
  * @returns {Promise}
  */
@@ -79,7 +67,6 @@ export function getClassicLeagueStandings(leagueId: number): Promise<types.Leagu
 
 /**
  * All static game data:
- * A promise that if fulfilled returns an object mapped to https://fantasy.premierleague.com/drf/bootstrap-static
  * @returns {Promise}
  */
 export function getBootstrapData(): Promise<types.BootstrappedData> {
@@ -95,11 +82,9 @@ export function getBootstrapData(): Promise<types.BootstrappedData> {
 function getData(path: string) {
   return fromCache(path, () => {
     return axios.get(path).then((response) => {
-      // console.log(path, 'got reponse');
       return response.data;
     }).catch(() => {
-      // console.log(path, 'caught error');
-      throw new Error('fplapi: did not receive expected response');
+      throw new Error('fpl-api-node: Request error');
     });
   });
 }
