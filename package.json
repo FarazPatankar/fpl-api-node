@@ -1,6 +1,6 @@
 {
   "name": "fpl-api-node",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A node wrapper for the Fantasy Premier League (fantasy.premierleague.com) restful web api",
   "main": "dist/index.js",
   "typings": "dist/index",
@@ -12,7 +12,7 @@
     "report-coverage": "codecov",
     "test": "nyc mocha -r ts-node/register test/specs.ts --timeout 5000 --slow 0",
     "prepare": "rm -rf dist && tsc -p src/tsconfig.json",
-    "prepublishOnly":"npm run prepare && npm run lint && npm run test",
+    "prepublishOnly": "npm run prepare && npm run lint && npm run test",
     "wiki": "ts-node tasks/wiki/src/index.ts"
   },
   "repository": {
