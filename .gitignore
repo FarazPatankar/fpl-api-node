@@ -6,4 +6,5 @@ _README.md
 tmp/
 coverage
 .nyc_output
+tasks/wiki/out
 
