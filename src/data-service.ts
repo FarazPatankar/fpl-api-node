@@ -1,11 +1,9 @@
 import axios from 'axios';
-import { fromCache } from './cache-manager';
+import * as cache from 'memory-cache';
 import * as types from './types';
 
-// set axios defaults
-axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
-
 /**
+ * Hooks into available fpl endpoints.
  * The Available end-points are:
  * https://fantasy.premierleague.com/drf/bootstrap-static
  * https://fantasy.premierleague.com/drf/entry/${id}
@@ -21,70 +19,84 @@ axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
  * https://fantasy.premierleague.com/drf/leagues-classic-standings/${id}
  */
 
-/**
- * Entry History:
- * @param entryId Entry id
- * @returns {Promise}
- */
+// standard cache timeout (30 mins)
+const stdCacheTTL = 1800000;
+
+// set axios defaults
+axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
+
 export function getEntryHistory(entryId: number): Promise<types.EntryRoot> {
-  return getData(`/entry/${entryId}/history`);
+  return fetch(`/entry/${entryId}/history`);
+}
+
+export function getEntryEventPicks(entryId: number, eventNumber: number): Promise<types.EntryPicksRoot> {
+  return fetchEvent(`entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
+}
+
+export function getEntryTransfers(entryId: number): Promise<types.EntryTransfers> {
+  return fetch(`/entry/${entryId}/transfers`);
+}
+
+export function getLiveEvent(eventNumber: number): Promise<types.LiveEvent> {
+  return fetchEvent(`/event/${eventNumber}/live`, eventNumber);
+}
+
+export function getClassicLeagueStandings(leagueId: number): Promise<types.LeagueRoot> {
+  return fetch(`/leagues-classic-standings/${leagueId}`);
+}
+
+export function getBootstrapData(): Promise<types.BootstrappedData> {
+  return fetch('/bootstrap-static');
 }
 
 /**
- * Entry Picks:
- * @param entryId
+ * Fetch event related request (if event has passed we can cache it forever)
+ * @param path
  * @param eventNumber
  */
-export function getEntryEventPicks(entryId: number, eventNumber: number): Promise<types.EntryPicksRoot> {
-  return getData(`entry/${entryId}/event/${eventNumber}/picks`);
+function fetchEvent(path: string, eventNumber: number): Promise<any> {
+  return new Promise((resolve: any, reject: any) => {
+    const cacheValue = cache.get(path);
+    if (cacheValue) {
+      resolve(cacheValue);
+    } else {
+      return getBootstrapData().then((data) => {
+        const currentEvent = data['current-event'];
+        resolve(fetch(path, eventNumber < currentEvent));
+      });
+    }
+  });
 }
 
 /**
- * Entry transfers:
- * @param entryId Entry id
- * @returns {Promise}
+ * Fetch generic request
+ * @param path
+ * @param ttl
  */
-export function getEntryTransfers(entryId: number): Promise<types.EntryTransfers> {
-  return getData(`/entry/${entryId}/transfers`);
-}
-
-/**
- * Event /gameweek details:
- * @returns {Promise}
- */
-export function getEventLive(eventNumber: number): Promise<types.LiveGameweek> {
-  return getData(`/event/${eventNumber}/live`);
-}
-
-/**
- * Classic league standings:
- * @param leagueId League id
- * @returns {Promise}
- */
-export function getClassicLeagueStandings(leagueId: number): Promise<types.LeagueRoot> {
-  return getData(`/leagues-classic-standings/${leagueId}`);
-}
-
-/**
- * All static game data:
- * @returns {Promise}
- */
-export function getBootstrapData(): Promise<types.BootstrappedData> {
-  return getData('/bootstrap-static');
-}
-
-/**
- * Returns a promise that if fulfilled returns json object mapped to the given request
- * @param path The path of the rest web api request
- * @returns {Promise}
- * @private
- */
-function getData(path: string) {
-  return fromCache(path, () => {
-    return axios.get(path).then((response) => {
-      return response.data;
-    }).catch(() => {
-      throw new Error('fpl-api-node: Request error');
-    });
+export function fetch(path: string, cacheForever = false): Promise<any> {
+  return new Promise((resolve: any, reject: any) => {
+    const cacheValue = cache.get(path);
+    if (cacheValue) {
+      resolve(cacheValue);
+    } else {
+      axios.get(path).then((response) => {
+        const data = response.data;
+        if (Object.keys(data).length > 0 && data.constructor === Object) {
+          if (cacheForever) {
+            cache.put(path, data);
+          } else {
+            cache.put(path, data, stdCacheTTL);
+          }
+          resolve(data);
+        } else {
+          const error = data.includes('The game is being updated') ?
+            'There was an error as the game is being updated' :
+            'There was an error as returned data is not in the expected format';
+          reject(`fpl-api-node: ${error}`);
+        }
+      }).catch(() => {
+        reject('fpl-api-node: Error as response not received from fpl');
+      });
+    }
   });
 }

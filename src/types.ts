@@ -2,16 +2,19 @@
 // all static data
 export interface BootstrappedData {
   phases: Phase[];
-  elements: Player[];
+  elements: Element[];
   'total-players': number;
+  'current-event': number;
+  'next-event': number;
+  'last-entry-event': number;
   teams: Team[];
-  element_types: PlayerType[];
-  events: Gameweek[];
+  element_types: ElementType[];
+  events: Event[];
 }
 
 // game interfaces
 
-export interface Gameweek {
+export interface Event {
   id: number;
   name: string;
   deadline_time: Date;
@@ -48,7 +51,7 @@ export interface Formations {
 }
 
 // element interfaces
-export interface Player {
+export interface Element {
   id: number;
   photo: string;
   web_name: string;
@@ -108,7 +111,7 @@ export interface Player {
   team: number;
 }
 
-export interface PlayerType {
+export interface ElementType {
   id: number;
   singular_name: string;
   singular_name_short: string;
@@ -208,13 +211,13 @@ export interface EntryRoot {
   entry: Entry;
   leagues: EntryLeagues;
   season: EntrySeason[];
-  history: EntryGameweek[];
+  history: EntryEvent[];
 }
 
 export interface EntryPicksRoot {
   active_chip: string;
   automatic_subs: EntryAutomaticSub[];
-  entry_history: EntryGameweek;
+  entry_history: EntryEvent;
   event: Event;
   picks: EntryPick[];
 }
@@ -327,7 +330,7 @@ export interface EntrySeason {
   player: number;
 }
 
-export interface EntryGameweek {
+export interface EntryEvent {
   id: number;
   movement: string;
   points: number;
@@ -372,30 +375,6 @@ export interface EntryTransferHistory {
   element_out: number;
   entry: number;
   event: number;
-}
-
-// stats
-
-export interface PlayerStats {
-  yellow_cards: number;
-  own_goals: number;
-  creativity: number;
-  goals_conceded: number;
-  bonus: number;
-  red_cards: number;
-  saves: number;
-  influence: number;
-  bps: number;
-  clean_sheets: number;
-  assists: number;
-  ict_index: number;
-  goals_scored: number;
-  threat: number;
-  penalties_missed: number;
-  total_points: number;
-  penalties_saved: number;
-  in_dreamteam: boolean;
-  minutes: number;
 }
 
 // fixture
@@ -444,24 +423,63 @@ export interface FixtureStatValue {
   element: number;
 }
 
-export interface LiveGameweek {
+export interface LiveEvent {
   fixtures: Fixture[];
-  elements: GameweekPlayers;
+  elements: EventElements;
 }
 
-export interface GameweekPlayers {
+export interface EventElements {
   [key: number]: {
-    explain: Array<{
-      [key: string]: {
-        points: number;
-        name: string;
-        value: number;
-      };
-    }>;
-    stats: PlayerStats;
+    explain: EventPointSource[];
+    stats: EventElementStats;
   };
 }
 
-export interface PlayerStatsMap {
-  [key: number]: PlayerStats;
+export interface EventElementStats {
+  yellow_cards: number;
+  own_goals: number;
+  creativity: number;
+  goals_conceded: number;
+  bonus: number;
+  red_cards: number;
+  saves: number;
+  influence: number;
+  bps: number;
+  clean_sheets: number;
+  assists: number;
+  ict_index: number;
+  goals_scored: number;
+  threat: number;
+  penalties_missed: number;
+  total_points: number;
+  penalties_saved: number;
+  in_dreamteam: boolean;
+  minutes: number;
+}
+
+export interface EventPointSource {
+  [key: string]: {
+    points: number;
+    name: string;
+    value: number;
+  };
+}
+
+export interface EventElement {
+  explain: Array<{
+    [key: string]: {
+      points: number;
+      name: string;
+      value: number;
+    };
+  }>;
+  stats: EventElementStats;
+
+}
+
+export interface GameData {
+  total_players: number;
+  current_event: number;
+  next_event: number;
+  last_entry_event: number;
 }

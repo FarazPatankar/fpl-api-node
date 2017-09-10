@@ -1,20 +1,16 @@
+// import axios from 'axios';
+import axios from 'axios';
 import { expect } from 'chai';
+import * as cache from 'memory-cache';
 import 'mocha';
+import * as sinon from 'sinon';
 
+import * as dataService from '../src/data-service';
 import * as fplapi from '../src/index';
-
-// helper methods
-function catchError(p, done) {
-  p.then((data) => {
-    done(new Error('An error was expected'));
-  }).catch((e) => {
-    done();
-  });
-}
 
 // Entries
 
-describe('should return correct Entry data', () => {
+describe('Entry data:', () => {
 
   const entryId = 545548;
 
@@ -23,30 +19,24 @@ describe('should return correct Entry data', () => {
       expect(data.player_first_name).to.equal('Tom');
       expect(data.player_last_name).to.equal('Grey');
       done();
-    }).catch((e) => {
-      done(new Error(e));
     });
   });
 
-  it('should catch error on findEntry()', (done) => {
-    catchError(fplapi.findEntry(0), done);
-  });
-
-  it('should findEntryGameweeks()', (done) => {
-    fplapi.findEntryGameweeks(entryId).then((data) => {
+  it('should findEntryEvents()', (done) => {
+    fplapi.findEntryEvents(entryId).then((data) => {
       expect(data[0].points).to.equal(69);
       done();
-    }).catch((e) => {
-      done(new Error(e));
     });
   });
 
-  it('should catch error on findEntryGameweeks()', (done) => {
-    catchError(fplapi.findEntryGameweeks(0), done);
+  it('should findEntryChips()', (done) => {
+    fplapi.findEntryChips(entryId).then((data) => {
+      done();
+    });
   });
 
-  it('should findEntryGameweek()', (done) => {
-    fplapi.findEntryGameweek(entryId, 1).then((data) => {
+  it('should findEntryEvent()', (done) => {
+    fplapi.findEntryEvent(entryId, 1).then((data) => {
       expect(data.entry).to.equal(entryId);
       expect(data.total_points).to.equal(69);
       done();
@@ -55,21 +45,13 @@ describe('should return correct Entry data', () => {
     });
   });
 
-  it('should catch error on findEntryGameweek()', (done) => {
-    catchError(fplapi.findEntryGameweek(0, 0), done);
-  });
-
-  it('should findEntryPicksByGameweek()', (done) => {
-    fplapi.findEntryPicksByGameweek(entryId, 1).then((data) => {
+  it('should findEntryPicksByEvent()', (done) => {
+    fplapi.findEntryPicksByEvent(entryId, 1).then((data) => {
       expect(data[0].element).to.equal(421);
       done();
     }).catch((e) => {
       done(new Error(e));
     });
-  });
-
-  it('should catch error on findEntryPicksByGameweek()', (done) => {
-    catchError(fplapi.findEntryPicksByGameweek(0, 0), done);
   });
 
   it('should findEntryTransferHistory', (done) => {
@@ -81,18 +63,14 @@ describe('should return correct Entry data', () => {
     });
   });
 
-  it('should catch error on findEntryGameweek()', (done) => {
-    catchError(fplapi.findEntryTransferHistory(0), done);
-  });
-
 });
 
-// Players
+// Elements
 
-describe('should return correct Player data', () => {
+describe('Elements data:', () => {
 
-  it('should getAllPlayers()', (done) => {
-    fplapi.getAllPlayers().then((data) => {
+  it('should getElements()', (done) => {
+    fplapi.getElements().then((data) => {
       expect(data[0].web_name).to.equal('Ospina');
       done();
     }).catch((e) => {
@@ -100,39 +78,23 @@ describe('should return correct Player data', () => {
     });
   });
 
-  it('should findPlayer()', (done) => {
-    fplapi.findPlayer(2).then((data) => {
-      expect(data.web_name).to.equal('Cech');
+  it('should findElementsByEvent()', (done) => {
+    fplapi.findElementsByEvent(1).then((data) => {
+      expect(data['498'].stats.total_points).to.equal(6);
       done();
     }).catch((e) => {
       done(new Error(e));
     });
   });
 
-  it('should catch error on findPlayer()', (done) => {
-    catchError(fplapi.findPlayer(999), done);
-  });
-
-  it('should findPlayerStatsByGameweek()', (done) => {
-    fplapi.findPlayerStatsByGameweek(38, 1).then((data) => {
-      expect(data.total_points).to.equal(3);
-      done();
-    }).catch((e) => {
-      done(new Error(e));
-    });
-  });
-
-  it('should catch error on findPlayerStatsByGameweek()', (done) => {
-    catchError(fplapi.findPlayerStatsByGameweek(0, 0), done);
-  });
 });
 
-// Gameweeks
+// Events
 
-describe('should return correct Gamweek data', () => {
+describe('Event data:', () => {
 
-  it('should getAllGameweeks', (done) => {
-    fplapi.getAllGameweeks().then((data) => {
+  it('should getEvents()', (done) => {
+    fplapi.getEvents().then((data) => {
       expect(data[0].id).to.equal(1);
       done();
     }).catch((e) => {
@@ -140,38 +102,13 @@ describe('should return correct Gamweek data', () => {
     });
   });
 
-  it('should find findGameweek()', (done) => {
-    fplapi.findGameweek(1).then((data) => {
-      expect(data.id).to.equal(1);
-      done();
-    }).catch((e) => {
-      done(new Error(e));
-    });
-  });
-
-  it('should catch error on findGameweek()', (done) => {
-    catchError(fplapi.findGameweek(0), done);
-  });
-
-  it('should findGameweekPlayerStats()', (done) => {
-    fplapi.findGameweekPlayerStats(1).then((data) => {
-      expect(data[1].total_points).to.equal(1);
-      done();
-    }).catch((e) => {
-      done(new Error(e));
-    });
-  });
-
-  it('should catch error on findGameweekPlayerStats()', (done) => {
-    catchError(fplapi.findGameweekPlayerStats(0), done);
-  });
 });
 
 // Teams
 
-describe('should return correct Team data', () => {
-  it('should getAllTeams()', (done) => {
-    fplapi.getAllTeams().then((data) => {
+describe('Team data:', () => {
+  it('should getTeams()', (done) => {
+    fplapi.getTeams().then((data) => {
       expect(data[0].name).to.equal('Arsenal');
       done();
     }).catch((e) => {
@@ -179,24 +116,12 @@ describe('should return correct Team data', () => {
     });
   });
 
-  it('should findTeam()', (done) => {
-    fplapi.findTeam(1).then((data) => {
-      expect(data.name).to.equal('Arsenal');
-      done();
-    }).catch((e) => {
-      done(new Error(e));
-    });
-  });
-
-  it('should catch error on findTeam()', (done) => {
-    catchError(fplapi.findTeam(0), done);
-  });
-
 });
 
 // Leagues
 
-describe('should findLeague()', () => {
+describe('Leagues:', () => {
+
   it('should find League', (done) => {
     fplapi.findLeague(313).then((data) => {
       expect(data.name).to.equal('Overall');
@@ -206,12 +131,8 @@ describe('should findLeague()', () => {
     });
   });
 
-  it('should catch error on findLeague()', (done) => {
-    catchError(fplapi.findLeague(0), done);
-  });
-
-  it('should findLeagueResults()', (done) => {
-    fplapi.findLeagueResults(313).then((data) => {
+  it('should findLeagueStandings()', (done) => {
+    fplapi.findLeagueStandings(313).then((data) => {
       expect(data.length).to.equal(50);
       done();
     }).catch((e) => {
@@ -219,34 +140,140 @@ describe('should findLeague()', () => {
     });
   });
 
-  it('should catch error on findLeagueResults()', (done) => {
-    catchError(fplapi.findLeagueResults(0), done);
-  });
-
 });
 
 // Utils
 
-describe('should return utils', () => {
-  it('should getTotalNumberOfEntries()', (done) => {
-    fplapi.getTotalNumberOfEntries().then((data) => {
-      expect(data).to.be.a('number');
+describe('General data:', () => {
+
+  it('should getElementTypes()', (done) => {
+    fplapi.getElementTypes().then((data) => {
+      expect(data[1].id).to.equal(2);
+      expect(data[1].plural_name).to.equal('Defenders');
       done();
     }).catch((e) => {
       done(new Error(e));
     });
   });
 
-  it('should findPlayerType()', (done) => {
-    fplapi.findPlayerType(4).then((data) => {
-      expect(data.singular_name).to.equal('Forward');
+  it('should getGameData()', (done) => {
+    fplapi.getGameData().then((data) => {
+      expect(data.total_players).to.be.a('number');
+      expect(data.current_event).to.be.a('number');
       done();
     }).catch((e) => {
       done(new Error(e));
     });
   });
 
-  it('should catch error on findPlayerType()', (done) => {
-    catchError(fplapi.findPlayerType(0), done);
-  });
 });
+
+describe('should handle errors: ', () => {
+
+  let sandbox;
+
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+    sandbox.stub(cache, 'get').returns(null);
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
+
+  it('should throw error with correct message when game is updating', (done) => {
+    dataService.fetch('https://fantasy.premierleague.com/updating/').then((data) => {
+      done(new Error('An error was expected'));
+    }).catch((e) => {
+      if (e === 'fpl-api-node: There was an error as the game is being updated') {
+        done();
+      } else {
+        done(new Error());
+      }
+    });
+  });
+
+  it('should throw error with correct message when game is updating', (done) => {
+    dataService.fetch('https://fantasy.premierleague.com/a/team/545548/event/4').then((data) => {
+      done(new Error('An error was expected'));
+    }).catch((e) => {
+      done();
+    });
+  });
+
+  it('should catch error on findEntry()', (done) => {
+    catchError(fplapi.findEntry(0), done);
+  });
+
+  it('should catch error on findEntryEvents()', (done) => {
+    catchError(fplapi.findEntryEvents(0), done);
+  });
+
+  it('should catch error on findEntryChips()', (done) => {
+    catchError(fplapi.findEntryChips(0), done);
+  });
+
+  it('should catch error on findEntryEvent()', (done) => {
+    catchError(fplapi.findEntryEvent(0, 0), done);
+  });
+
+  it('should catch error on findEntryPicksByEvent()', (done) => {
+    catchError(fplapi.findEntryPicksByEvent(0, 0), done);
+  });
+
+  it('should catch error on findEntryEvent()', (done) => {
+    catchError(fplapi.findEntryTransferHistory(0), done);
+  });
+
+  it('should catch error on getEvents()', (done) => {
+    catchError(fplapi.findEntryEvent(0, 0), done);
+  });
+
+  it('should catch error on findElementsByEvent()', (done) => {
+    catchError(fplapi.findElementsByEvent(0), done);
+  });
+
+  it('should catch error on findLeague()', (done) => {
+    catchError(fplapi.findLeague(0), done);
+  });
+
+  it('should catch error on findLeagueStandings()', (done) => {
+    catchError(fplapi.findLeagueStandings(0), done);
+  });
+
+  it('should catch error on getElements()', (done) => {
+    sandbox.stub(axios, 'get').returns(Promise.reject('error'));
+    catchError(fplapi.getElements(), done);
+  });
+
+  it('should catch error on getEvents()', (done) => {
+    sandbox.stub(axios, 'get').returns(Promise.reject('error'));
+    catchError(fplapi.getEvents(), done);
+  });
+
+  it('should catch error on getTeams()', (done) => {
+    sandbox.stub(axios, 'get').returns(Promise.reject('error'));
+    catchError(fplapi.getTeams(), done);
+  });
+
+  it('should catch error on getElementTypes()', (done) => {
+    sandbox.stub(axios, 'get').returns(Promise.reject('error'));
+    catchError(fplapi.getElementTypes(), done);
+  });
+
+  it('should catch error on getGameData()', (done) => {
+    sandbox.stub(axios, 'get').returns(Promise.reject('error'));
+    catchError(fplapi.getGameData(), done);
+  });
+
+});
+
+// helper methods
+
+function catchError(p, done) {
+  p.then((data) => {
+    done(new Error('An error was expected'));
+  }).catch((e) => {
+    done();
+  });
+}

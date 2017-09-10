@@ -7,13 +7,13 @@ import * as types from './types';
 // *************
 
 /**
- * Returns entry summary.
+ * Returns entry summary / details.
  * @param entryId The unique id of entry
  */
 export function findEntry(entryId: number): Promise<types.Entry> {
   return new Promise((resolve, reject) => {
     dataService.getEntryHistory(entryId).then((data) => {
-      returnResponse(data.entry, resolve, reject);
+      resolve(data.entry);
     }).catch((e) => {
       reject(e);
     });
@@ -21,29 +21,13 @@ export function findEntry(entryId: number): Promise<types.Entry> {
 }
 
 /**
- * Returns a details of a specified gameweek
+ * Returns a collection of completed or ongoing events
  * @param entryId
- * @param gameweek
  */
-export function findEntryGameweek(entryId: number, gameweek: number): Promise<types.EntryGameweek> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryEventPicks(entryId, gameweek).then((data) => {
-      returnResponse(data.entry_history, resolve, reject);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
-}
-
-/**
- * Returns a collection of completed gameweeks
- * @param entryId
- * @param gameweek
- */
-export function findEntryGameweeks(entryId: number): Promise<types.EntryGameweek[]> {
+export function findEntryEvents(entryId: number): Promise<types.EntryEvent[]> {
   return new Promise((resolve, reject) => {
     dataService.getEntryHistory(entryId).then((data) => {
-      returnResponse(data.history, resolve, reject);
+      resolve(data.history);
     }).catch((e) => {
       reject(e);
     });
@@ -51,14 +35,44 @@ export function findEntryGameweeks(entryId: number): Promise<types.EntryGameweek
 }
 
 /**
- * Returns a collection of picks for a specified gameweek
+ * Returns chip details of a specified entry
  * @param entryId
- * @param gameweek
+ * @param eventNumber
  */
-export function findEntryPicksByGameweek(entryId: number, gameweek: number): Promise<types.EntryPick[]> {
+export function findEntryChips(entryId: number): Promise<types.EntryChip[]> {
   return new Promise((resolve, reject) => {
-    dataService.getEntryEventPicks(entryId, gameweek).then((data) => {
-      returnResponse(data.picks, resolve, reject);
+    dataService.getEntryHistory(entryId).then((data) => {
+      resolve(data.chips);
+    }).catch((e) => {
+      reject(e);
+    });
+  });
+}
+
+/**
+ * Returns a details of a specified event
+ * @param entryId
+ * @param eventNumber
+ */
+export function findEntryEvent(entryId: number, eventNumber: number): Promise<types.EntryEvent> {
+  return new Promise((resolve, reject) => {
+    dataService.getEntryEventPicks(entryId, eventNumber).then((data) => {
+      resolve(data.entry_history);
+    }).catch((e) => {
+      reject(e);
+    });
+  });
+}
+
+/**
+ * Returns a collection of picks for a specified event
+ * @param entryId
+ * @param event
+ */
+export function findEntryPicksByEvent(entryId: number, event: number): Promise<types.EntryPick[]> {
+  return new Promise((resolve, reject) => {
+    dataService.getEntryEventPicks(entryId, event).then((data) => {
+      resolve(data.picks);
     }).catch((e) => {
       reject(e);
     });
@@ -72,24 +86,7 @@ export function findEntryPicksByGameweek(entryId: number, gameweek: number): Pro
 export function findEntryTransferHistory(entryId: number): Promise<types.EntryTransferHistory[]> {
   return new Promise((resolve, reject) => {
     dataService.getEntryTransfers(entryId).then((data) => {
-      returnResponse(data.history, resolve, reject);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
-}
-
-// *************
-// Player methods
-// *************
-
-/**
- * Returns a collection of all players.
- */
-export function getAllPlayers(): Promise<types.Player[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      returnResponse(data.elements, resolve, reject);
+      resolve(data.history);
     }).catch((e) => {
       reject(e);
     });
@@ -97,121 +94,15 @@ export function getAllPlayers(): Promise<types.Player[]> {
 }
 
 /**
- * Returns stats for a specified player.
+ * Returns all element data for a specified event
+ * @param event
  */
-export function findPlayer(playerId: number): Promise<types.Player> {
+export function findElementsByEvent(event: number): Promise<types.EventElements> {
   return new Promise((resolve, reject) => {
-    getAllPlayers().then((elements) => {
-      const match = elements.find((element) => {
-        return element.id === playerId;
-      });
-      if (match) {
-        resolve(match);
-      } else {
-        reject('fpl-api-node: Player not found');
-      }
-    });
-  });
-}
-
-/**
- * Returns a stats for a specified gameweek
- */
-export function findPlayerStatsByGameweek(playerId: number, gameweek: number): Promise<types.PlayerStats> {
-  return new Promise((resolve, reject) => {
-    dataService.getEventLive(gameweek).then((data) => {
-      returnResponse(data.elements[playerId].stats, resolve, reject);
+    dataService.getLiveEvent(event).then((data) => {
+      resolve(data.elements);
     }).catch((e) => {
       reject(e);
-    });
-  });
-}
-
-// *************
-// Gameweek methods
-// *************
-
-/**
- * Returns a collection of all gameweeks
- */
-export function getAllGameweeks(): Promise<types.Gameweek[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      returnResponse(data.events, resolve, reject);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
-}
-
-/**
- * Returns a specific gameweek
- * @param gameweek
- */
-export function findGameweek(gameweek: number): Promise<types.Gameweek> {
-  return new Promise((resolve, reject) => {
-    getAllGameweeks().then((events) => {
-      const match = events.find((event) => {
-        return event.id === gameweek;
-      });
-      if (match) {
-        resolve(match);
-      } else {
-        reject('fpl-api-node: Gameweek not found');
-      }
-    });
-  });
-}
-
-/**
- * Returns a specific gameweek
- * @param gameweek
- */
-export function findGameweekPlayerStats(gameweek: number): Promise<types.PlayerStatsMap> {
-  return new Promise((resolve, reject) => {
-    dataService.getEventLive(gameweek).then((data) => {
-      const playerStatsMap = Object.keys(data.elements).map((key) => {
-        return data.elements[key].stats;
-      });
-      returnResponse(playerStatsMap, resolve, reject);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
-}
-
-// *************
-// Team methods
-// *************
-
-/**
- * Returns a collection of all teams
- */
-export function getAllTeams(): Promise<types.Team[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      returnResponse(data.teams, resolve, reject);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
-}
-
-/**
- * Returns a specified team
- * @param teamId
- */
-export function findTeam(teamId: number): Promise<types.Team> {
-  return new Promise((resolve, reject) => {
-    getAllTeams().then((teams) => {
-      const match = teams.find((team) => {
-        return team.id === teamId;
-      });
-      if (match) {
-        resolve(match);
-      } else {
-        reject('fpl-api-node: Team not found');
-      }
     });
   });
 }
@@ -227,7 +118,7 @@ export function findTeam(teamId: number): Promise<types.Team> {
 export function findLeague(leagueId: number): Promise<types.League> {
   return new Promise((resolve, reject) => {
     dataService.getClassicLeagueStandings(leagueId).then((data) => {
-      returnResponse(data.league, resolve, reject);
+      resolve(data.league);
     }).catch((e) => {
       reject(e);
     });
@@ -238,10 +129,10 @@ export function findLeague(leagueId: number): Promise<types.League> {
  * Returns specified league standings (top 50)
  * @param leagueId
  */
-export function findLeagueResults(leagueId: number): Promise<types.LeagueResult[]> {
+export function findLeagueStandings(leagueId: number): Promise<types.LeagueResult[]> {
   return new Promise((resolve, reject) => {
     dataService.getClassicLeagueStandings(leagueId).then((data) => {
-      returnResponse(data.standings.results, resolve, reject);
+      resolve(data.standings.results);
     }).catch((e) => {
       reject(e);
     });
@@ -249,63 +140,75 @@ export function findLeagueResults(leagueId: number): Promise<types.LeagueResult[
 }
 
 // *************
-// Utils methods
+// Other
 // *************
+
+/**
+ * Returns a collection of all elements.
+ */
+export function getElements(): Promise<types.Element[]> {
+  return new Promise((resolve, reject) => {
+    dataService.getBootstrapData().then((data) => {
+      resolve(data.elements);
+    }).catch((e) => {
+      reject(e);
+    });
+  });
+}
+
+/**
+ * Returns a collection of all element types in the game
+ */
+export function getElementTypes(): Promise<types.ElementType[]> {
+  return new Promise((resolve, reject) => {
+    dataService.getBootstrapData().then((data) => {
+      resolve(data.element_types);
+    }).catch((e) => {
+      reject(e);
+    });
+  });
+}
+
+/**
+ * Returns a collection of all events
+ */
+export function getEvents(): Promise<types.Event[]> {
+  return new Promise((resolve, reject) => {
+    dataService.getBootstrapData().then((data) => {
+      resolve(data.events);
+    }).catch((e) => {
+      reject(e);
+    });
+  });
+}
+
+/**
+ * Returns a collection of all teams
+ */
+export function getTeams(): Promise<types.Team[]> {
+  return new Promise((resolve, reject) => {
+    dataService.getBootstrapData().then((data) => {
+      resolve(data.teams);
+    }).catch((e) => {
+      reject(e);
+    });
+  });
+}
 
 /**
  * Returns the total number of entries
  */
-export function getTotalNumberOfEntries(): Promise<number> {
+export function getGameData(): Promise<types.GameData> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
-      returnResponse(data['total-players'], resolve, reject);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
-}
-
-/**
- * Returns a collection of all player types in the game
- */
-export function getAllPlayerTypes(): Promise<types.PlayerType[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      returnResponse(data.element_types, resolve, reject);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
-}
-
-/**
- * Returns a specified player type
- */
-export function findPlayerType(typeId: number): Promise<types.PlayerType> {
-  return new Promise((resolve, reject) => {
-    getAllPlayerTypes().then((playerTypes) => {
-      const match = playerTypes.find((playerType) => {
-        return playerType.id === typeId;
+      resolve({
+        current_event: data['current-event'],
+        last_entry_event: data['last-entry-event'],
+        next_event: data['next-event'],
+        total_players: data['total-players'],
       });
-      if (match) {
-        resolve(match);
-      } else {
-        reject('fpl-api-node: Player type not found');
-      }
+    }).catch((e) => {
+      reject(e);
     });
   });
-}
-
-/**
- * Catch undefined responses
- * @param value
- * @param resolve
- * @param reject
- */
-function returnResponse(value, resolve, reject) {
-  if (value) {
-    resolve(value);
-  } else {
-    reject('fpl-api-node: Data error');
-  }
 }
