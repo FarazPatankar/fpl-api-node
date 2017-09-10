@@ -205,7 +205,7 @@ export function getGameData(): Promise<types.GameData> {
         current_event: data['current-event'],
         last_entry_event: data['last-entry-event'],
         next_event: data['next-event'],
-        total_players: data['total-players'],
+        total_entries: data['total-players'],
       });
     }).catch((e) => {
       reject(e);

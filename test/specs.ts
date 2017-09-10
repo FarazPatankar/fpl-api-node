@@ -158,7 +158,7 @@ describe('General data:', () => {
 
   it('should getGameData()', (done) => {
     fplapi.getGameData().then((data) => {
-      expect(data.total_players).to.be.a('number');
+      expect(data.total_entries).to.be.a('number');
       expect(data.current_event).to.be.a('number');
       done();
     }).catch((e) => {

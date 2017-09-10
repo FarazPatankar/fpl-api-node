@@ -478,7 +478,7 @@ export interface EventElement {
 }
 
 export interface GameData {
-  total_players: number;
+  total_entries: number;
   current_event: number;
   next_event: number;
   last_entry_event: number;
