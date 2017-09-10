@@ -79,7 +79,6 @@ function getData(file, ns) {
       returnType,
     });
   });
-  methods.sort(sortByName);
   dataTypes.sort(sortByName);
   return { methods, dataTypes };
 }
@@ -95,16 +94,12 @@ function setDataType(dataTypes, matchedInterface: any, filename, inttype?) {
 
   const data: any = [];
 
-  let description;
-
   // need to refactor hardcoded interface name
-  if (matchedInterface.getName() === 'PlayerStatsMap') {
-
-    description = 'An object map of player id keys';
+  if (matchedInterface.getName() === 'EventElements') {
     // set the element
-    const typeInterface = getInterface(filename, 'PlayerStats');
-    setDataType(dataTypes, typeInterface, filename, 'PlayerStats');
-    data.push({ displayType: getDisplayType(typeInterface), name: '[key: number]', description });
+    const typeInterface = getInterface(filename, 'EventElement');
+    setDataType(dataTypes, typeInterface, filename, 'EventElement');
+    data.push({ displayType: getDisplayType(typeInterface), name: '[key: number]'});
   } else {
 
     // iterate over interface properties
@@ -115,10 +110,7 @@ function setDataType(dataTypes, matchedInterface: any, filename, inttype?) {
       // set param type definition and description
       const typeDef = prop.getName();
 
-      // set description
-      description = prop.getDocumentationComment() || _.startCase(prop.getName());
-
-      // set property type as a string
+     // set property type as a string
       const propType = prop.getType().getText();
 
       if (propType.includes('any')) {
@@ -143,7 +135,7 @@ function setDataType(dataTypes, matchedInterface: any, filename, inttype?) {
       }
 
       // set the element
-      data.push({ displayType, name: typeDef, description });
+      data.push({ displayType, name: typeDef });
 
     });
 

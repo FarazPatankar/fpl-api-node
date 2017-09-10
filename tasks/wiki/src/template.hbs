@@ -1,4 +1,3 @@
-
 {{#if methods}}  
 
 ## Methods
@@ -47,14 +46,22 @@ ___
 
 ### {{name}}
 
-|Property|Type|Description
-|---|---|---|
+|Property|Type
+|---|---|
 {{#each data}}
-|{{name}}|{{{displayType}}}|{{description}}
+|{{name}}|{{{displayType}}}
 {{/each}}
 
 <a href="#top">Back to top</a> 
 ___  
 {{/each}}
 {{/if}}
+
+## Notes
+
+The terminology follows that of fpl apis:
+
+* **entry** > fpl managed team
+* **event** > gameweek
+* **element** > player
 
