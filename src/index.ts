@@ -198,15 +198,23 @@ export function getTeams(): Promise<types.Team[]> {
 /**
  * Returns the total number of entries
  */
-export function getGameData(): Promise<types.GameData> {
+export function getTotalNumberOfEntries(): Promise<number> {
   return new Promise((resolve, reject) => {
     dataService.getBootstrapData().then((data) => {
-      resolve({
-        current_event: data['current-event'],
-        last_entry_event: data['last-entry-event'],
-        next_event: data['next-event'],
-        total_entries: data['total-players'],
-      });
+      resolve(data['total-players']);
+    }).catch((e) => {
+      reject(e);
+    });
+  });
+}
+
+/**
+ * Returns the current event number
+ */
+export function getCurrentEventNumber(): Promise<number> {
+  return new Promise((resolve, reject) => {
+    dataService.getBootstrapData().then((data) => {
+      resolve(data['current-event']);
     }).catch((e) => {
       reject(e);
     });

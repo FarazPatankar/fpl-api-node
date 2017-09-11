@@ -155,10 +155,18 @@ describe('General data:', () => {
     });
   });
 
-  it('should getGameData()', (done) => {
-    fplapi.getGameData().then((data) => {
-      expect(data.total_entries).to.be.a('number');
-      expect(data.current_event).to.be.a('number');
+  it('should getTotalNumberOfEntries()', (done) => {
+    fplapi.getTotalNumberOfEntries().then((data) => {
+      expect(data).to.be.a('number');
+      done();
+    }).catch((e) => {
+      done(new Error(e));
+    });
+  });
+
+  it('should getCurrentEventNumber()', (done) => {
+    fplapi.getCurrentEventNumber().then((data) => {
+      expect(data).to.be.a('number');
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -260,9 +268,14 @@ describe('should handle errors: ', () => {
     catchError(fplapi.getElementTypes(), done);
   });
 
-  it('should catch error on getGameData()', (done) => {
+  it('should catch error on getTotalNumberOfEntries()', (done) => {
     sandbox.stub(axios, 'get').returns(Promise.reject('error'));
-    catchError(fplapi.getGameData(), done);
+    catchError(fplapi.getTotalNumberOfEntries(), done);
+  });
+
+  it('should catch error on getCurrentEventNumber()', (done) => {
+    sandbox.stub(axios, 'get').returns(Promise.reject('error'));
+    catchError(fplapi.getCurrentEventNumber(), done);
   });
 
 });

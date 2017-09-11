@@ -60,6 +60,8 @@ function getData(file, ns) {
         + '](#' + getTypeAnchorName(matchedInterface) + ')'
         + (isArray ? '[]' : '') + '&gt;';
       setDataType(dataTypes, matchedInterface, './src/types.ts');
+    } else {
+      displayedReturnType = `&lt;${returnInterfaceName}&gt;`;
     }
 
     const isObject = matchedInterface ? true : false;

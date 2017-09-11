@@ -476,10 +476,3 @@ export interface EventElement {
   stats: EventElementStats;
 
 }
-
-export interface GameData {
-  total_entries: number;
-  current_event: number;
-  next_event: number;
-  last_entry_event: number;
-}
