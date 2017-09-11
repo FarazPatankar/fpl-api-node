@@ -23,7 +23,7 @@ import * as types from './types';
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
 
 // standard cache timeout (30 mins)
-const stdCacheTTL = 18000;
+const stdCacheTTL = 1800;
 
 // reference to cache object
 export const cache = new NodeCache();
@@ -85,8 +85,8 @@ export function fetch(path: string, cacheForever = false): Promise<any> {
       axios.get(path).then((response) => {
         const data = response.data;
         if (Object.keys(data).length > 0 && data.constructor === Object) {
-            cache.set(path, data, cacheForever ? 0 : stdCacheTTL);
-            resolve(data);
+          cache.set(path, data, cacheForever ? 0 : stdCacheTTL);
+          resolve(data);
         } else {
           const error = data.includes('The game is being updated') ?
             'There was an error as the game is being updated' :
