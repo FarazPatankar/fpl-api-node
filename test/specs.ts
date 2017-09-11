@@ -1,7 +1,6 @@
 // import axios from 'axios';
 import axios from 'axios';
 import { expect } from 'chai';
-import * as cache from 'memory-cache';
 import 'mocha';
 import * as sinon from 'sinon';
 
@@ -174,7 +173,7 @@ describe('should handle errors: ', () => {
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
-    sandbox.stub(cache, 'get').returns(null);
+    sandbox.stub(dataService.cache, 'get').returns(null);
   });
 
   afterEach(() => {

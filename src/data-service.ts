@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as cache from 'memory-cache';
+import * as NodeCache from 'node-cache';
 import * as types from './types';
 
 /**
@@ -19,11 +19,14 @@ import * as types from './types';
  * https://fantasy.premierleague.com/drf/leagues-classic-standings/${id}
  */
 
-// standard cache timeout (30 mins)
-const stdCacheTTL = 1800000;
-
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
+
+// standard cache timeout (30 mins)
+const stdCacheTTL = 18000;
+
+// reference to cache object
+export const cache = new NodeCache();
 
 export function getEntryHistory(entryId: number): Promise<types.EntryRoot> {
   return fetch(`/entry/${entryId}/history`);
@@ -82,12 +85,8 @@ export function fetch(path: string, cacheForever = false): Promise<any> {
       axios.get(path).then((response) => {
         const data = response.data;
         if (Object.keys(data).length > 0 && data.constructor === Object) {
-          if (cacheForever) {
-            cache.put(path, data);
-          } else {
-            cache.put(path, data, stdCacheTTL);
-          }
-          resolve(data);
+            cache.set(path, data, cacheForever ? 0 : stdCacheTTL);
+            resolve(data);
         } else {
           const error = data.includes('The game is being updated') ?
             'There was an error as the game is being updated' :
