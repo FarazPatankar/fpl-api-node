@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as NodeCache from 'node-cache';
+import * as Errors from './errors';
 import * as types from './types';
 
 /**
@@ -88,13 +89,14 @@ export function fetch(path: string, cacheForever = false): Promise<any> {
           cache.set(path, data, cacheForever ? 0 : stdCacheTTL);
           resolve(data);
         } else {
-          const error = data.includes('The game is being updated') ?
-            'There was an error as the game is being updated' :
-            'There was an error as returned data is not in the expected format';
-          reject(`fpl-api-node: ${error}`);
+          if (data.includes('The game is being updated')) {
+            reject(new Errors.GameUpdatingError());
+          } else {
+            reject(new Errors.NotFoundError());
+          }
         }
       }).catch(() => {
-        reject('fpl-api-node: Error as response not received from fpl');
+        reject(new Errors.NoResponseError());
       });
     }
   });

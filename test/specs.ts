@@ -5,6 +5,7 @@ import 'mocha';
 import * as sinon from 'sinon';
 
 import * as dataService from '../src/data-service';
+import * as errors from '../src/errors';
 import * as fplapi from '../src/index';
 
 // Entries
@@ -192,7 +193,7 @@ describe('should handle errors: ', () => {
     dataService.fetch('https://fantasy.premierleague.com/updating/').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      if (e === 'fpl-api-node: There was an error as the game is being updated') {
+      if (e.name === errors.GameUpdatingError.name && e.message === 'The game is being updated') {
         done();
       } else {
         done(new Error());
@@ -200,11 +201,15 @@ describe('should handle errors: ', () => {
     });
   });
 
-  it('should throw error with correct message when game is updating', (done) => {
-    dataService.fetch('https://fantasy.premierleague.com/a/team/545548/event/4').then((data) => {
+  it('should throw error with correct message when fpl is unreachable', (done) => {
+    dataService.fetch('https://fantasy.premierleague.com/a/team/0/event/4').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      done();
+      if (e.name === errors.NotFoundError.name) {
+        done();
+      } else {
+        done(new Error());
+      }
     });
   });
 
