@@ -16,7 +16,7 @@ describe('Entry data:', () => {
 
   it('should findEntry()', (done) => {
     fplapi.findEntry(entryId).then((data) => {
-      expect(data.player_first_name).to.equal('Tom');
+      expect(data.player_first_name).to.equal('Thomas');
       expect(data.player_last_name).to.equal('Grey');
       done();
     });

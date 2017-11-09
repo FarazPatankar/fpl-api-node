@@ -7,7 +7,7 @@ import Ast from 'ts-simple-ast';
 const ast = new Ast();
 
 // get reference to files
-const indexFile = ast.getOrAddSourceFileFromFilePath('./src/index.ts');
+const indexFile = ast.getOrAddSourceFile('./src/index.ts');
 
 // get data for templates
 const indexData = getData(indexFile, 'entry');
@@ -182,6 +182,6 @@ function sortByName(a, b) {
  * @param namedInterface
  */
 function getInterface(interfacePath, namedInterface) {
-  const interfaceFile = ast.getOrAddSourceFileFromFilePath(interfacePath);
+  const interfaceFile = ast.getOrAddSourceFile(interfacePath);
   return interfaceFile.getInterface(namedInterface);
 }
