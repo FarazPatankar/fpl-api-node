@@ -5,7 +5,7 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "importHelpers": true,
+    "importHelpers": false,
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitHelpers": true,
@@ -15,7 +15,7 @@
     "sourceMap": false,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es5",
+    "target": "es2015",
     "lib": [
       "es2016",
       "dom"
