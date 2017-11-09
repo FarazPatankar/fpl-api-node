@@ -8,9 +8,6 @@ node_js:
   - '8'
   - '7'
   - '6'
-before_script:  
-  - rm -rf node_modules
-  - npm install
 script:
   - npm run prepublishOnly
 branches:
