@@ -5,7 +5,7 @@ import 'mocha';
 import * as sinon from 'sinon';
 
 import * as dataService from '../src/data-service';
-import * as errors from '../src/errors';
+import {Errors} from '../src/errors';
 import * as fplapi from '../src/index';
 
 // Entries
@@ -193,7 +193,7 @@ describe('should handle errors: ', () => {
     dataService.fetch('https://fantasy.premierleague.com/updating/').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      if (e.name === errors.GameUpdatingError.name && e.message === 'The game is being updated') {
+      if (e === Errors.GAME_UPDATING) {
         done();
       } else {
         done(new Error());
@@ -201,11 +201,11 @@ describe('should handle errors: ', () => {
     });
   });
 
-  it('should throw error with correct message when fpl is unreachable', (done) => {
+  it('should throw error with correct message when endpoint not found', (done) => {
     dataService.fetch('https://fantasy.premierleague.com/a/team/0/event/4').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      if (e.name === errors.NotFoundError.name) {
+      if (e === Errors.NOT_FOUND) {
         done();
       } else {
         done(new Error());

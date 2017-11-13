@@ -1,27 +1,14 @@
-export class CustomError {
-    public name: string;
-    public message: string;
-    constructor(message: string) {
-        Error.captureStackTrace(this, this.constructor);
-        this.name = this.constructor.name;
-        this.message = message;
-    }
-}
+import chalk from 'chalk';
 
-export class GameUpdatingError extends CustomError {
-    constructor() {
-        super('The game is being updated');
-     }
-}
+export class Errors {
 
-export class NotFoundError extends CustomError {
-    constructor() {
-        super('Response from fpl is not in the expected format');
-     }
-}
+  public static GAME_UPDATING = 'The game is being updated';
+  public static NOT_FOUND = 'Endpoint not found';
+  public static NO_RESPONSE = 'No response received from fpl';
 
-export class NoResponseError extends CustomError {
-    constructor() {
-        super('No response received from fpl');
-     }
+  public static log(message, path, reject) {
+    console.error(chalk.red(`fpl-api-node: ${message} (https://fantasy.premierleague.com/drf${path})`));
+    reject(message);
+  }
+
 }

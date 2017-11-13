@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as NodeCache from 'node-cache';
-import * as Errors from './errors';
+
+import { Errors } from './errors';
 import * as types from './types';
 
 /**
@@ -90,13 +91,13 @@ export function fetch(path: string, cacheForever = false): Promise<any> {
           resolve(data);
         } else {
           if (data.includes('The game is being updated')) {
-            reject(new Errors.GameUpdatingError());
+            Errors.log(Errors.GAME_UPDATING, path, reject);
           } else {
-            reject(new Errors.NotFoundError());
+            Errors.log(Errors.NOT_FOUND, path, reject);
           }
         }
       }).catch(() => {
-        reject(new Errors.NoResponseError());
+        Errors.log(Errors.NO_RESPONSE, path, reject);
       });
     }
   });
