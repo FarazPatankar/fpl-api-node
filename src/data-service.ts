@@ -91,13 +91,13 @@ export function fetch(path: string, cacheForever = false): Promise<any> {
           resolve(data);
         } else {
           if (data.includes('The game is being updated')) {
-            Errors.log(Errors.GAME_UPDATING, path, reject);
+            reject(Errors.GAME_UPDATING);
           } else {
-            Errors.log(Errors.NOT_FOUND, path, reject);
+            reject(Errors.NOT_FOUND);
           }
         }
       }).catch(() => {
-        Errors.log(Errors.NO_RESPONSE, path, reject);
+        reject(Errors.NO_RESPONSE);
       });
     }
   });
