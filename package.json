@@ -35,12 +35,10 @@
   "homepage": "https://github.com/tgreyuk/fpl-api-node#readme",
   "dependencies": {
     "axios": "^0.17.1",
-    "chalk": "^2.3.0",
     "node-cache": "^4.1.1"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
-    "@types/chalk": "^2.2.0",
     "@types/handlebars": "^4.0.36",
     "@types/lodash": "^4.14.85",
     "@types/mocha": "^2.2.44",
