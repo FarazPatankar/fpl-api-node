@@ -8,14 +8,14 @@
     "importHelpers": false,
     "module": "commonjs",
     "moduleResolution": "node",
-    "noEmitHelpers": true,
+    "noEmitHelpers": false,
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "removeComments": true,
     "sourceMap": false,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es2015",
+    "target": "es6",
     "lib": [
       "es2016",
       "dom"

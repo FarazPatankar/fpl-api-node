@@ -10,28 +10,18 @@ import * as types from './types';
  * Returns entry summary / details.
  * @param entryId The unique id of entry
  */
-export function findEntry(entryId: number): Promise<types.Entry> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryHistory(entryId).then((data) => {
-      resolve(data.entry);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function findEntry(entryId: number): Promise<types.Entry> {
+  const data = await dataService.getEntryHistory(entryId);
+  return data.entry;
 }
 
 /**
  * Returns a collection of completed or ongoing events
  * @param entryId
  */
-export function findEntryEvents(entryId: number): Promise<types.EntryEvent[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryHistory(entryId).then((data) => {
-      resolve(data.history);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function findEntryEvents(entryId: number): Promise<types.EntryEvent[]> {
+  const data = await dataService.getEntryHistory(entryId);
+  return data.history;
 }
 
 /**
@@ -39,14 +29,9 @@ export function findEntryEvents(entryId: number): Promise<types.EntryEvent[]> {
  * @param entryId
  * @param eventNumber
  */
-export function findEntryChips(entryId: number): Promise<types.EntryChip[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryHistory(entryId).then((data) => {
-      resolve(data.chips);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function findEntryChips(entryId: number): Promise<types.EntryChip[]> {
+  const data = await dataService.getEntryHistory(entryId);
+  return data.chips;
 }
 
 /**
@@ -54,14 +39,9 @@ export function findEntryChips(entryId: number): Promise<types.EntryChip[]> {
  * @param entryId
  * @param eventNumber
  */
-export function findEntryEvent(entryId: number, eventNumber: number): Promise<types.EntryEvent> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryEventPicks(entryId, eventNumber).then((data) => {
-      resolve(data.entry_history);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function findEntryEvent(entryId: number, eventNumber: number): Promise<types.EntryEvent> {
+  const data = await dataService.getEntryEventPicks(entryId, eventNumber);
+  return data.entry_history;
 }
 
 /**
@@ -69,42 +49,27 @@ export function findEntryEvent(entryId: number, eventNumber: number): Promise<ty
  * @param entryId
  * @param event
  */
-export function findEntryPicksByEvent(entryId: number, event: number): Promise<types.EntryPick[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryEventPicks(entryId, event).then((data) => {
-      resolve(data.picks);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function findEntryPicksByEvent(entryId: number, event: number): Promise<types.EntryPick[]> {
+  const data = await dataService.getEntryEventPicks(entryId, event);
+  return data.picks;
 }
 
 /**
  * Returns transfer history of an entry
  * @param entryId
  */
-export function findEntryTransferHistory(entryId: number): Promise<types.EntryTransferHistory[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getEntryTransfers(entryId).then((data) => {
-      resolve(data.history);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function findEntryTransferHistory(entryId: number): Promise<types.EntryTransferHistory[]> {
+  const data = await dataService.getEntryTransfers(entryId);
+  return data.history;
 }
 
 /**
  * Returns all element data for a specified event
  * @param event
  */
-export function findElementsByEvent(event: number): Promise<types.EventElements> {
-  return new Promise((resolve, reject) => {
-    dataService.getLiveEvent(event).then((data) => {
-      resolve(data.elements);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function findElementsByEvent(event: number): Promise<types.EventElements> {
+  const data = await dataService.getLiveEvent(event);
+  return data.elements;
 }
 
 // *************
@@ -115,28 +80,18 @@ export function findElementsByEvent(event: number): Promise<types.EventElements>
  * Returns specified league details
  * @param leagueId
  */
-export function findLeague(leagueId: number): Promise<types.League> {
-  return new Promise((resolve, reject) => {
-    dataService.getClassicLeagueStandings(leagueId).then((data) => {
-      resolve(data.league);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function findLeague(leagueId: number): Promise<types.League> {
+  const data = await dataService.getClassicLeagueStandings(leagueId);
+  return data.league;
 }
 
 /**
  * Returns specified league standings (top 50)
  * @param leagueId
  */
-export function findLeagueStandings(leagueId: number): Promise<types.LeagueResult[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getClassicLeagueStandings(leagueId).then((data) => {
-      resolve(data.standings.results);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function findLeagueStandings(leagueId: number): Promise<types.LeagueResult[]> {
+  const data = await dataService.getClassicLeagueStandings(leagueId);
+  return data.standings.results;
 }
 
 // *************
@@ -146,77 +101,47 @@ export function findLeagueStandings(leagueId: number): Promise<types.LeagueResul
 /**
  * Returns a collection of all elements.
  */
-export function getElements(): Promise<types.Element[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      resolve(data.elements);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function getElements(): Promise<types.Element[]> {
+  const data = await dataService.getBootstrapData();
+  return data.elements;
 }
 
 /**
  * Returns a collection of all element types in the game
  */
-export function getElementTypes(): Promise<types.ElementType[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      resolve(data.element_types);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function getElementTypes(): Promise<types.ElementType[]> {
+  const data = await dataService.getBootstrapData();
+  return data.element_types;
 }
 
 /**
  * Returns a collection of all events
  */
-export function getEvents(): Promise<types.Event[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      resolve(data.events);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function getEvents(): Promise<types.Event[]> {
+  const data = await dataService.getBootstrapData();
+  return data.events;
 }
 
 /**
  * Returns a collection of all teams
  */
-export function getTeams(): Promise<types.Team[]> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      resolve(data.teams);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function getTeams(): Promise<types.Team[]> {
+  const data = await dataService.getBootstrapData();
+  return data.teams;
 }
 
 /**
  * Returns the total number of entries
  */
-export function getTotalNumberOfEntries(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      resolve(data['total-players']);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function getTotalNumberOfEntries(): Promise<number> {
+  const data = await dataService.getBootstrapData();
+  return data['total-players'];
 }
 
 /**
  * Returns the current event number
  */
-export function getCurrentEventNumber(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    dataService.getBootstrapData().then((data) => {
-      resolve(data['current-event']);
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+export async function getCurrentEventNumber(): Promise<number> {
+  const data = await dataService.getBootstrapData();
+  return data['current-event'];
 }
