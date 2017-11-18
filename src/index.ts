@@ -67,9 +67,9 @@ export async function findEntryTransferHistory(entryId: number): Promise<types.E
  * Returns all element data for a specified event
  * @param event
  */
-export async function findElementsByEvent(event: number): Promise<types.EventElements> {
+export async function findElementStatsByEvent(event: number, elementId: number): Promise<types.EventElementStats> {
   const data = await dataService.getLiveEvent(event);
-  return data.elements;
+  return data.elements[elementId].stats;
 }
 
 // *************

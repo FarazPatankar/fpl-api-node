@@ -5,7 +5,7 @@ import 'mocha';
 import * as sinon from 'sinon';
 
 import * as dataService from '../src/data-service';
-import {Errors} from '../src/errors';
+import { Errors } from '../src/errors';
 import * as fplapi from '../src/index';
 
 // Entries
@@ -79,8 +79,8 @@ describe('Elements data:', () => {
   });
 
   it('should findElementsByEvent()', (done) => {
-    fplapi.findElementsByEvent(1).then((data) => {
-      expect(data['498'].stats.total_points).to.equal(6);
+    fplapi.findElementStatsByEvent(1, 498).then((data) => {
+      expect(data.total_points).to.equal(6);
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -242,7 +242,7 @@ describe('should handle errors: ', () => {
   });
 
   it('should catch error on findElementsByEvent()', (done) => {
-    catchError(fplapi.findElementsByEvent(0), done);
+    catchError(fplapi.findElementStatsByEvent(0, 1), done);
   });
 
   it('should catch error on findLeague()', (done) => {
