@@ -1,4 +1,3 @@
-
 import * as dataService from './data-service';
 import * as types from './types';
 
@@ -67,9 +66,9 @@ export async function findEntryTransferHistory(entryId: number): Promise<types.E
  * Returns all element data for a specified event
  * @param event
  */
-export async function findElementStatsByEvent(event: number, elementId: number): Promise<types.EventElementStats> {
+export async function findElementsByEvent(event: number): Promise<types.EventElements> {
   const data = await dataService.getLiveEvent(event);
-  return data.elements[elementId].stats;
+  return data.elements;
 }
 
 // *************

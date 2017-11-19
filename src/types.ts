@@ -430,12 +430,11 @@ export interface LiveEvent {
 
 export interface EventElements {
   [key: number]: {
-    explain: EventPointSource[];
-    stats: EventElementStats;
+    stats: ElementStats;
   };
 }
 
-export interface EventElementStats {
+export interface ElementStats {
   yellow_cards: number;
   own_goals: number;
   creativity: number;
@@ -473,6 +472,6 @@ export interface EventElement {
       value: number;
     };
   }>;
-  stats: EventElementStats;
+  stats: ElementStats;
 
 }

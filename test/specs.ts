@@ -79,8 +79,8 @@ describe('Elements data:', () => {
   });
 
   it('should findElementsByEvent()', (done) => {
-    fplapi.findElementStatsByEvent(1, 498).then((data) => {
-      expect(data.total_points).to.equal(6);
+    fplapi.findElementsByEvent(1).then((data) => {
+      expect(data[500].stats.total_points).to.equal(0);
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -242,7 +242,7 @@ describe('should handle errors: ', () => {
   });
 
   it('should catch error on findElementsByEvent()', (done) => {
-    catchError(fplapi.findElementStatsByEvent(0, 1), done);
+    catchError(fplapi.findElementsByEvent(0), done);
   });
 
   it('should catch error on findLeague()', (done) => {
