@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as NodeCache from 'node-cache';
 
-import { Errors } from './errors';
+import * as errors from './errors';
 import * as types from './types';
 
 /**
@@ -30,24 +30,28 @@ const stdCacheTTL = 1800;
 // reference to cache object
 export const cache = new NodeCache();
 
-export function getEntryHistory(entryId: number): Promise<types.EntryRoot> {
+export function findEntryRoot(entryId: number): Promise<types.EntryRoot> {
   return fetch(`/entry/${entryId}/history`);
 }
 
-export function getEntryEventPicks(entryId: number, eventNumber: number): Promise<types.EntryPicksRoot> {
+export function findEntryEventPicksRoot(entryId: number, eventNumber: number): Promise<types.EntryPicksRoot> {
   return fetchEvent(`entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
 }
 
-export function getEntryTransfers(entryId: number): Promise<types.EntryTransfers> {
+export function findEntryTransfers(entryId: number): Promise<types.EntryTransfers> {
   return fetch(`/entry/${entryId}/transfers`);
 }
 
-export function getLiveEvent(eventNumber: number): Promise<types.LiveEvent> {
+export function findLiveEvent(eventNumber: number): Promise<types.LiveEvent> {
   return fetchEvent(`/event/${eventNumber}/live`, eventNumber);
 }
 
-export function getClassicLeagueStandings(leagueId: number): Promise<types.LeagueRoot> {
-  return fetch(`/leagues-classic-standings/${leagueId}`);
+export function findLeagueRoot(leagueId: number, pageNumber= 1): Promise<types.LeagueRoot> {
+  return fetch(`/leagues-classic-standings/${leagueId}?page=${pageNumber}`, false, {
+    params: {
+      'ls-page': pageNumber,
+    },
+  });
 }
 
 export function getBootstrapData(): Promise<types.BootstrappedData> {
@@ -78,26 +82,26 @@ function fetchEvent(path: string, eventNumber: number): Promise<any> {
  * @param path
  * @param ttl
  */
-export function fetch(path: string, cacheForever = false): Promise<any> {
+export function fetch(path: string, cacheForever = false, config = {}): Promise<any> {
   return new Promise((resolve: any, reject: any) => {
     const cacheValue = cache.get(path);
     if (cacheValue) {
       resolve(cacheValue);
     } else {
-      axios.get(path).then((response) => {
+      axios.get(path, config).then((response) => {
         const data = response.data;
         if (Object.keys(data).length > 0 && data.constructor === Object) {
           cache.set(path, data, cacheForever ? 0 : stdCacheTTL);
           resolve(data);
         } else {
           if (data.includes('The game is being updated')) {
-            reject(Errors.GAME_UPDATING);
+            reject(errors.GAME_UPDATING);
           } else {
-            reject(Errors.NOT_FOUND);
+            reject(errors.NOT_FOUND);
           }
         }
       }).catch(() => {
-        reject(Errors.NO_RESPONSE);
+        reject(errors.NO_RESPONSE);
       });
     }
   });

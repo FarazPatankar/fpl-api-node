@@ -5,7 +5,7 @@ import 'mocha';
 import * as sinon from 'sinon';
 
 import * as dataService from '../src/data-service';
-import { Errors } from '../src/errors';
+import * as errors from '../src/errors';
 import * as fplapi from '../src/index';
 
 // Entries
@@ -133,7 +133,19 @@ describe('Leagues:', () => {
 
   it('should findLeagueStandings()', (done) => {
     fplapi.findLeagueStandings(313).then((data) => {
-      expect(data.length).to.equal(50);
+      expect(data.has_next).to.equal(true);
+      expect(data.number).to.equal(1);
+      expect(data.results.length).to.equal(50);
+      done();
+    }).catch((e) => {
+      done(new Error(e));
+    });
+  });
+
+  it('should findLeagueStandings() page 2', (done) => {
+    fplapi.findLeagueStandings(313, 2).then((data) => {
+      expect(data.has_next).to.equal(true);
+      expect(data.number).to.equal(2);
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -193,7 +205,7 @@ describe('should handle errors: ', () => {
     dataService.fetch('https://fantasy.premierleague.com/updating/').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      if (e === Errors.GAME_UPDATING) {
+      if (e === errors.GAME_UPDATING) {
         done();
       } else {
         done(new Error());
@@ -205,7 +217,7 @@ describe('should handle errors: ', () => {
     dataService.fetch('https://fantasy.premierleague.com/a/team/0/event/4').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      if (e === Errors.NOT_FOUND) {
+      if (e === errors.NOT_FOUND) {
         done();
       } else {
         done(new Error());
