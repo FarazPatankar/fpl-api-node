@@ -124,16 +124,14 @@ function setDataType(dataTypes, matchedInterface: any, filename, inttype?) {
 
       // if type is an object change label
 
-      // const isArray = propType.includes('[]');
-      // propLabel = 'Object' + (isArray ? '[]' : '');
-
+      const isArray = propType.includes('[]');
       let displayType = '```' + propLabel + '```';
 
       // first determine if the object is an available interface
       const typeInterface = getInterface(filename, propType.replace('[]', ''));
       if (typeInterface) {
         setDataType(dataTypes, typeInterface, filename, typeDef);
-        displayType = getDisplayType(typeInterface);
+        displayType = getDisplayType(typeInterface) + (isArray ? '[]' : '');
       }
 
       // set the element
