@@ -23,11 +23,12 @@ fplapi.findEntry(entryId).then((data) => console.log(data));
 
 ## TypeScript
 
-fpl-api-node is packaged with [TypeScript](http://www.typescriptlang.org/) definitions.
+fpl-api-node includes [TypeScript](http://www.typescriptlang.org/) definitions.
 
 ```js
-import * as fplapi from 'fpl-api-node';
+import { findEntry, Entry } from 'fpl-api-node';
 
+findEntry(entryId).then((data) => console.log(data));
 ```
 
 ## API
