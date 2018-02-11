@@ -11,11 +11,11 @@
     "noEmitHelpers": false,
     "noImplicitAny": false,
     "noUnusedLocals": true,
-    "removeComments": true,
+    "removeComments": false,
     "sourceMap": false,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es6",
+    "target": "es2016",
     "lib": [
       "es2016",
       "dom"
