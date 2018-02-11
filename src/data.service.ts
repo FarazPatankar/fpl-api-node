@@ -1,8 +1,8 @@
 import axios from 'axios';
 import * as NodeCache from 'node-cache';
 
-import * as errors from './errors';
-import * as types from './types';
+import { Errors } from './errors.enum';
+import * as interfaces from './interfaces';
 
 /**
  * Hooks into available fpl endpoints.
@@ -30,23 +30,23 @@ const stdCacheTTL = 1800;
 // reference to cache object
 export const cache = new NodeCache();
 
-export function findEntryRoot(entryId: number): Promise<types.EntryRoot> {
+export function findEntryRoot(entryId: number): Promise<interfaces.EntryRoot> {
   return fetch(`/entry/${entryId}/history`);
 }
 
-export function findEntryEventPicksRoot(entryId: number, eventNumber: number): Promise<types.EntryPicksRoot> {
+export function findEntryEventPicksRoot(entryId: number, eventNumber: number): Promise<interfaces.EntryPicksRoot> {
   return fetchEvent(`entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
 }
 
-export function findEntryTransfers(entryId: number): Promise<types.EntryTransfers> {
+export function findEntryTransfers(entryId: number): Promise<interfaces.EntryTransfers> {
   return fetch(`/entry/${entryId}/transfers`);
 }
 
-export function findLiveEvent(eventNumber: number): Promise<types.LiveEvent> {
+export function findLiveEvent(eventNumber: number): Promise<interfaces.LiveEvent> {
   return fetchEvent(`/event/${eventNumber}/live`, eventNumber);
 }
 
-export function findLeagueRoot(leagueId: number, pageNumber= 1): Promise<types.LeagueRoot> {
+export function findLeagueRoot(leagueId: number, pageNumber = 1): Promise<interfaces.LeagueRoot> {
   return fetch(`/leagues-classic-standings/${leagueId}?page=${pageNumber}`, false, {
     params: {
       'ls-page': pageNumber,
@@ -54,7 +54,7 @@ export function findLeagueRoot(leagueId: number, pageNumber= 1): Promise<types.L
   });
 }
 
-export function getBootstrapData(): Promise<types.BootstrappedData> {
+export function getBootstrapData(): Promise<interfaces.BootstrappedData> {
   return fetch('/bootstrap-static');
 }
 
@@ -95,13 +95,13 @@ export function fetch(path: string, cacheForever = false, config = {}): Promise<
           resolve(data);
         } else {
           if (data.includes('The game is being updated')) {
-            reject(errors.GAME_UPDATING);
+            reject(Errors.GAME_UPDATING);
           } else {
-            reject(errors.NOT_FOUND);
+            reject(Errors.NOT_FOUND);
           }
         }
       }).catch(() => {
-        reject(errors.NO_RESPONSE);
+        reject(Errors.NO_RESPONSE);
       });
     }
   });

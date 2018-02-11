@@ -1,27 +1,32 @@
 import * as fs from 'fs';
 import * as Handlebars from 'handlebars';
-import * as _ from 'lodash';
 import * as path from 'path';
-import Ast from 'ts-simple-ast';
+import Ast, { SourceFile } from 'ts-simple-ast';
 
 const ast = new Ast();
 
+ast.addSourceFilesFromTsConfig('tsconfig.json');
+
 // get reference to files
-const indexFile = ast.getOrAddSourceFile('./src/index.ts');
+
+const indexFile = ast.getSourceFile('src/index.ts');
 
 // get data for templates
-const indexData = getData(indexFile, 'entry');
+if (indexFile) {
+  const indexData = getData(indexFile, 'entry');
 
-// write pages
-writePage('Home', indexData, 'template.hbs');
-writePage('_Sidebar', indexData, 'sidebar.hbs');
+  // write pages
+  writePage('Home', indexData, 'template.hbs');
+  writePage('_Sidebar', indexData, 'sidebar.hbs');
+
+}
 
 /**
  * Returns data for a template
  * @param file
  * @param ns
  */
-function getData(file, ns) {
+function getData(file: SourceFile, ns) {
 
   const dataTypes: any = [];
   const methods: any = [];
@@ -43,14 +48,14 @@ function getData(file, ns) {
     });
 
     // method comment
-    const comment = fn.getDocumentationComment();
+    const comment = fn.getJsDocs()[0].getComment();
 
     // return type
     const returnType = fn.getReturnType().getText();
 
     // get the interface of the return type (with this we can populate data types)
     const returnInterfaceName = returnType.substring(returnType.indexOf('<') + 1, returnType.indexOf('>'));
-    const matchedInterface = getInterface('./src/types.ts', returnInterfaceName.replace('[]', ''));
+    const matchedInterface = getInterface('src/interfaces.ts', returnInterfaceName.replace('[]', ''));
 
     let displayedReturnType;
 
@@ -59,7 +64,7 @@ function getData(file, ns) {
       displayedReturnType = '&lt;[' + matchedInterface.getName()
         + '](#' + getTypeAnchorName(matchedInterface) + ')'
         + (isArray ? '[]' : '') + '&gt;';
-      setDataType(dataTypes, matchedInterface, './src/types.ts');
+      setDataType(dataTypes, matchedInterface, 'src/interfaces.ts');
     } else {
       displayedReturnType = `&lt;${returnInterfaceName}&gt;`;
     }
@@ -82,7 +87,9 @@ function getData(file, ns) {
     });
   });
   dataTypes.sort(sortByName);
+
   return { methods, dataTypes };
+
 }
 
 function writePage(name, methods, templateName) {
@@ -101,18 +108,16 @@ function setDataType(dataTypes, matchedInterface: any, filename, inttype?) {
     // set the element
     const typeInterface = getInterface(filename, 'EventElement');
     setDataType(dataTypes, typeInterface, filename, 'EventElement');
-    data.push({ displayType: getDisplayType(typeInterface), name: '[key: number]'});
+    data.push({ displayType: getDisplayType(typeInterface), name: '[key: number]' });
   } else {
 
     // iterate over interface properties
     matchedInterface.getProperties().forEach((prop) => {
 
-      // try {
-
       // set param type definition and description
       const typeDef = prop.getName();
 
-     // set property type as a string
+      // set property type as a string
       const propType = prop.getType().getText();
 
       if (propType.includes('any')) {
@@ -149,7 +154,6 @@ function setDataType(dataTypes, matchedInterface: any, filename, inttype?) {
     dataTypes.push({
       anchorName: getTypeAnchorName(matchedInterface),
       data,
-      displayName: _.startCase(matchedInterface.getName()),
       name: matchedInterface.getName(),
     });
   }
@@ -180,6 +184,9 @@ function sortByName(a, b) {
  * @param namedInterface
  */
 function getInterface(interfacePath, namedInterface) {
-  const interfaceFile = ast.getOrAddSourceFile(interfacePath);
-  return interfaceFile.getInterface(namedInterface);
+  const interfaceFile = ast.getSourceFile(interfacePath);
+  if (interfaceFile) {
+    return interfaceFile.getInterface(namedInterface);
+  }
+  return;
 }

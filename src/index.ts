@@ -1,5 +1,18 @@
-import * as dataService from './data-service';
-import * as types from './types';
+import * as dataService from './data.service';
+import {
+  Element,
+  ElementType,
+  Entry,
+  EntryChip,
+  EntryEvent,
+  EntryPick,
+  EntryTransferHistory,
+  Event,
+  EventElements,
+  League,
+  LeagueStandings,
+  Team,
+} from './interfaces';
 
 // *************
 // Entry methods
@@ -9,7 +22,7 @@ import * as types from './types';
  * Returns entry summary / details.
  * @param entryId The id of entry
  */
-export async function findEntry(entryId: number): Promise<types.Entry> {
+export async function findEntry(entryId: number): Promise<Entry> {
   const data = await dataService.findEntryRoot(entryId);
   return data.entry;
 }
@@ -18,7 +31,7 @@ export async function findEntry(entryId: number): Promise<types.Entry> {
  * Returns a collection of completed or ongoing events
  * @param entryId The id of entry
  */
-export async function findEntryEvents(entryId: number): Promise<types.EntryEvent[]> {
+export async function findEntryEvents(entryId: number): Promise<EntryEvent[]> {
   const data = await dataService.findEntryRoot(entryId);
   return data.history;
 }
@@ -28,7 +41,7 @@ export async function findEntryEvents(entryId: number): Promise<types.EntryEvent
  * @param entryId The id of entry
  * @param eventNumber The event number
  */
-export async function findEntryChips(entryId: number): Promise<types.EntryChip[]> {
+export async function findEntryChips(entryId: number): Promise<EntryChip[]> {
   const data = await dataService.findEntryRoot(entryId);
   return data.chips;
 }
@@ -38,7 +51,7 @@ export async function findEntryChips(entryId: number): Promise<types.EntryChip[]
  * @param entryId The id of entry
  * @param eventNumber The event number
  */
-export async function findEntryEvent(entryId: number, eventNumber: number): Promise<types.EntryEvent> {
+export async function findEntryEvent(entryId: number, eventNumber: number): Promise<EntryEvent> {
   const data = await dataService.findEntryEventPicksRoot(entryId, eventNumber);
   return data.entry_history;
 }
@@ -48,7 +61,7 @@ export async function findEntryEvent(entryId: number, eventNumber: number): Prom
  * @param entryId The id of entry
  * @param event The event number
  */
-export async function findEntryPicksByEvent(entryId: number, event: number): Promise<types.EntryPick[]> {
+export async function findEntryPicksByEvent(entryId: number, event: number): Promise<EntryPick[]> {
   const data = await dataService.findEntryEventPicksRoot(entryId, event);
   return data.picks;
 }
@@ -57,7 +70,7 @@ export async function findEntryPicksByEvent(entryId: number, event: number): Pro
  * Returns transfer history of an entry
  * @param entryId The id of entry
  */
-export async function findEntryTransferHistory(entryId: number): Promise<types.EntryTransferHistory[]> {
+export async function findEntryTransferHistory(entryId: number): Promise<EntryTransferHistory[]> {
   const data = await dataService.findEntryTransfers(entryId);
   return data.history;
 }
@@ -66,7 +79,7 @@ export async function findEntryTransferHistory(entryId: number): Promise<types.E
  * Returns all element data for a specified event
  * @param event The event number
  */
-export async function findElementsByEvent(event: number): Promise<types.EventElements> {
+export async function findElementsByEvent(event: number): Promise<EventElements> {
   const data = await dataService.findLiveEvent(event);
   return data.elements;
 }
@@ -79,7 +92,7 @@ export async function findElementsByEvent(event: number): Promise<types.EventEle
  * Returns specified details of a classic league
  * @param leagueId The id of the league
  */
-export async function findLeague(leagueId: number): Promise<types.League> {
+export async function findLeague(leagueId: number): Promise<League> {
   const data = await dataService.findLeagueRoot(leagueId);
   return data.league;
 }
@@ -89,7 +102,7 @@ export async function findLeague(leagueId: number): Promise<types.League> {
  * @param leagueId The id of the league
  * @param pageNumber The page number of the standings (50 results per page)
  */
-export async function findLeagueStandings(leagueId: number, pageNumber = 1): Promise<types.LeagueStandings> {
+export async function findLeagueStandings(leagueId: number, pageNumber = 1): Promise<LeagueStandings> {
   const data = await dataService.findLeagueRoot(leagueId, pageNumber);
   return data.standings;
 }
@@ -101,7 +114,7 @@ export async function findLeagueStandings(leagueId: number, pageNumber = 1): Pro
 /**
  * Returns a collection of all elements.
  */
-export async function getElements(): Promise<types.Element[]> {
+export async function getElements(): Promise<Element[]> {
   const data = await dataService.getBootstrapData();
   return data.elements;
 }
@@ -109,7 +122,7 @@ export async function getElements(): Promise<types.Element[]> {
 /**
  * Returns a collection of all element types in the game
  */
-export async function getElementTypes(): Promise<types.ElementType[]> {
+export async function getElementTypes(): Promise<ElementType[]> {
   const data = await dataService.getBootstrapData();
   return data.element_types;
 }
@@ -117,7 +130,7 @@ export async function getElementTypes(): Promise<types.ElementType[]> {
 /**
  * Returns a collection of all events
  */
-export async function getEvents(): Promise<types.Event[]> {
+export async function getEvents(): Promise<Event[]> {
   const data = await dataService.getBootstrapData();
   return data.events;
 }
@@ -125,7 +138,7 @@ export async function getEvents(): Promise<types.Event[]> {
 /**
  * Returns a collection of all teams
  */
-export async function getTeams(): Promise<types.Team[]> {
+export async function getTeams(): Promise<Team[]> {
   const data = await dataService.getBootstrapData();
   return data.teams;
 }
@@ -145,3 +158,17 @@ export async function getCurrentEventNumber(): Promise<number> {
   const data = await dataService.getBootstrapData();
   return data['current-event'];
 }
+
+// export interfaces
+export {
+  ElementType,
+  Entry,
+  EntryChip,
+  EntryEvent,
+  EntryPick,
+  EntryTransferHistory,
+  EventElements,
+  League,
+  LeagueStandings,
+  Team,
+};

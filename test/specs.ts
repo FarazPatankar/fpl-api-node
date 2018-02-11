@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import 'mocha';
 import * as sinon from 'sinon';
 
-import * as dataService from '../src/data-service';
-import * as errors from '../src/errors';
+import * as dataService from '../src/data.service';
+import { Errors } from '../src/errors.enum';
 import * as fplapi from '../src/index';
 
 // Entries
@@ -205,7 +205,7 @@ describe('should handle errors: ', () => {
     dataService.fetch('https://fantasy.premierleague.com/updating/').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      if (e === errors.GAME_UPDATING) {
+      if (e === Errors.GAME_UPDATING) {
         done();
       } else {
         done(new Error());
@@ -217,7 +217,7 @@ describe('should handle errors: ', () => {
     dataService.fetch('https://fantasy.premierleague.com/a/team/0/event/4').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      if (e === errors.NOT_FOUND) {
+      if (e === Errors.NOT_FOUND) {
         done();
       } else {
         done(new Error());
