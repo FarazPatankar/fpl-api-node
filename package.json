@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tgreyuk/fpl-api-node.git"
+    "url": "git+https://github.com/tgreyjs/fpl-api-node.git"
   },
   "keywords": [
     "fantasy premier league",
