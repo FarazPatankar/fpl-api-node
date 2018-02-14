@@ -17,8 +17,7 @@ npm install fpl-api-node --save
 ```js
 const fplapi = require('fpl-api-node');
 
-fplapi.findEntry(entryId).then((data) => console.log(data));
-
+fplapi.findEntry(entryId).then((entry) => console.log(entry));
 ```
 
 ## TypeScript
@@ -28,7 +27,11 @@ fpl-api-node includes [TypeScript](http://www.typescriptlang.org/) definitions.
 ```js
 import { findEntry, Entry } from 'fpl-api-node';
 
-findEntry(entryId).then((data) => console.log(data));
+findEntry(entryId).then((data) => handleEntry(data));
+
+function handleEntry(entry: Entry) {
+  console.log(entry);
+}
 ```
 
 ## API
