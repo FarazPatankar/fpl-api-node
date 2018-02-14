@@ -22,18 +22,16 @@ import {
  * Returns entry summary / details.
  * @param entryId The id of entry
  */
-export async function findEntry(entryId: number): Promise<Entry> {
-  const data = await dataService.findEntryRoot(entryId);
-  return data.entry;
+export function findEntry(entryId: number): Promise<Entry> {
+  return dataService.fetchEntryRoot(entryId).map((data) => data.entry).toPromise();
 }
 
 /**
  * Returns a collection of completed or ongoing events
  * @param entryId The id of entry
  */
-export async function findEntryEvents(entryId: number): Promise<EntryEvent[]> {
-  const data = await dataService.findEntryRoot(entryId);
-  return data.history;
+export function findEntryEvents(entryId: number): Promise<EntryEvent[]> {
+  return dataService.fetchEntryRoot(entryId).map((data) => data.history).toPromise();
 }
 
 /**
@@ -41,9 +39,8 @@ export async function findEntryEvents(entryId: number): Promise<EntryEvent[]> {
  * @param entryId The id of entry
  * @param eventNumber The event number
  */
-export async function findEntryChips(entryId: number): Promise<EntryChip[]> {
-  const data = await dataService.findEntryRoot(entryId);
-  return data.chips;
+export function findEntryChips(entryId: number): Promise<EntryChip[]> {
+  return dataService.fetchEntryRoot(entryId).map((data) => data.chips).toPromise();
 }
 
 /**
@@ -51,9 +48,8 @@ export async function findEntryChips(entryId: number): Promise<EntryChip[]> {
  * @param entryId The id of entry
  * @param eventNumber The event number
  */
-export async function findEntryEvent(entryId: number, eventNumber: number): Promise<EntryEvent> {
-  const data = await dataService.findEntryEventPicksRoot(entryId, eventNumber);
-  return data.entry_history;
+export function findEntryEvent(entryId: number, eventNumber: number): Promise<EntryEvent> {
+  return dataService.fetchEntryEventPicksRoot(entryId, eventNumber).map((data) => data.entry_history).toPromise();
 }
 
 /**
@@ -61,27 +57,24 @@ export async function findEntryEvent(entryId: number, eventNumber: number): Prom
  * @param entryId The id of entry
  * @param event The event number
  */
-export async function findEntryPicksByEvent(entryId: number, event: number): Promise<EntryPick[]> {
-  const data = await dataService.findEntryEventPicksRoot(entryId, event);
-  return data.picks;
+export function findEntryPicksByEvent(entryId: number, event: number): Promise<EntryPick[]> {
+  return dataService.fetchEntryEventPicksRoot(entryId, event).map((data) => data.picks).toPromise();
 }
 
 /**
  * Returns transfer history of an entry
  * @param entryId The id of entry
  */
-export async function findEntryTransferHistory(entryId: number): Promise<EntryTransferHistory[]> {
-  const data = await dataService.findEntryTransfers(entryId);
-  return data.history;
+export function findEntryTransferHistory(entryId: number): Promise<EntryTransferHistory[]> {
+  return dataService.fetchEntryTransfers(entryId).map((data) => data.history).toPromise();
 }
 
 /**
  * Returns all element data for a specified event
  * @param event The event number
  */
-export async function findElementsByEvent(event: number): Promise<EventElements> {
-  const data = await dataService.findLiveEvent(event);
-  return data.elements;
+export function findElementsByEvent(event: number): Promise<EventElements> {
+  return dataService.fetchLiveEvent(event).map((data) => data.elements).toPromise();
 }
 
 // *************
@@ -92,9 +85,8 @@ export async function findElementsByEvent(event: number): Promise<EventElements>
  * Returns specified details of a classic league
  * @param leagueId The id of the league
  */
-export async function findLeague(leagueId: number): Promise<League> {
-  const data = await dataService.findLeagueRoot(leagueId);
-  return data.league;
+export function findLeague(leagueId: number): Promise<League> {
+  return dataService.fetchLeagueRoot(leagueId).map((data) => data.league).toPromise();
 }
 
 /**
@@ -102,9 +94,8 @@ export async function findLeague(leagueId: number): Promise<League> {
  * @param leagueId The id of the league
  * @param pageNumber The page number of the standings (50 results per page)
  */
-export async function findLeagueStandings(leagueId: number, pageNumber = 1): Promise<LeagueStandings> {
-  const data = await dataService.findLeagueRoot(leagueId, pageNumber);
-  return data.standings;
+export function findLeagueStandings(leagueId: number, pageNumber = 1): Promise<LeagueStandings> {
+  return dataService.fetchLeagueRoot(leagueId, pageNumber).map((data) => data.standings).toPromise();
 }
 
 // *************
@@ -114,49 +105,43 @@ export async function findLeagueStandings(leagueId: number, pageNumber = 1): Pro
 /**
  * Returns a collection of all elements.
  */
-export async function getElements(): Promise<Element[]> {
-  const data = await dataService.getBootstrapData();
-  return data.elements;
+export function getElements(): Promise<Element[]> {
+  return dataService.getBootstrapData().map((data) => data.elements).toPromise();
 }
 
 /**
  * Returns a collection of all element types in the game
  */
-export async function getElementTypes(): Promise<ElementType[]> {
-  const data = await dataService.getBootstrapData();
-  return data.element_types;
+export function getElementTypes(): Promise<ElementType[]> {
+  return dataService.getBootstrapData().map((data) => data.element_types).toPromise();
 }
 
 /**
  * Returns a collection of all events
  */
-export async function getEvents(): Promise<Event[]> {
-  const data = await dataService.getBootstrapData();
-  return data.events;
+export function getEvents(): Promise<Event[]> {
+  return dataService.getBootstrapData().map((data) => data.events).toPromise();
 }
 
 /**
  * Returns a collection of all teams
  */
-export async function getTeams(): Promise<Team[]> {
-  const data = await dataService.getBootstrapData();
-  return data.teams;
+export function getTeams(): Promise<Team[]> {
+  return dataService.getBootstrapData().map((data) => data.teams).toPromise();
 }
 
 /**
  * Returns the total number of entries
  */
-export async function getTotalNumberOfEntries(): Promise<number> {
-  const data = await dataService.getBootstrapData();
-  return data['total-players'];
+export function getTotalNumberOfEntries(): Promise<number> {
+  return dataService.getBootstrapData().map((data) => data['total-players']).toPromise();
 }
 
 /**
  * Returns the current event number
  */
-export async function getCurrentEventNumber(): Promise<number> {
-  const data = await dataService.getBootstrapData();
-  return data['current-event'];
+export function getCurrentEventNumber(): Promise<number> {
+  return dataService.getBootstrapData().map((data) => data['current-event']).toPromise();
 }
 
 // export interfaces

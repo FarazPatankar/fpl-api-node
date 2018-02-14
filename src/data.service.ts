@@ -1,8 +1,9 @@
 import axios from 'axios';
 import * as NodeCache from 'node-cache';
+import * as Rx from 'rxjs';
 
 import { Errors } from './errors.enum';
-import * as interfaces from './interfaces';
+import { BootstrappedData, EntryPicksRoot, EntryRoot, EntryTransfers, LeagueRoot, LiveEvent } from './interfaces';
 
 /**
  * Hooks into available fpl endpoints.
@@ -24,38 +25,42 @@ import * as interfaces from './interfaces';
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
 
-// standard cache timeout (30 mins)
+// standard cache timeout (1 hour)
+
 const stdCacheTTL = 1800;
 
 // reference to cache object
+
 export const cache = new NodeCache();
 
-export function findEntryRoot(entryId: number): Promise<interfaces.EntryRoot> {
-  return fetch(`/entry/${entryId}/history`);
+// lookup methods
+
+export function fetchEntryRoot(entryId: number): Rx.Observable<EntryRoot> {
+  return http<EntryRoot>(`/entry/${entryId}/history`);
 }
 
-export function findEntryEventPicksRoot(entryId: number, eventNumber: number): Promise<interfaces.EntryPicksRoot> {
-  return fetchEvent(`entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
+export function fetchEntryEventPicksRoot(entryId: number, eventNumber: number): Rx.Observable<EntryPicksRoot> {
+  return httpOfEvent<EntryPicksRoot>(`entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
 }
 
-export function findEntryTransfers(entryId: number): Promise<interfaces.EntryTransfers> {
-  return fetch(`/entry/${entryId}/transfers`);
+export function fetchEntryTransfers(entryId: number): Rx.Observable<EntryTransfers> {
+  return http(`/entry/${entryId}/transfers`);
 }
 
-export function findLiveEvent(eventNumber: number): Promise<interfaces.LiveEvent> {
-  return fetchEvent(`/event/${eventNumber}/live`, eventNumber);
+export function fetchLiveEvent(eventNumber: number): Rx.Observable<LiveEvent> {
+  return httpOfEvent(`/event/${eventNumber}/live`, eventNumber);
 }
 
-export function findLeagueRoot(leagueId: number, pageNumber = 1): Promise<interfaces.LeagueRoot> {
-  return fetch(`/leagues-classic-standings/${leagueId}?page=${pageNumber}`, false, {
+export function fetchLeagueRoot(leagueId: number, pageNumber = 1): Rx.Observable<LeagueRoot> {
+  return http(`/leagues-classic-standings/${leagueId}?page=${pageNumber}`, false, {
     params: {
       'ls-page': pageNumber,
     },
   });
 }
 
-export function getBootstrapData(): Promise<interfaces.BootstrappedData> {
-  return fetch('/bootstrap-static');
+export function getBootstrapData(): Rx.Observable<BootstrappedData> {
+  return http('/bootstrap-static');
 }
 
 /**
@@ -63,46 +68,43 @@ export function getBootstrapData(): Promise<interfaces.BootstrappedData> {
  * @param path
  * @param eventNumber
  */
-function fetchEvent(path: string, eventNumber: number): Promise<any> {
-  return new Promise((resolve: any, reject: any) => {
-    const cacheValue = cache.get(path);
-    if (cacheValue) {
-      resolve(cacheValue);
-    } else {
-      return getBootstrapData().then((data) => {
-        const currentEvent = data['current-event'];
-        resolve(fetch(path, eventNumber < currentEvent));
-      });
-    }
-  });
+function httpOfEvent<T>(path: string, eventNumber: number): Rx.Observable<T> {
+  const cacheValue = cache.get(path) as T;
+  if (cacheValue) {
+    return Rx.Observable.of(cacheValue);
+  } else {
+    return getBootstrapData().mergeMap((data) => {
+      const currentEvent = data['current-event'];
+      return http<T>(path, eventNumber < currentEvent);
+    });
+  }
 }
 
 /**
  * Fetch generic request
+ * If cache value exists - return it, otherwise make a http request
  * @param path
  * @param ttl
  */
-export function fetch(path: string, cacheForever = false, config = {}): Promise<any> {
-  return new Promise((resolve: any, reject: any) => {
-    const cacheValue = cache.get(path);
-    if (cacheValue) {
-      resolve(cacheValue);
-    } else {
-      axios.get(path, config).then((response) => {
-        const data = response.data;
-        if (Object.keys(data).length > 0 && data.constructor === Object) {
-          cache.set(path, data, cacheForever ? 0 : stdCacheTTL);
-          resolve(data);
+export function http<T>(path: string, cacheForever = false, config = {}): Rx.Observable<T> {
+  const cacheValue = cache.get(path) as T;
+  if (cacheValue) {
+    return Rx.Observable.of(cacheValue);
+  } else {
+    return Rx.Observable.fromPromise(axios.get(path, config).then((response) => {
+      const data = response.data;
+      if (Object.keys(data).length > 0 && data.constructor === Object) {
+        cache.set(path, data, cacheForever ? 0 : stdCacheTTL);
+        return data;
+      } else {
+        if (data.includes('The game is being updated')) {
+          throw new Error(Errors.GAME_UPDATING);
         } else {
-          if (data.includes('The game is being updated')) {
-            reject(Errors.GAME_UPDATING);
-          } else {
-            reject(Errors.NOT_FOUND);
-          }
+          throw new Error(Errors.NOT_FOUND);
         }
-      }).catch(() => {
-        reject(Errors.NO_RESPONSE);
-      });
-    }
-  });
+      }
+    }).catch((error: Error) => {
+      throw new Error(error.message);
+    }));
+  }
 }
