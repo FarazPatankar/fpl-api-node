@@ -30,9 +30,9 @@
     "node": ">=7"
   },
   "bugs": {
-    "url": "https://github.com/tgreyuk/fpl-api-node/issues"
+    "url": "https://github.com/tgreyjs/fpl-api-node/issues"
   },
-  "homepage": "https://github.com/tgreyuk/fpl-api-node#readme",
+  "homepage": "https://github.com/tgreyjs/fpl-api-node#readme",
   "dependencies": {
     "@types/node-cache": "^4.1.1",
     "axios": "^0.17.1",
