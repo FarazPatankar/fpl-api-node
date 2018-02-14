@@ -1,10 +1,26 @@
 {
-  "extends": ["tslint:latest"],
+  "extends": [
+    "tslint:latest"
+  ],
   "rules": {
-    "interface-name": [false],
-    "quotemark": [true, "single"],
-    "max-classes-per-file": [false],
-    "no-console": [false],
-    "no-implicit-dependencies": [false]
+    "interface-name": [
+      false
+    ],
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "max-classes-per-file": [
+      false
+    ],
+    "no-console": [
+      false
+    ],
+    "no-submodule-imports": [
+      false
+    ],
+    "no-implicit-dependencies": [
+      false
+    ]
   }
 }
