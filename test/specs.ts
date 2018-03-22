@@ -201,13 +201,11 @@ describe('should handle errors: ', () => {
     sandbox.restore();
   });
 
-  it('should throw error with correct message when endpoint not found', (done) => {
-    const resolved = new Promise((r) => r({ data: [] }));
-    sandbox.stub(axios, 'get').returns(resolved);
-    fplapi.findEntry(123).then((data) => {
+  it('should throw error with correct message when game is updating', (done) => {
+    dataService.fetch('https://fantasy.premierleague.com/updating/').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      if (e.message === Errors.NOT_FOUND) {
+      if (e === Errors.GAME_UPDATING) {
         done();
       } else {
         done(new Error());
@@ -215,13 +213,11 @@ describe('should handle errors: ', () => {
     });
   });
 
-  it('should throw error with correct message when game is updating', (done) => {
-    const resolved = new Promise((r) => r({ data: 'The game is being updated' }));
-    sandbox.stub(axios, 'get').returns(resolved);
-    fplapi.findEntry(123).then((data) => {
+  it('should throw error with correct message when endpoint not found', (done) => {
+    dataService.fetch('https://fantasy.premierleague.com/a/team/0/event/4').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
-      if (e.message === Errors.GAME_UPDATING) {
+      if (e === Errors.NOT_FOUND) {
         done();
       } else {
         done(new Error());
