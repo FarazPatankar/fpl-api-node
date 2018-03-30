@@ -219,7 +219,7 @@ export interface EntryPicksRoot {
   automatic_subs: EntryAutomaticSub[];
   entry_history: EntryEvent;
   event: Event;
-  picks: EntryPick[];
+  picks: Pick[];
 }
 
 export interface Entry {
@@ -255,7 +255,7 @@ export interface Entry {
   player: number;
 }
 
-export interface EntryPick {
+export interface Pick {
   element: number;
   position: number;
   is_captain: boolean;

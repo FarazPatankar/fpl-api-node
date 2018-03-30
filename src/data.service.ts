@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as NodeCache from 'node-cache';
 
 import { Errors } from './errors.enum';
-import * as interfaces from './interfaces';
+import * as interfaces from './interfaces.fpl';
 
 /**
  * Hooks into available fpl endpoints.
@@ -10,14 +10,13 @@ import * as interfaces from './interfaces';
  * https://fantasy.premierleague.com/drf/bootstrap-static
  * https://fantasy.premierleague.com/drf/entry/${id}
  * https://fantasy.premierleague.com/drf/entry/${id}/history
- * https://fantasy.premierleague.com/drf/entry/${id}/event/{$eventNumber}/picks
+ * https://fantasy.premierleague.com/drf/entry/${id}/event/{$event}/picks
  * https://fantasy.premierleague.com/drf/entry/${id}/transfers
  * https://fantasy.premierleague.com/drf/teams
  * https://fantasy.premierleague.com/drf/elements
- * https://fantasy.premierleague.com/drf/elements-types
  * https://fantasy.premierleague.com/drf/events
  * https://fantasy.premierleague.com/drf/game-settings
- * https://fantasy.premierleague.com/drf/event/${eventNumber}/live
+ * https://fantasy.premierleague.com/drf/event/${event}/live
  * https://fantasy.premierleague.com/drf/leagues-classic-standings/${id}
  */
 
@@ -35,7 +34,7 @@ export function findEntryRoot(entryId: number): Promise<interfaces.EntryRoot> {
 }
 
 export function findEntryEventPicksRoot(entryId: number, eventNumber: number): Promise<interfaces.EntryPicksRoot> {
-  return fetchEvent(`entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
+  return fetchEvent(`/entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
 }
 
 export function findEntryTransfers(entryId: number): Promise<interfaces.EntryTransfers> {

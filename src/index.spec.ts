@@ -1,44 +1,90 @@
-// import axios from 'axios';
+import { equal } from 'assert';
 import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
+import * as fs from 'fs';
+import * as jsonfile from 'jsonfile';
+import * as _ from 'lodash';
 import 'mocha';
 import * as sinon from 'sinon';
 
 import * as dataService from '../src/data.service';
 import { Errors } from '../src/errors.enum';
 import * as fplapi from '../src/index';
+import { getFileNameFromUrl, writeMock } from '../tasks/mock-generator/helpers';
 
-// Entries
+const normalAxios = axios.create();
+
+const mockDir = __dirname + `/../mocks/methods`;
+
+function readRawMock(name) {
+  const dir = __dirname + `/../mocks/raw`;
+  return jsonfile.readFileSync(`${dir}/${name}.json`);
+}
+
+function readMethodMock(name) {
+  return jsonfile.readFileSync(`${mockDir}/${name}.json`);
+}
+
+const mock = new MockAdapter(axios);
 
 describe('Entry data:', () => {
 
   const entryId = 545548;
 
+  mock
+    .onGet('/bootstrap-static').reply(200, readRawMock('_bootstrap-static'))
+    .onGet('/entry/545548/history').reply(200, readRawMock('_entry_545548_history'))
+    .onGet(/\/entry\/545548\/event\/\d+\/picks/).reply((config) => {
+      const file = config.url ? config.url.split('/').join('_') : {};
+      return [200, readRawMock(file)];
+    })
+    .onGet(/\/event\/\d+\/live/).reply((config) => {
+      const file = config.url ? config.url.split('/').join('_') : {};
+      return [200, readRawMock(file)];
+    })
+    .onGet(/\/leagues-classic-standings\/\d+\?page=\d+/).reply((config) => {
+      const file = config.url ? config.url.split('/').join('_') : {};
+      return [200, readRawMock(file)];
+    })
+    .onGet('/entry/545548/transfers').reply(200, readRawMock('_entry_545548_transfers'))
+    .onGet('/updating').reply(200, '<html><p>The game is being updated.</p></html>')
+    .onGet('/error').reply(200, '<html></html>');
+
   it('should findEntry()', (done) => {
     fplapi.findEntry(entryId).then((data) => {
-      expect(data.player_first_name).to.equal('Thomas');
-      expect(data.player_last_name).to.equal('Grey');
+      // writeMock(mockDir, 'findEntry', data);
+      expect(data).to.deep.equal(readMethodMock('findEntry'));
       done();
+    }).catch((e) => {
+      done(new Error(e));
     });
   });
 
   it('should findEntryEvents()', (done) => {
     fplapi.findEntryEvents(entryId).then((data) => {
-      expect(data[0].points).to.equal(69);
+      // writeMock(mockDir, 'findEntryEvents', data);
+      expect(data).to.deep.equal(readMethodMock('findEntryEvents'));
       done();
+    }).catch((e) => {
+      done(new Error(e));
     });
   });
 
   it('should findEntryChips()', (done) => {
     fplapi.findEntryChips(entryId).then((data) => {
+      // writeMock(mockDir, 'findEntryChips', data);
+      expect(data).to.deep.equal(readMethodMock('findEntryChips'));
       done();
+    }).catch((e) => {
+      done(new Error(e));
     });
   });
 
   it('should findEntryEvent()', (done) => {
     fplapi.findEntryEvent(entryId, 1).then((data) => {
-      expect(data.entry).to.equal(entryId);
-      expect(data.total_points).to.equal(69);
+      // writeMock(mockDir, 'findEntryEvent', data);
+      expect(data).to.deep.equal(readMethodMock('findEntryEvent'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -47,7 +93,8 @@ describe('Entry data:', () => {
 
   it('should findEntryPicksByEvent()', (done) => {
     fplapi.findEntryPicksByEvent(entryId, 1).then((data) => {
-      expect(data[0].element).to.equal(421);
+      // writeMock(mockDir, 'findEntryPicksByEvent', data);
+      expect(data).to.deep.equal(readMethodMock('findEntryPicksByEvent'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -56,7 +103,28 @@ describe('Entry data:', () => {
 
   it('should findEntryTransferHistory', (done) => {
     fplapi.findEntryTransferHistory(entryId).then((data) => {
-      expect(data[0].element_in).to.equal(106);
+      // writeMock(mockDir, 'findEntryTransferHistory', data);
+      expect(data).to.deep.equal(readMethodMock('findEntryTransferHistory'));
+      done();
+    }).catch((e) => {
+      done(new Error(e));
+    });
+  });
+
+  it('should findEntryPicks()', (done) => {
+    fplapi.findEntryPicks(entryId).then((data) => {
+      // writeMock(mockDir, 'findEntryPicks', data);
+      expect(data).to.deep.equal(readMethodMock('findEntryPicks'));
+      done();
+    }).catch((e) => {
+      done(new Error(e));
+    });
+  });
+
+  it('should findEntryStats()', (done) => {
+    fplapi.findEntryStats(entryId).then((data) => {
+      writeMock(mockDir, 'findEntryStats', data);
+      // expect(data).to.deep.equal(readMethodMock('findEntryStats'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -71,7 +139,8 @@ describe('Elements data:', () => {
 
   it('should getElements()', (done) => {
     fplapi.getElements().then((data) => {
-      expect(data[0].web_name).to.equal('Ospina');
+      // writeMock(mockDir, 'getElements', data);
+      expect(data).to.deep.equal(readMethodMock('getElements'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -80,7 +149,8 @@ describe('Elements data:', () => {
 
   it('should findElementsByEvent()', (done) => {
     fplapi.findElementsByEvent(1).then((data) => {
-      expect(data[500].stats.total_points).to.equal(0);
+      // writeMock(mockDir, 'findElementsByEvent', data);
+      expect(data).to.deep.equal(readMethodMock('findElementsByEvent'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -95,7 +165,8 @@ describe('Event data:', () => {
 
   it('should getEvents()', (done) => {
     fplapi.getEvents().then((data) => {
-      expect(data[0].id).to.equal(1);
+      writeMock(mockDir, 'getEvents', data);
+      // expect(data).to.deep.equal(readMethodMock('getEvents'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -109,7 +180,8 @@ describe('Event data:', () => {
 describe('Team data:', () => {
   it('should getTeams()', (done) => {
     fplapi.getTeams().then((data) => {
-      expect(data[0].name).to.equal('Arsenal');
+      // writeMock(mockDir, 'getTeams', data);
+      expect(data).to.deep.equal(readMethodMock('getTeams'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -122,9 +194,10 @@ describe('Team data:', () => {
 
 describe('Leagues:', () => {
 
-  it('should find League', (done) => {
+  it('should findLeague', (done) => {
     fplapi.findLeague(313).then((data) => {
-      expect(data.name).to.equal('Overall');
+      // writeMock(mockDir, 'findLeague', data);
+      expect(data).to.deep.equal(readMethodMock('findLeague'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -133,9 +206,8 @@ describe('Leagues:', () => {
 
   it('should findLeagueStandings()', (done) => {
     fplapi.findLeagueStandings(313).then((data) => {
-      expect(data.has_next).to.equal(true);
-      expect(data.number).to.equal(1);
-      expect(data.results.length).to.equal(50);
+      // writeMock(mockDir, 'findLeagueStandings-1', data);
+      expect(data).to.deep.equal(readMethodMock('findLeagueStandings-1'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -144,8 +216,8 @@ describe('Leagues:', () => {
 
   it('should findLeagueStandings() page 2', (done) => {
     fplapi.findLeagueStandings(313, 2).then((data) => {
-      expect(data.has_next).to.equal(true);
-      expect(data.number).to.equal(2);
+      // writeMock(mockDir, 'findLeagueStandings-2', data);
+      expect(data).to.deep.equal(readMethodMock('findLeagueStandings-2'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -160,8 +232,8 @@ describe('General data:', () => {
 
   it('should getElementTypes()', (done) => {
     fplapi.getElementTypes().then((data) => {
-      expect(data[1].id).to.equal(2);
-      expect(data[1].plural_name).to.equal('Defenders');
+      // writeMock(mockDir, 'getElementTypes', data);
+      expect(data).to.deep.equal(readMethodMock('getElementTypes'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -170,7 +242,8 @@ describe('General data:', () => {
 
   it('should getTotalNumberOfEntries()', (done) => {
     fplapi.getTotalNumberOfEntries().then((data) => {
-      expect(data).to.be.a('number');
+      // writeMock(mockDir, 'getTotalNumberOfEntries', data);
+      expect(data).to.deep.equal(readMethodMock('getTotalNumberOfEntries'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -179,7 +252,8 @@ describe('General data:', () => {
 
   it('should getCurrentEventNumber()', (done) => {
     fplapi.getCurrentEventNumber().then((data) => {
-      expect(data).to.be.a('number');
+      // writeMock(mockDir, 'getCurrentEventNumber', data);
+      expect(data).to.deep.equal(readMethodMock('getCurrentEventNumber'));
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -202,7 +276,7 @@ describe('should handle errors: ', () => {
   });
 
   it('should throw error with correct message when game is updating', (done) => {
-    dataService.fetch('https://fantasy.premierleague.com/updating/').then((data) => {
+    dataService.fetch('/updating').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
       if (e === Errors.GAME_UPDATING) {
@@ -214,7 +288,7 @@ describe('should handle errors: ', () => {
   });
 
   it('should throw error with correct message when endpoint not found', (done) => {
-    dataService.fetch('https://fantasy.premierleague.com/a/team/0/event/4').then((data) => {
+    dataService.fetch('/error').then((data) => {
       done(new Error('An error was expected'));
     }).catch((e) => {
       if (e === Errors.NOT_FOUND) {
