@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/tgreyjs/fpl-api-node.svg?branch=master)](https://travis-ci.org/tgreyjs/fpl-api-node)
 [![Greenkeeper badge](https://badges.greenkeeper.io/tgreyjs/fpl-api-node.svg)](https://greenkeeper.io/)
 
-A simple node API wrapper for the Fantasy Premier League (fantasy.premierleague.com) web apis, updated for the 2017/18 season. 
+A simple node API wrapper for the Fantasy Premier League (fantasy.premierleague.com) web apis. 
 
 ## Installation
 
@@ -15,25 +15,11 @@ npm install fpl-api-node --save
 ## Usage
 
 ```js
-const fplapi = require('fpl-api-node');
+import {entries } from 'fpl-api-node';
 
-fplapi.findEntry(entryId).then((entry) => console.log(entry));
+entries.getManager(entryId).then((data) => console.log(data));
 ```
 
-## TypeScript
+## Documentation
 
-fpl-api-node includes [TypeScript](http://www.typescriptlang.org/) definitions.
-
-```js
-import { findEntry, Entry } from 'fpl-api-node';
-
-findEntry(entryId).then((data) => handleEntry(data));
-
-function handleEntry(entry: Entry) {
-  console.log(entry);
-}
-```
-
-## API
-
-Please refer to the [Wiki for API documentation](https://github.com/tgreyjs/fpl-api-node/wiki).
+Further usage and API details can be found at http://www.gitbook.com.

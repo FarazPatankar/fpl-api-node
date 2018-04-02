@@ -11,7 +11,7 @@
     "moduleResolution": "node",
     "noEmitHelpers": false,
     "noImplicitAny": false,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "removeComments": false,
     "sourceMap": false,
     "strictNullChecks": false,
@@ -19,17 +19,24 @@
     "target": "es2016",
     "lib": [
       "es2016",
-      "dom"
+      "dom",
     ],
     "typeRoots": [
       "node_modules/@types"
     ]
+  },
+  "typedocOptions": {
+    "excludeExternals": true,
+    "exclude": "**/*+(data.*|.enum|cache.*|index).ts",
+    "excludePrivate": "true",
+    "readme": "./docs/introduction.md"
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
+    "tasks/**/*",
     "**/*.spec.ts",
     "wiki"
   ]

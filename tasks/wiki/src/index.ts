@@ -57,7 +57,10 @@ function getData(file: SourceFile, ns) {
 
     // get the interface of the return type (with this we can populate data types)
     const returnInterfaceName = returnType.substring(returnType.indexOf('<') + 1, returnType.indexOf('>'));
-    const matchedInterface = getInterface('src/interfaces.ts', returnInterfaceName.replace('[]', ''));
+    let matchedInterface = getInterface('src/interfaces.ts', returnInterfaceName.replace('[]', ''));
+    if (!matchedInterface) {
+      matchedInterface = getInterface('src/interfaces.ts', returnInterfaceName.replace('[]', ''));
+    }
 
     let displayedReturnType;
 

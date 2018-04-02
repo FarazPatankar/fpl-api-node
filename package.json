@@ -10,11 +10,13 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "report-coverage": "codecov",
-    "test": "nyc mocha -r ts-node/register src/index.spec.ts --timeout 5000 --slow 0",
+    "test": "nyc mocha -r ts-node/register test/test.ts --timeout 5000 --slow 0",
     "prepare": "rm -rf dist && tsc",
     "prepublishOnly": "npm run prepare && npm run lint && npm run test",
-    "task:wiki": "ts-node tasks/wiki/src/index.ts",
-    "task:mocks": "ts-node tasks/mock-generator/index.ts"
+    "mock:data": "ts-node tasks/mock-generator/generate-data.ts",
+    "mock:methods": "ts-node tasks/mock-generator/generate-methods.ts",
+    "docs": "typedoc --theme markdown --out ./docs/out/md --mdFlavour gitbook --mdHideSources",
+    "docs:html": "typedoc --out ./docs/out/html"
   },
   "repository": {
     "type": "git",
@@ -34,7 +36,8 @@
     "url": "https://github.com/tgreyjs/fpl-api-node/issues"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.106",
+    "@types/async": "^2.0.49",
+    "@types/lodash": "^4.14.107",
     "@types/node-cache": "^4.1.1",
     "async": "^2.6.0",
     "axios": "^0.18.0",
@@ -44,26 +47,23 @@
   "devDependencies": {
     "@types/axios-mock-adapter": "^1.10.0",
     "@types/chai": "^4.1.2",
-    "@types/handlebars": "^4.0.36",
     "@types/jsonfile": "^4.0.1",
     "@types/mocha": "^5.0.0",
-    "@types/node": "^9.6.1",
-    "@types/sinon": "^4.3.0",
-    "axios-mock-adapter": "^1.14.1",
+    "@types/node": "^9.6.5",
+    "@types/sinon": "^4.3.1",
+    "axios-mock-adapter": "^1.15.0",
     "chai": "^4.1.2",
-    "handlebars": "^4.0.11",
     "jsonfile": "^4.0.0",
-    "mocha": "^5.0.5",
+    "mocha": "^5.1.0",
     "nyc": "^11.6.0",
-    "sinon": "^4.4.9",
-    "ts-node": "^5.0.1",
-    "ts-simple-ast": "^10.0.1",
+    "rimraf": "^2.6.2",
+    "sinon": "^4.5.0",
+    "ts-node": "^6.0.0",
+    "ts-simple-ast": "^10.3.2",
     "tslint": "^5.9.1",
+    "typedoc": "^0.11.1",
+    "typedoc-plugin-external-module-name": "^1.1.1",
+    "typedoc-plugin-markdown": "^1.1.4",
     "typescript": "^2.8.1"
-  },
-  "greenkeeper": {
-    "ignore": [
-      "ts-simple-ast"
-    ]
   }
 }
