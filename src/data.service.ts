@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as NodeCache from 'node-cache';
 
 import { Errors } from './errors.enum';
-import * as interfaces from './interfaces.fpl';
+import * as interfaces from './interfaces';
 
 /**
  * Hooks into available fpl endpoints.

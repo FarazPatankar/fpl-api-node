@@ -2,21 +2,26 @@ import * as async from 'async';
 import * as _ from 'lodash';
 
 import * as dataService from './data.service';
-import { EntryPick, EntryPickStats, EntryStats, PickStatsHolder, PlayerResult } from './interfaces.custom';
+
 import {
   Element,
   ElementType,
   Entry,
   EntryChip,
   EntryEvent,
+  EntryPick,
+  EntryPickStats,
+  EntryStats,
   EntryTransferHistory,
   Event,
   EventElements,
   League,
   LeagueStandings,
   Pick,
+  PickStatsHolder,
+  PlayerResult,
   Team,
-} from './interfaces.fpl';
+} from './interfaces';
 
 // *************
 // Entry methods
