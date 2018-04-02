@@ -6,8 +6,8 @@ import * as dataService from './data.service';
 import {
   Element,
   ElementType,
-  Entry,
   EntryChip,
+  EntryDetails,
   EntryEvent,
   EntryPick,
   EntryPickStats,
@@ -31,7 +31,7 @@ import {
  * Returns entry summary / details.
  * @param entryId The id of entry
  */
-export async function findEntry(entryId: number): Promise<Entry> {
+export async function findEntry(entryId: number): Promise<EntryDetails> {
   const data = await dataService.findEntryRoot(entryId);
   return data.entry;
 }
@@ -414,7 +414,7 @@ export async function getCurrentEventNumber(): Promise<number> {
 // export interfaces
 export {
   ElementType,
-  Entry,
+  EntryDetails,
   EntryChip,
   EntryEvent,
   Pick,

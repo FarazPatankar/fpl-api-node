@@ -212,7 +212,7 @@ export interface LeagueResult {
 
 export interface EntryRoot {
   chips: EntryChip[];
-  entry: Entry;
+  entry: EntryDetails;
   leagues: EntryLeagues;
   season: EntrySeason[];
   history: EntryEvent[];
@@ -226,7 +226,7 @@ export interface EntryPicksRoot {
   picks: Pick[];
 }
 
-export interface Entry {
+export interface EntryDetails {
   id: number;
   player_first_name: string;
   player_last_name: string;
@@ -354,7 +354,7 @@ export interface EntryEvent {
 
 export interface EntryTransfers {
   wildcards: EntryWildcard[];
-  entry: Entry;
+  entry: EntryDetails;
   leagues: EntryLeagues;
   history: EntryTransferHistory[];
 }
