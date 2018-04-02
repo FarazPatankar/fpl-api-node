@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as Handlebars from 'handlebars';
+import * as _ from 'lodash';
 import * as path from 'path';
 import Ast, { SourceFile } from 'ts-simple-ast';
 
@@ -14,6 +15,7 @@ const indexFile = ast.getSourceFile('src/index.ts');
 // get data for templates
 if (indexFile) {
   const indexData = getData(indexFile, 'entry');
+  indexData.methods.sort(sortByName);
 
   // write pages
   writePage('Home', indexData, 'template.hbs');
