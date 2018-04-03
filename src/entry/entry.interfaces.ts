@@ -1,3 +1,5 @@
+import { ElementStats } from '../data/data.interfaces';
+
 export interface EntryChip {
   played_time_formatted: string;
   status: string;
@@ -66,7 +68,14 @@ export interface EntryPick {
   stats: EntryPickStats;
 }
 
-export interface EntryPickStats extends PlayerStats {
+export interface EntryPickTemp {
+  id: number;
+  name: string;
+  type: number;
+  stats: PickStats;
+}
+
+export interface EntryPickStats extends PickOverallStats {
   times_captained: number;
   total_captain_points: number;
   times_played: number;
@@ -77,7 +86,7 @@ export interface EntryPickStats extends PlayerStats {
   average_captained: number;
 }
 
-export interface PlayerStats {
+export interface PickOverallStats {
   yellow_cards: number;
   own_goals: number;
   goals_conceded: number;
@@ -99,4 +108,10 @@ export interface PlayerStats {
   times_absent: number;
   total_captain_points: number;
   total_bench_points: number;
+}
+
+export interface PickStats extends ElementStats {
+  element: number;
+  is_captain: boolean;
+  is_sub: boolean;
 }

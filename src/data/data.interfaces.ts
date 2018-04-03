@@ -423,11 +423,6 @@ export interface EventElement {
 /**
  * Custom interfaces
  */
-export interface PickStatsHolder extends ElementStats {
-  element: number;
-  is_captain: boolean;
-  is_sub: boolean;
-}
 
 export interface EntryStats {
   overall_rank: number;

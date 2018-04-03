@@ -6,8 +6,7 @@ import * as dataService from '../data/data.service';
 import {
   EntryStats,
   EntryTransferHistory,
-  Pick,
-  PickStatsHolder,
+
 } from '../data/data.interfaces';
 
 import {
@@ -15,10 +14,10 @@ import {
   EntryDetails,
   EntryGameweek,
   EntryPick,
-  PlayerStats,
+  EntryPickTemp,
+  PickOverallStats,
+  PickStats,
 } from './entry.interfaces';
-
-import { Utils } from '../utils/utils.class';
 
 export class Entry {
 
@@ -59,55 +58,20 @@ export class Entry {
 
     return new Promise((resolve, reject) => {
 
-      Promise.all([Utils.getAllPlayers(), Entry.getGameweekHistory(entryId)]).then((result) => {
+      Promise.all([dataService.getBootstrapData(), dataService.fetchEntryRoot(entryId)]).then((result) => {
 
-        const elements = result[0];
-        const gameweeks = result[1];
+        const elements = result[0].elements;
+        const gameweeks = result[1].history;
 
-        const picks: PickStatsHolder[][] = [];
+        const picks: PickStats[][] = [];
 
         async.each(gameweeks, (gameweek, nextGameweek) => {
 
           const event = gameweek.event;
 
-          Promise.all([
-            Utils.getPlayersByGameweek(event),
-            Entry.getPicksByGameweek(entryId, event),
-          ]).then((result1) => {
-
-            const eventElements = result1[0];
-
-            const entryPicks = result1[1].map((entryPick, i) => {
-              const isSub = i > 10;
-              return { ...entryPick, is_sub: isSub };
-            });
-
-            const pickDataArray: PickStatsHolder[] = [];
-
-            async.each(entryPicks, (pick, nextPicks) => {
-
-              const picksData = eventElements[pick.element].stats;
-
-              pickDataArray.push({
-                ...picksData,
-                element: pick.element,
-                is_captain: pick.is_captain,
-                is_sub: pick.is_sub,
-              });
-
-              nextPicks();
-
-            }, (err) => {
-
-              if (err) {
-                reject(err);
-              } else {
-                picks.push(pickDataArray);
-                nextGameweek();
-              }
-
-            });
-
+          Entry.getPicks(entryId, event).then((pickDataArray) => {
+            picks.push(pickDataArray);
+            nextGameweek();
           });
 
         }, (err) => {
@@ -117,13 +81,13 @@ export class Entry {
           } else {
 
             const groupedPlayers: {
-              [key: number]: PickStatsHolder[];
+              [key: number]: PickStats[];
             } = _.groupBy(_.flatten(picks), 'element');
 
             const players: EntryPick[] = _.toArray(_.mapValues(groupedPlayers, (value, playerKey) => {
 
-              const player: PlayerStats
-                = _.reduce(value, (playerResult, pick): PlayerStats => {
+              const player: PickOverallStats
+                = _.reduce(value, (playerResult, pick): PickOverallStats => {
 
                   function setProp(prop: string, increment = false, propOveride?: string) {
                     playerResult[prop] =
@@ -297,16 +261,6 @@ export class Entry {
   }
 
   /**
-   * Returns a collection of picks for a specified event
-   * @param entryId The id of entry
-   * @param gameweek The event number
-   */
-  public static async getPicksByGameweek(entryId: number, gameweek: number): Promise<Pick[]> {
-    const data = await dataService.fetchEntryPicksByGameweek(entryId, gameweek);
-    return data.picks;
-  }
-
-  /**
    * Returns transfer history of an entry
    * @param entryId The id of entry
    */
@@ -315,4 +269,85 @@ export class Entry {
     return data.history;
   }
 
+  /**
+   * Returns a collection of picks for a specified event
+   * @param entryId The id of entry
+   * @param gameweek The event number
+   */
+  public static async getPicksByGameweek(entryId: number, gameweek: number): Promise<EntryPickTemp[]> {
+
+    const data = await Promise.all([dataService.getBootstrapData(), Entry.getPicks(entryId, gameweek)]);
+    const elements = data[0].elements;
+    const picks = data[1];
+
+    const x = picks.map((pick) => {
+      const element = _.find(elements, { id: pick.element } || elements[0]);
+      if (element) {
+        const elementDetails = {
+          id: element.id,
+          name: element.web_name,
+          type: element.element_type,
+        };
+        return {
+          ...elementDetails,
+          stats: pick,
+        };
+      }
+
+    });
+    return x;
+  }
+
+  /**
+   * @param entryId
+   * @param event
+   * @private
+   */
+  private static getPicks(entryId, event): Promise<PickStats[]> {
+
+    return new Promise((resolve, reject) => {
+
+      Promise.all([
+        dataService.fetchEventByNumber(event),
+        dataService.fetchEntryPicksByGameweek(entryId, event),
+      ]).then((result) => {
+
+        const eventElements = result[0].elements;
+        const picks = result[1].picks;
+
+        const entryPicks = picks.map((entryPick, i) => {
+          const isSub = i > 10;
+          return { ...entryPick, is_sub: isSub };
+        });
+
+        const pickDataArray: PickStats[] = [];
+
+        async.each(entryPicks, (pick, nextPicks) => {
+
+          const picksData = eventElements[pick.element].stats;
+
+          pickDataArray.push({
+            ...picksData,
+            element: pick.element,
+            is_captain: pick.is_captain,
+            is_sub: pick.is_sub,
+          });
+
+          nextPicks();
+
+        }, (err) => {
+
+          if (err) {
+            reject(err);
+          } else {
+            resolve(pickDataArray);
+          }
+
+        });
+
+      });
+
+    });
+
+  }
 }

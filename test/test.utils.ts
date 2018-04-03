@@ -47,13 +47,22 @@ export function setMock() {
 
 }
 
+function getMethods(sourceFileName, className) {
+
+  const sourceFile = ast.getSourceFile(sourceFileName);
+
+  const specClass = sourceFile.getClass(className);
+
+  const methods = specClass.getStaticMethods().filter((method) => {
+    return method.getName() !== 'getPicks';
+  });
+
+  return methods;
+}
+
 export function doEntryMethods(callback) {
 
-  const sourceFile = ast.getSourceFile('src/entry/entry.class.ts');
-
-  const specClass = sourceFile.getClass('Entry');
-
-  const methods = specClass.getStaticMethods();
+  const methods = getMethods('src/entry/entry.class.ts', 'Entry');
 
   const entryId = 545548;
 

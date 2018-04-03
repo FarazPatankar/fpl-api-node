@@ -14,9 +14,9 @@
     "prepare": "rm -rf dist && tsc",
     "prepublishOnly": "npm run prepare && npm run lint && npm run test",
     "task:wiki": "ts-node tasks/wiki/src/index.ts",
-    "task:mocks": "ts-node tasks/mock-generator/index.ts",
-    "generate-method-mocks": "ts-node tasks/mock-generator/generate-method-mocks.ts",
-    "docs": "typedoc --out ./docs-html ./src --excludeExternals --exclude \"**/*+(data.*|.enum).ts\" --mode file"
+    "mocks:data": "ts-node tasks/mock-generator/generate-data.ts",
+    "mocks:methods": "ts-node tasks/mock-generator/generate-methods.ts",
+    "docs": "typedoc --out ./docs-html ./src --excludeExternals --exclude \"**/*+(data.*|.enum).ts\" --excludePrivate --mode file"
   },
   "repository": {
     "type": "git",
