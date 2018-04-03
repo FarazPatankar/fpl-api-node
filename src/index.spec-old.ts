@@ -1,19 +1,16 @@
-import { equal } from 'assert';
+
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import * as fs from 'fs';
+
 import * as jsonfile from 'jsonfile';
-import * as _ from 'lodash';
+
 import 'mocha';
 import * as sinon from 'sinon';
 
 import * as dataService from '../src/data.service';
 import { Errors } from '../src/errors.enum';
 import * as fplapi from '../src/index';
-import { getFileNameFromUrl, writeMock } from '../tasks/mock-generator/helpers';
-
-const normalAxios = axios.create();
 
 const mockDir = __dirname + `/../mocks/methods`;
 
@@ -123,7 +120,7 @@ describe('Entry data:', () => {
 
   it('should findEntryStats()', (done) => {
     fplapi.findEntryStats(entryId).then((data) => {
-      writeMock(mockDir, 'findEntryStats', data);
+      // writeMock(mockDir, 'findEntryStats', data);
       // expect(data).to.deep.equal(readMethodMock('findEntryStats'));
       done();
     }).catch((e) => {
@@ -165,7 +162,7 @@ describe('Event data:', () => {
 
   it('should getEvents()', (done) => {
     fplapi.getEvents().then((data) => {
-      writeMock(mockDir, 'getEvents', data);
+      // writeMock(mockDir, 'getEvents', data);
       // expect(data).to.deep.equal(readMethodMock('getEvents'));
       done();
     }).catch((e) => {

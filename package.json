@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "report-coverage": "codecov",
-    "test": "nyc mocha -r ts-node/register src/index.spec.ts --timeout 5000 --slow 0",
+    "test": "nyc mocha -r ts-node/register **/*.spec.ts --timeout 5000 --slow 0",
     "prepare": "rm -rf dist && tsc",
     "prepublishOnly": "npm run prepare && npm run lint && npm run test",
     "task:wiki": "ts-node tasks/wiki/src/index.ts",
