@@ -1,12 +1,13 @@
 
-import * as dataService from '../data.service';
+import * as dataService from '../data/data.service';
 
 import {
   Element,
   ElementType,
   EventElements,
-
-} from '../interfaces';
+  Gameweek,
+  Team,
+} from '../data/data.interfaces';
 
 export class Utils {
 
@@ -20,10 +21,10 @@ export class Utils {
 
   /**
    * Returns all element data for a specified event
-   * @param event The event number
+   * @param gameweek The event number
    */
-  public static async getPlayersByEvent(event: number): Promise<EventElements> {
-    const data = await dataService.findLiveEvent(event);
+  public static async getPlayersByGameweek(gameweek: number): Promise<EventElements> {
+    const data = await dataService.fetchEventByNumber(gameweek);
     return data.elements;
   }
 
@@ -33,6 +34,38 @@ export class Utils {
   public static async getPlayerTypes(): Promise<ElementType[]> {
     const data = await dataService.getBootstrapData();
     return data.element_types;
+  }
+
+  /**
+   * Returns a collection of all events
+   */
+  public static async getGameweeks(): Promise<Gameweek[]> {
+    const data = await dataService.getBootstrapData();
+    return data.events;
+  }
+
+  /**
+   * Returns a collection of all teams
+   */
+  public static async getTeams(): Promise<Team[]> {
+    const data = await dataService.getBootstrapData();
+    return data.teams;
+  }
+
+  /**
+   * Returns the total number of entries
+   */
+  public static async getTotalNumberOfEntries(): Promise<number> {
+    const data = await dataService.getBootstrapData();
+    return data['total-players'];
+  }
+
+  /**
+   * Returns the current event number
+   */
+  public static async getCurrentEventNumber(): Promise<number> {
+    const data = await dataService.getBootstrapData();
+    return data['current-event'];
   }
 
 }

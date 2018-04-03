@@ -30,6 +30,7 @@
   ],
   "exclude": [
     "node_modules",
+    "tasks/**/*",
     "**/*.spec.ts",
     "wiki"
   ]
