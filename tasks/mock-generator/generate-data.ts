@@ -8,6 +8,7 @@ const entryId = 545548;
 const currentGameweek = 31;
 const paths = [
   '/bootstrap-static',
+  '/elements',
   '/entry/545548',
   '/entry/545548/history',
   '/entry/545548/transfers',
@@ -20,7 +21,7 @@ _.times(currentGameweek, (i) => {
   paths.push(`/event/${i + 1}/live`);
 });
 
-const baseDir = __dirname + `/../../mocks/data`;
+const baseDir = __dirname + `/../../test/mocks/data`;
 
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
 

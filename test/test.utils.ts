@@ -28,6 +28,7 @@ export function setMock() {
 
   mock
     .onGet('/bootstrap-static').reply(200, readRawMock('_bootstrap-static'))
+    .onGet('/elements').reply(200, readRawMock('_elements'))
     .onGet('/entry/545548/history').reply(200, readRawMock('_entry_545548_history'))
     .onGet(/\/entry\/545548\/event\/\d+\/picks/).reply((config) => {
       const file = config.url ? config.url.split('/').join('_') : {};

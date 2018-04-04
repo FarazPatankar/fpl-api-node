@@ -1,4 +1,3 @@
-import { ElementStats } from '../data/data.interfaces';
 
 export interface EntryChip {
   played_time_formatted: string;
@@ -68,13 +67,6 @@ export interface EntryPick {
   stats: EntryPickStats;
 }
 
-export interface EntryPickTemp {
-  id: number;
-  name: string;
-  type: number;
-  stats: PickStats;
-}
-
 export interface EntryPickStats extends PickOverallStats {
   times_captained: number;
   total_captain_points: number;
@@ -110,8 +102,57 @@ export interface PickOverallStats {
   total_bench_points: number;
 }
 
-export interface PickStats extends ElementStats {
+export interface PickStats extends PickEventStats {
   element: number;
   is_captain: boolean;
   is_sub: boolean;
+}
+
+export interface EntryPickTemp {
+  id: number;
+  name: string;
+  type: number;
+  stats: PickStats;
+}
+
+export interface SeasonPick {
+  element: number;
+  position: number;
+  is_captain: boolean;
+  is_vice_captain: boolean;
+  multiplier: number;
+  stats: PickEventStats;
+}
+
+export interface Pick {
+  element: number;
+  element_type: number;
+  web_name: string;
+  position: number;
+  is_captain: boolean;
+  is_vice_captain: boolean;
+  multiplier: number;
+  stats: PickEventStats;
+}
+
+export interface PickEventStats {
+  yellow_cards: number;
+  own_goals: number;
+  creativity: number;
+  goals_conceded: number;
+  bonus: number;
+  red_cards: number;
+  saves: number;
+  influence: number;
+  bps: number;
+  clean_sheets: number;
+  assists: number;
+  ict_index: number;
+  goals_scored: number;
+  threat: number;
+  penalties_missed: number;
+  total_points: number;
+  penalties_saved: number;
+  in_dreamteam: boolean;
+  minutes: number;
 }

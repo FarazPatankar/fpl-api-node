@@ -1,6 +1,7 @@
 
-import * as dataService from '../data/data.service';
+import * as _ from 'lodash';
 
+import { cache } from '../cache/cache.service';
 import {
   Element,
   ElementType,
@@ -8,15 +9,16 @@ import {
   Gameweek,
   Team,
 } from '../data/data.interfaces';
+import * as dataService from '../data/data.service';
 
 export class Utils {
 
   /**
    * Returns a collection of all elements.
    */
-  public static async getAllPlayers(): Promise<Element[]> {
-    const data = await dataService.getBootstrapData();
-    return data.elements;
+  public static async getElements(): Promise<Element[]> {
+    const data = await dataService.fetchElements();
+    return data;
   }
 
   /**

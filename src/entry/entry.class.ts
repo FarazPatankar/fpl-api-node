@@ -1,9 +1,11 @@
 import * as async from 'async';
 import * as _ from 'lodash';
+import * as NodeCache from 'node-cache';
 
 import * as dataService from '../data/data.service';
 
 import {
+  ElementsMap,
   EntryStats,
   EntryTransferHistory,
 
@@ -15,6 +17,7 @@ import {
   EntryGameweek,
   EntryPick,
   EntryPickTemp,
+  Pick,
   PickOverallStats,
   PickStats,
 } from './entry.interfaces';
@@ -54,6 +57,7 @@ export class Entry {
    * @param entryId The id of entry
    * @param event The event number
    */
+  /*
   public static getAllPicks(entryId: number): Promise<EntryPick[]> {
 
     return new Promise((resolve, reject) => {
@@ -178,6 +182,7 @@ export class Entry {
 
     });
   }
+  */
 
   /**
    * Returns some general stats
@@ -274,28 +279,11 @@ export class Entry {
    * @param entryId The id of entry
    * @param gameweek The event number
    */
-  public static async getPicksByGameweek(entryId: number, gameweek: number): Promise<EntryPickTemp[]> {
-
-    const data = await Promise.all([dataService.getBootstrapData(), Entry.getPicks(entryId, gameweek)]);
-    const elements = data[0].elements;
-    const picks = data[1];
-
-    const x = picks.map((pick) => {
-      const element = _.find(elements, { id: pick.element } || elements[0]);
-      if (element) {
-        const elementDetails = {
-          id: element.id,
-          name: element.web_name,
-          type: element.element_type,
-        };
-        return {
-          ...elementDetails,
-          stats: pick,
-        };
-      }
-
-    });
-    return x;
+  public static async getPicksByGameweek(entryId: number, gameweek: number): Promise<Pick[]> {
+    const elements = await dataService.fetchElements();
+    const elementsMap = _.keyBy(elements, 'id');
+    const data = Entry.getPicks(entryId, gameweek, elementsMap);
+    return data;
   }
 
   /**
@@ -303,7 +291,7 @@ export class Entry {
    * @param event
    * @private
    */
-  private static getPicks(entryId, event): Promise<PickStats[]> {
+  private static getPicks(entryId: number, event: number, elementsMap: ElementsMap): Promise<Pick[]> {
 
     return new Promise((resolve, reject) => {
 
@@ -315,23 +303,22 @@ export class Entry {
         const eventElements = result[0].elements;
         const picks = result[1].picks;
 
-        const entryPicks = picks.map((entryPick, i) => {
-          const isSub = i > 10;
-          return { ...entryPick, is_sub: isSub };
-        });
+        const pickDataArray: Pick[] = [];
 
-        const pickDataArray: PickStats[] = [];
+        async.each(picks, (pick, nextPicks) => {
 
-        async.each(entryPicks, (pick, nextPicks) => {
+          // const element =
+          const stats = eventElements[pick.element].stats;
+          const element = elementsMap[pick.element];
 
-          const picksData = eventElements[pick.element].stats;
+          const item: Pick = {
+            ...pick,
+            web_name: element.web_name,
+            element_type: element.element_type,
+            stats,
+          };
 
-          pickDataArray.push({
-            ...picksData,
-            element: pick.element,
-            is_captain: pick.is_captain,
-            is_sub: pick.is_sub,
-          });
+          pickDataArray.push(item);
 
           nextPicks();
 

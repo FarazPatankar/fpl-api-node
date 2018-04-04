@@ -1,4 +1,4 @@
-import { EntryChip, EntryDetails, EntryGameweek } from '../entry/entry.interfaces';
+import { EntryChip, EntryDetails, EntryGameweek, PickEventStats } from '../entry/entry.interfaces';
 
 /**
  * FPL Interfaces
@@ -374,30 +374,8 @@ export interface LiveEvent {
 
 export interface EventElements {
   [key: number]: {
-    stats: ElementStats;
+    stats: PickEventStats;
   };
-}
-
-export interface ElementStats {
-  yellow_cards: number;
-  own_goals: number;
-  creativity: number;
-  goals_conceded: number;
-  bonus: number;
-  red_cards: number;
-  saves: number;
-  influence: number;
-  bps: number;
-  clean_sheets: number;
-  assists: number;
-  ict_index: number;
-  goals_scored: number;
-  threat: number;
-  penalties_missed: number;
-  total_points: number;
-  penalties_saved: number;
-  in_dreamteam: boolean;
-  minutes: number;
 }
 
 export interface EventPointSource {
@@ -416,7 +394,7 @@ export interface EventElement {
       value: number;
     };
   }>;
-  stats: ElementStats;
+  stats: PickEventStats;
 
 }
 
@@ -435,4 +413,8 @@ export interface EntryStats {
   total_transfer_cost: number;
   money_in_bank: number;
   total_value: number;
+}
+
+export interface ElementsMap {
+  [key: number]: Element;
 }

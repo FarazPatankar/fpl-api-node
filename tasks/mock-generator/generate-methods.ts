@@ -22,23 +22,23 @@ const entryMockDir = `${baseDir}/entry`;
 const utilsMockDir = `${baseDir}/utils`;
 
 function generateEntryMocks() {
-    mockUtils.doEntryMethods((method, params) => {
-        Entry[method.getName()](...params).then((data) => {
-            writeMock(entryMockDir, method.getName(), data);
-        }).catch((e) => {
-            console.log('Entry', method.getName(), e);
-        });
+  mockUtils.doEntryMethods((method, params) => {
+    Entry[method.getName()](...params).then((data) => {
+      writeMock(entryMockDir, method.getName(), data);
+    }).catch((e) => {
+      console.log('Entry', method.getName(), e);
     });
+  });
 }
 
 function generateUtilsMocks() {
-    mockUtils.doUtilsMethods((method, params) => {
-        Utils[method.getName()](...params).then((data) => {
-            writeMock(utilsMockDir, method.getName(), data);
-        }).catch((e) => {
-            console.log('Utils', method.getName(), e);
-        });
+  mockUtils.doUtilsMethods((method, params) => {
+    Utils[method.getName()](...params).then((data) => {
+      writeMock(utilsMockDir, method.getName(), data);
+    }).catch((e) => {
+      console.log('Utils', method.getName(), e);
     });
+  });
 }
 
 rimraf(entryMockDir, generateEntryMocks);
