@@ -17,6 +17,7 @@ import {
   EntryGameweek,
 
   GameweekPick,
+  GameweekPicks,
   SeasonPick,
   SeasonPickStats,
 
@@ -31,15 +32,6 @@ export class Entry {
   public static async getDetails(entryId: number): Promise<EntryDetails> {
     const data = await dataService.fetchEntryRoot(entryId);
     return data.entry;
-  }
-
-  /**
-   * Returns a collection of completed or ongoing events
-   * @param entryId The id of entry
-   */
-  public static async getGameweekHistory(entryId: number): Promise<EntryGameweek[]> {
-    const data = await dataService.fetchEntryRoot(entryId);
-    return data.history;
   }
 
   /**
@@ -58,25 +50,35 @@ export class Entry {
    * @param event The event number
    */
 
-  public static getSeasonPicks(entryId: number): Promise<GameweekPick[]> {
+  public static getGameweekHistory(entryId: number): Promise<EntryGameweek[]> {
     return new Promise((resolve, reject) => {
       Promise.all([dataService.fetchElements(), dataService.fetchEntryRoot(entryId)]).then((result) => {
 
         const elements = result[0];
         const gameweeks = result[1].history;
 
-        const picks: GameweekPick[][] = [];
+        const picks: EntryGameweek[] = [];
 
         async.each(gameweeks, (gameweek, nextGameweek) => {
-          nextGameweek();
+
+          Entry.getPicks(entryId, gameweek.event, elements).then((pickDataArray) => {
+            picks.push({ ...gameweek, picks: pickDataArray });
+            nextGameweek();
+          });
+
+        }, (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(picks);
+          }
         });
 
       });
-
     });
-  })
+  }
 
-  public static getSeasonPicks2(entryId: number): Promise<SeasonPick[]> {
+  public static getSeasonPicks(entryId: number): Promise<SeasonPick[]> {
 
     return new Promise((resolve, reject) => {
 
@@ -208,6 +210,7 @@ export class Entry {
     return new Promise((resolve, reject) => {
 
       Promise.all([
+
         Entry.getDetails(entryId),
         Entry.getGameweekHistory(entryId)]).then((result) => {
 

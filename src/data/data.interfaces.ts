@@ -415,6 +415,6 @@ export interface EntryStats {
   total_value: number;
 }
 
-export interface ElementsMap {
+export interface IElementsMap {
   [key: number]: Element;
 }

@@ -58,6 +58,12 @@ export interface EntryGameweek {
   bank: number;
   entry: number;
   event: number;
+  picks: GameweekPick[];
+}
+
+export interface GameweekPicks {
+  event: number;
+  picks: GameweekPick[];
 }
 
 export interface GameweekPick {
