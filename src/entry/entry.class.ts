@@ -15,11 +15,11 @@ import {
   EntryChip,
   EntryDetails,
   EntryGameweek,
-  EntryPick,
-  EntryPickTemp,
-  Pick,
-  PickOverallStats,
-  PickStats,
+
+  GameweekPick,
+  SeasonPick,
+  SeasonPickStats,
+
 } from './entry.interfaces';
 
 export class Entry {
@@ -57,23 +57,41 @@ export class Entry {
    * @param entryId The id of entry
    * @param event The event number
    */
-  /*
-  public static getAllPicks(entryId: number): Promise<EntryPick[]> {
+
+  public static getSeasonPicks(entryId: number): Promise<GameweekPick[]> {
+    return new Promise((resolve, reject) => {
+      Promise.all([dataService.fetchElements(), dataService.fetchEntryRoot(entryId)]).then((result) => {
+
+        const elements = result[0];
+        const gameweeks = result[1].history;
+
+        const picks: GameweekPick[][] = [];
+
+        async.each(gameweeks, (gameweek, nextGameweek) => {
+          nextGameweek();
+        });
+
+      });
+
+    });
+  })
+
+  public static getSeasonPicks2(entryId: number): Promise<SeasonPick[]> {
 
     return new Promise((resolve, reject) => {
 
-      Promise.all([dataService.getBootstrapData(), dataService.fetchEntryRoot(entryId)]).then((result) => {
+      Promise.all([dataService.fetchElements(), dataService.fetchEntryRoot(entryId)]).then((result) => {
 
-        const elements = result[0].elements;
+        const elements = result[0];
         const gameweeks = result[1].history;
 
-        const picks: PickStats[][] = [];
+        const picks: GameweekPick[][] = [];
 
         async.each(gameweeks, (gameweek, nextGameweek) => {
 
           const event = gameweek.event;
 
-          Entry.getPicks(entryId, event).then((pickDataArray) => {
+          Entry.getPicks(entryId, event, elements).then((pickDataArray) => {
             picks.push(pickDataArray);
             nextGameweek();
           });
@@ -84,95 +102,93 @@ export class Entry {
             reject(err);
           } else {
 
-            const groupedPlayers: {
-              [key: number]: PickStats[];
-            } = _.groupBy(_.flatten(picks), 'element');
+            const groupedPlayers = _.groupBy(_.flatten(picks), 'element');
 
-            const players: EntryPick[] = _.toArray(_.mapValues(groupedPlayers, (value, playerKey) => {
+            const players = _.toArray(_.mapValues(groupedPlayers, (value, playerKey) => {
 
-              const player: PickOverallStats
-                = _.reduce(value, (playerResult, pick): PickOverallStats => {
+              let playerRoot;
 
-                  function setProp(prop: string, increment = false, propOveride?: string) {
-                    playerResult[prop] =
-                      increment ? playerResult[prop] + 1 :
-                        playerResult[prop] + pick[propOveride ? propOveride : prop];
-                  }
+              const playerStats: SeasonPickStats = _.reduce(value, (playerStatsResult, pick): SeasonPickStats => {
 
-                  if (pick.is_captain) {
-                    setProp('times_captained', true);
-                    setProp('total_captain_points', false, 'total_points');
-                  }
+                if (!playerRoot) {
+                  playerRoot = {
+                    element: pick.element,
+                    web_name: pick.web_name,
+                    element_type: pick.element_type,
+                  };
+                }
 
-                  if (!pick.is_sub && pick.minutes > 0) {
-                    setProp('times_played', true);
-                    Object.keys(pick)
-                      .filter((key) => {
+                function setProp(prop: string, increment = false, propOveride?: string) {
+                  playerStatsResult[prop] =
+                    increment ? playerStatsResult[prop] + 1 :
+                      playerStatsResult[prop] + pick.stats[propOveride ? propOveride : prop];
+                }
 
-                        return key !== 'is_sub'
-                          && key !== 'is_captain'
-                          && key !== 'element'
-                          && key !== 'creativity'
-                          && key !== 'ict_index'
-                          && key !== 'in_dreamteam'
-                          && key !== 'threat';
-                      })
-                      .forEach((key) => {
-                        setProp(key);
-                      });
+                if (pick.is_captain) {
+                  setProp('times_captained', true);
+                  setProp('total_captain_points', false, 'total_points');
+                }
 
-                  } else if (pick.minutes > 0) {
-                    setProp('times_benched', true);
-                    setProp('total_bench_points', false, 'total_points');
-                  } else {
-                    setProp('times_absent', true);
-                  }
-
-                  return playerResult;
-                }, {
-                    yellow_cards: 0,
-                    own_goals: 0,
-                    goals_conceded: 0,
-                    bonus: 0,
-                    red_cards: 0,
-                    saves: 0,
-                    influence: 0,
-                    bps: 0,
-                    clean_sheets: 0,
-                    assists: 0,
-                    goals_scored: 0,
-                    penalties_missed: 0,
-                    total_points: 0,
-                    penalties_saved: 0,
-                    minutes: 0,
-                    times_played: 0,
-                    times_benched: 0,
-                    times_absent: 0,
-                    times_captained: 0,
-                    total_captain_points: 0,
-                    total_bench_points: 0,
+                if (pick.position > 11 && pick.stats.minutes > 0) {
+                  setProp('times_played', true);
+                  Object.keys(pick.stats).forEach((key) => {
+                    setProp(key);
                   });
 
-              const element = _.find(elements, { id: parseInt(playerKey, 10) } || elements[0]);
+                } else if (pick.stats.minutes > 0) {
+                  setProp('times_benched', true);
+                  setProp('total_bench_points', false, 'total_points');
+                } else {
+                  setProp('times_absent', true);
+                }
 
-              if (element) {
-                const elementDetails = {
-                  id: element.id,
-                  name: element.web_name,
-                  type: element.element_type,
-                };
+                return playerStatsResult;
+              }, {
+                  yellow_cards: 0,
+                  own_goals: 0,
+                  creativity: 0,
+                  goals_conceded: 0,
+                  bonus: 0,
+                  red_cards: 0,
+                  saves: 0,
+                  influence: 0,
+                  bps: 0,
+                  clean_sheets: 0,
+                  assists: 0,
+                  ict_index: 0,
+                  goals_scored: 0,
+                  threat: 0,
+                  penalties_missed: 0,
+                  total_points: 0,
+                  penalties_saved: 0,
+                  in_dreamteam: false,
+                  minutes: 0,
+                  average_played: 0,
+                  average_benched: 0,
+                  average_captained: 0,
+                  times_played: 0,
+                  times_captained: 0,
+                  times_benched: 0,
+                  times_absent: 0,
+                  times_in_dreamteam: 0,
+                  total_captain_points: 0,
+                  total_bench_points: 0,
+                });
 
-                const averages = {
-                  average_played: player.total_points / player.times_played || 0,
-                  average_benched: player.total_bench_points / player.times_benched || 0,
-                  average_captained: player.total_captain_points / player.times_captained || 0,
-                };
-                const stats = { ...player, ...averages };
-                return {
-                  ...elementDetails,
-                  stats,
-                };
-              }
+              // const element = _.find(elements, { id: parseInt(playerKey, 10) } || elements[0]);
+
+              const averages = {
+                average_played: playerStats.total_points / playerStats.times_played || 0,
+                average_benched: playerStats.total_bench_points / playerStats.times_benched || 0,
+                average_captained: playerStats.total_captain_points / playerStats.times_captained || 0,
+              };
+              const stats = { ...playerStats, ...averages };
+
+              return {
+                ...playerRoot,
+                stats,
+              };
+              // }
 
             }));
             resolve(players);
@@ -182,7 +198,6 @@ export class Entry {
 
     });
   }
-  */
 
   /**
    * Returns some general stats
@@ -279,7 +294,7 @@ export class Entry {
    * @param entryId The id of entry
    * @param gameweek The event number
    */
-  public static async getPicksByGameweek(entryId: number, gameweek: number): Promise<Pick[]> {
+  public static async getPicksByGameweek(entryId: number, gameweek: number): Promise<GameweekPick[]> {
     const elements = await dataService.fetchElements();
     const elementsMap = _.keyBy(elements, 'id');
     const data = Entry.getPicks(entryId, gameweek, elementsMap);
@@ -291,7 +306,7 @@ export class Entry {
    * @param event
    * @private
    */
-  private static getPicks(entryId: number, event: number, elementsMap: ElementsMap): Promise<Pick[]> {
+  private static getPicks(entryId: number, event: number, elementsMap: ElementsMap): Promise<GameweekPick[]> {
 
     return new Promise((resolve, reject) => {
 
@@ -303,7 +318,7 @@ export class Entry {
         const eventElements = result[0].elements;
         const picks = result[1].picks;
 
-        const pickDataArray: Pick[] = [];
+        const pickDataArray: GameweekPick[] = [];
 
         async.each(picks, (pick, nextPicks) => {
 
@@ -311,7 +326,7 @@ export class Entry {
           const stats = eventElements[pick.element].stats;
           const element = elementsMap[pick.element];
 
-          const item: Pick = {
+          const item: GameweekPick = {
             ...pick,
             web_name: element.web_name,
             element_type: element.element_type,

@@ -1,4 +1,4 @@
-import { EntryChip, EntryDetails, EntryGameweek, PickEventStats } from '../entry/entry.interfaces';
+import { ElementStats, EntryChip, EntryDetails, EntryGameweek } from '../entry/entry.interfaces';
 
 /**
  * FPL Interfaces
@@ -374,7 +374,7 @@ export interface LiveEvent {
 
 export interface EventElements {
   [key: number]: {
-    stats: PickEventStats;
+    stats: ElementStats;
   };
 }
 
@@ -394,7 +394,7 @@ export interface EventElement {
       value: number;
     };
   }>;
-  stats: PickEventStats;
+  stats: ElementStats;
 
 }
 

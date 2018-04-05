@@ -5,7 +5,7 @@ import * as mockUtils from '../../test/test.utils';
 import { writeMock } from './helpers';
 
 const entryId = 545548;
-const currentGameweek = 31;
+const currentGameweek = 32;
 const paths = [
   '/bootstrap-static',
   '/elements',

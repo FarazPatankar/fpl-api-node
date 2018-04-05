@@ -1,14 +1,4 @@
 
-export interface EntryChip {
-  played_time_formatted: string;
-  status: string;
-  name: string;
-  time: Date;
-  chip: number;
-  entry: number;
-  event: number;
-}
-
 export interface EntryDetails {
   id: number;
   player_first_name: string;
@@ -42,6 +32,16 @@ export interface EntryDetails {
   player: number;
 }
 
+export interface EntryChip {
+  played_time_formatted: string;
+  status: string;
+  name: string;
+  time: Date;
+  chip: number;
+  entry: number;
+  event: number;
+}
+
 export interface EntryGameweek {
   id: number;
   movement: string;
@@ -60,71 +60,7 @@ export interface EntryGameweek {
   event: number;
 }
 
-export interface EntryPick {
-  id: number;
-  name: string;
-  type: number;
-  stats: EntryPickStats;
-}
-
-export interface EntryPickStats extends PickOverallStats {
-  times_captained: number;
-  total_captain_points: number;
-  times_played: number;
-  times_benched: number;
-  total_bench_points: number;
-  average_played: number;
-  average_benched: number;
-  average_captained: number;
-}
-
-export interface PickOverallStats {
-  yellow_cards: number;
-  own_goals: number;
-  goals_conceded: number;
-  bonus: number;
-  red_cards: number;
-  saves: number;
-  influence: number;
-  bps: number;
-  clean_sheets: number;
-  assists: number;
-  goals_scored: number;
-  penalties_missed: number;
-  total_points: number;
-  penalties_saved: number;
-  minutes: number;
-  times_played: number;
-  times_captained: number;
-  times_benched: number;
-  times_absent: number;
-  total_captain_points: number;
-  total_bench_points: number;
-}
-
-export interface PickStats extends PickEventStats {
-  element: number;
-  is_captain: boolean;
-  is_sub: boolean;
-}
-
-export interface EntryPickTemp {
-  id: number;
-  name: string;
-  type: number;
-  stats: PickStats;
-}
-
-export interface SeasonPick {
-  element: number;
-  position: number;
-  is_captain: boolean;
-  is_vice_captain: boolean;
-  multiplier: number;
-  stats: PickEventStats;
-}
-
-export interface Pick {
+export interface GameweekPick {
   element: number;
   element_type: number;
   web_name: string;
@@ -132,10 +68,17 @@ export interface Pick {
   is_captain: boolean;
   is_vice_captain: boolean;
   multiplier: number;
-  stats: PickEventStats;
+  stats: ElementStats;
 }
 
-export interface PickEventStats {
+export interface SeasonPick {
+  element: number;
+  element_type: number;
+  web_name: string;
+  stats: SeasonPickStats;
+}
+
+export interface ElementStats {
   yellow_cards: number;
   own_goals: number;
   creativity: number;
@@ -155,4 +98,17 @@ export interface PickEventStats {
   penalties_saved: number;
   in_dreamteam: boolean;
   minutes: number;
+}
+
+export interface SeasonPickStats extends ElementStats {
+  average_played: number;
+  average_benched: number;
+  average_captained: number;
+  times_played: number;
+  times_captained: number;
+  times_benched: number;
+  times_absent: number;
+  times_in_dreamteam: number;
+  total_captain_points: number;
+  total_bench_points: number;
 }
