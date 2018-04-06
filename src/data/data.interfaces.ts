@@ -1,10 +1,6 @@
-import { ElementStats, EntryChip, EntryDetails, EntryGameweek } from '../entry/entry.interfaces';
+import { Chip, Details, Gameweek, TransferHistory } from '../entry/entry.interfaces';
+import { PlayerStats } from '../utils/utils.interfaces';
 
-/**
- * FPL Interfaces
- */
-
-// all static data
 export interface BootstrappedData {
   phases: Phase[];
   elements: Element[];
@@ -16,8 +12,6 @@ export interface BootstrappedData {
   element_types: ElementType[];
   events: Gameweek[];
 }
-
-// game interfaces
 
 export interface Gameweek {
   id: number;
@@ -43,19 +37,6 @@ export interface Phase {
   stop_event: number;
 }
 
-export interface Formations {
-  '1-5-2-3': number[][];
-  '1-5-3-2': number[][];
-  '1-3-5-2': number[][];
-  '1-2-5-3': number[][];
-  '1-4-5-1': number[][];
-  '1-5-4-1': number[][];
-  '1-4-3-3': number[][];
-  '1-3-4-3': number[][];
-  '1-4-4-2': number[][];
-}
-
-// element interfaces
 export interface Element {
   id: number;
   photo: string;
@@ -124,7 +105,6 @@ export interface ElementType {
   plural_name_short: string;
 }
 
-// team interfaces
 export interface Team {
   id: number;
   current_event_fixture: TeamFixture[];
@@ -160,7 +140,6 @@ export interface TeamFixture {
   opponent: number;
 }
 
-// league interfaces
 export interface LeagueRoot {
   new_entries: LeagueStandings;
   league: League;
@@ -209,20 +188,18 @@ export interface LeagueResult {
   stop_event: number;
 }
 
-// entry interfaces
-
 export interface EntryRoot {
-  chips: EntryChip[];
-  entry: EntryDetails;
+  chips: Chip[];
+  entry: Details;
   leagues: EntryLeagues;
   season: EntrySeason[];
-  history: EntryGameweek[];
+  history: Gameweek[];
 }
 
 export interface EntryPicksRoot {
   active_chip: string;
   automatic_subs: EntryAutomaticSub[];
-  entry_history: EntryGameweek;
+  entry_history: Gameweek;
   event: Gameweek;
   picks: Pick[];
 }
@@ -294,9 +271,9 @@ export interface EntrySeason {
 
 export interface EntryTransfers {
   wildcards: EntryWildcard[];
-  entry: EntryDetails;
+  entry: Details;
   leagues: EntryLeagues;
-  history: EntryTransferHistory[];
+  history: TransferHistory[];
 }
 
 export interface EntryWildcard {
@@ -308,20 +285,6 @@ export interface EntryWildcard {
   entry: number;
   event: number;
 }
-
-export interface EntryTransferHistory {
-  id: number;
-  time_formatted: string;
-  time: Date;
-  element_in_cost: number;
-  element_out_cost: number;
-  element_in: number;
-  element_out: number;
-  entry: number;
-  event: number;
-}
-
-// fixture
 
 export interface Fixture {
   id: number;
@@ -374,7 +337,7 @@ export interface LiveEvent {
 
 export interface EventElements {
   [key: number]: {
-    stats: ElementStats;
+    stats: PlayerStats;
   };
 }
 
@@ -394,27 +357,18 @@ export interface EventElement {
       value: number;
     };
   }>;
-  stats: ElementStats;
+  stats: PlayerStats;
 
 }
 
-/**
- * Custom interfaces
- */
-
-export interface EntryStats {
-  overall_rank: number;
-  highest_gameweek_rank: number;
-  lowest_gameweek_rank: number;
-  overall_points: number;
-  highest_score: number;
-  lowest_score: number;
-  average_score: number;
-  total_transfer_cost: number;
-  money_in_bank: number;
-  total_value: number;
-}
-
-export interface IElementsMap {
-  [key: number]: Element;
+export interface Formations {
+  '1-5-2-3': number[][];
+  '1-5-3-2': number[][];
+  '1-3-5-2': number[][];
+  '1-2-5-3': number[][];
+  '1-4-5-1': number[][];
+  '1-5-4-1': number[][];
+  '1-4-3-3': number[][];
+  '1-3-4-3': number[][];
+  '1-4-4-2': number[][];
 }

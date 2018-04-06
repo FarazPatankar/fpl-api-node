@@ -1,5 +1,36 @@
+/**
+ * @module Entry
+ */
 
-export interface EntryDetails {
+import { Pick } from '../data/data.interfaces';
+import { PlayerStats } from '../utils/utils.interfaces';
+
+export interface TransferHistory {
+  id: number;
+  time_formatted: string;
+  time: Date;
+  element_in_cost: number;
+  element_out_cost: number;
+  element_in: number;
+  element_out: number;
+  entry: number;
+  event: number;
+}
+
+export interface Stats {
+  overall_rank: number;
+  highest_gameweek_rank: number;
+  lowest_gameweek_rank: number;
+  overall_points: number;
+  highest_score: number;
+  lowest_score: number;
+  average_score: number;
+  total_transfer_cost: number;
+  money_in_bank: number;
+  total_value: number;
+}
+
+export interface Details {
   id: number;
   player_first_name: string;
   player_last_name: string;
@@ -32,7 +63,7 @@ export interface EntryDetails {
   player: number;
 }
 
-export interface EntryChip {
+export interface Chip {
   played_time_formatted: string;
   status: string;
   name: string;
@@ -42,7 +73,7 @@ export interface EntryChip {
   event: number;
 }
 
-export interface EntryGameweek {
+export interface Gameweek {
   id: number;
   movement: string;
   points: number;
@@ -61,52 +92,21 @@ export interface EntryGameweek {
   picks: GameweekPick[];
 }
 
-export interface GameweekPicks {
-  event: number;
-  picks: GameweekPick[];
-}
-
 export interface GameweekPick {
   element: number;
-  element_type: number;
-  web_name: string;
   position: number;
   is_captain: boolean;
   is_vice_captain: boolean;
   multiplier: number;
-  stats: ElementStats;
+  stats: PlayerStats;
 }
 
 export interface SeasonPick {
   element: number;
-  element_type: number;
-  web_name: string;
   stats: SeasonPickStats;
 }
 
-export interface ElementStats {
-  yellow_cards: number;
-  own_goals: number;
-  creativity: number;
-  goals_conceded: number;
-  bonus: number;
-  red_cards: number;
-  saves: number;
-  influence: number;
-  bps: number;
-  clean_sheets: number;
-  assists: number;
-  ict_index: number;
-  goals_scored: number;
-  threat: number;
-  penalties_missed: number;
-  total_points: number;
-  penalties_saved: number;
-  in_dreamteam: boolean;
-  minutes: number;
-}
-
-export interface SeasonPickStats extends ElementStats {
+export interface SeasonPickStats extends PlayerStats {
   average_played: number;
   average_benched: number;
   average_captained: number;

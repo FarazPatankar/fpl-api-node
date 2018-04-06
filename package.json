@@ -16,7 +16,7 @@
     "task:wiki": "ts-node tasks/wiki/src/index.ts",
     "mock:data": "ts-node tasks/mock-generator/generate-data.ts",
     "mock:methods": "ts-node tasks/mock-generator/generate-methods.ts",
-    "docs": "typedoc --out ./docs-html ./src --excludeExternals --exclude \"**/*+(data.*|.enum).ts\" --excludePrivate --mode file"
+    "docs": "typedoc --out ./docs-html ./src --excludeExternals --exclude \"**/*+(data.*|.enum).ts\" --excludePrivate"
   },
   "repository": {
     "type": "git",
@@ -64,6 +64,7 @@
     "ts-simple-ast": "^10.0.1",
     "tslint": "^5.9.1",
     "typedoc": "^0.11.1",
+    "typedoc-plugin-external-module-name": "^1.1.1",
     "typescript": "^2.8.1"
   },
   "greenkeeper": {
