@@ -44,7 +44,7 @@ ___
 
 <a id="getmanagerdetails"></a>
 
-###  getManagerDetails
+##  getManagerDetails
 
 ► **getManagerDetails**(entryId: *`number`*): `Promise`.<[ManagerDetails](../interfaces/_types_.managerdetails.md)>
 
@@ -77,7 +77,7 @@ ___
 
 <a id="getmanagerstats"></a>
 
-###  getManagerStats
+##  getManagerStats
 
 ► **getManagerStats**(entryId: *`number`*): `Promise`.<[ManagerStats](../interfaces/_types_.managerstats.md)>
 
@@ -111,7 +111,7 @@ ___
 
 <a id="getseasonpicks"></a>
 
-###  getSeasonPicks
+##  getSeasonPicks
 
 ► **getSeasonPicks**(entryId: *`number`*): `Promise`.<[SeasonPick](../interfaces/_types_.seasonpick.md)[]>
 
@@ -141,7 +141,7 @@ ___
 
 <a id="gettransferhistory"></a>
 
-###  getTransferHistory
+##  getTransferHistory
 
 ► **getTransferHistory**(entryId: *`number`*): `Promise`.<[TransferHistory](../interfaces/_types_.transferhistory.md)[]>
 
@@ -174,7 +174,7 @@ ___
 
 <a id="getusedchips"></a>
 
-###  getUsedChips
+##  getUsedChips
 
 ► **getUsedChips**(entryId: *`number`*): `Promise`.<[Chip](../interfaces/_types_.chip.md)[]>
 
