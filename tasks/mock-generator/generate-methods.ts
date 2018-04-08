@@ -8,7 +8,8 @@ import { writeMock } from './helpers';
 import * as mockUtils from '../../test/test.utils';
 
 import { Entry } from '../../src/entry/entry.class';
-import { Utils } from '../../src/utils/utils.class';
+import { Game } from '../../src/game/game.class';
+import { League } from '../../src/api/league';
 
 const ast = new Ast();
 
@@ -19,7 +20,8 @@ mockUtils.setMock();
 const baseDir = path.join(__dirname, '/../../', 'test/mocks/methods');
 
 const entryMockDir = `${baseDir}/entry`;
-const utilsMockDir = `${baseDir}/utils`;
+const utilsMockDir = `${baseDir}/game`;
+const leagueMockDir = `${baseDir}/league`;
 
 function generateEntryMocks() {
   mockUtils.doEntryMethods((method, params) => {
@@ -33,13 +35,24 @@ function generateEntryMocks() {
 
 function generateUtilsMocks() {
   mockUtils.doUtilsMethods((method, params) => {
-    Utils[method.getName()](...params).then((data) => {
+    Game[method.getName()](...params).then((data) => {
       writeMock(utilsMockDir, method.getName(), data);
     }).catch((e) => {
-      console.log('Utils', method.getName(), e);
+      console.log('Game', method.getName(), e);
+    });
+  });
+}
+
+function generateLeagueMocks() {
+  mockUtils.doLeagueMethods((method, params) => {
+    League[method.getName()](...params).then((data) => {
+      writeMock(leagueMockDir, method.getName(), data);
+    }).catch((e) => {
+      console.log('League', method.getName(), e);
     });
   });
 }
 
 rimraf(entryMockDir, generateEntryMocks);
 rimraf(utilsMockDir, generateUtilsMocks);
+rimraf(leagueMockDir, generateLeagueMocks);

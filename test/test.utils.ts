@@ -87,9 +87,9 @@ export function doEntryMethods(callback) {
 
 export function doUtilsMethods(callback) {
 
-  const sourceFile = ast.getSourceFile('src/utils/utils.class.ts');
+  const sourceFile = ast.getSourceFile('src/game/game.class.ts');
 
-  const specClass = sourceFile.getClass('Utils');
+  const specClass = sourceFile.getClass('Game');
 
   const methods = specClass.getStaticMethods();
 
@@ -98,6 +98,28 @@ export function doUtilsMethods(callback) {
     const params = method.getParameters().map((param) => {
       if (param.getName() === 'gameweek') {
         return 1;
+      }
+    });
+
+    callback(method, params);
+
+  });
+
+}
+
+export function doLeagueMethods(callback) {
+
+  const sourceFile = ast.getSourceFile('src/league/league.class.ts');
+
+  const specClass = sourceFile.getClass('League');
+
+  const methods = specClass.getStaticMethods();
+
+  methods.forEach((method) => {
+
+    const params = method.getParameters().map((param) => {
+      if (param.getName() === 'leagueId') {
+        return 313;
       }
     });
 

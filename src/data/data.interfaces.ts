@@ -1,15 +1,14 @@
-import { Chip, Details, Gameweek, TransferHistory } from '../entry/entry.interfaces';
-import { PlayerStats } from '../utils/utils.interfaces';
+import * as publicInterfaces from '../types';
 
 export interface BootstrappedData {
   phases: Phase[];
-  elements: Element[];
+  elements: publicInterfaces.Player[];
   'total-players': number;
   'current-event': number;
   'next-event': number;
   'last-entry-event': number;
-  teams: Team[];
-  element_types: ElementType[];
+  teams: publicInterfaces.Team[];
+  element_types: publicInterfaces.PlayerType[];
   events: Gameweek[];
 }
 
@@ -37,160 +36,9 @@ export interface Phase {
   stop_event: number;
 }
 
-export interface Element {
-  id: number;
-  photo: string;
-  web_name: string;
-  team_code: number;
-  status: string;
-  code: number;
-  first_name: string;
-  second_name: string;
-  squad_number?: number;
-  news: string;
-  now_cost: number;
-  chance_of_playing_this_round?: number;
-  chance_of_playing_next_round?: number;
-  value_form: string;
-  value_season: string;
-  cost_change_start: number;
-  cost_change_event: number;
-  cost_change_start_fall: number;
-  cost_change_event_fall: number;
-  in_dreamteam: boolean;
-  dreamteam_count: number;
-  selected_by_percent: string;
-  form: string;
-  transfers_out: number;
-  transfers_in: number;
-  transfers_out_event: number;
-  transfers_in_event: number;
-  loans_in: number;
-  loans_out: number;
-  loaned_in: number;
-  loaned_out: number;
-  total_points: number;
-  event_points: number;
-  points_per_game: string;
-  ep_this: string;
-  ep_next: string;
-  special: boolean;
-  minutes: number;
-  goals_scored: number;
-  assists: number;
-  clean_sheets: number;
-  goals_conceded: number;
-  own_goals: number;
-  penalties_saved: number;
-  penalties_missed: number;
-  yellow_cards: number;
-  red_cards: number;
-  saves: number;
-  bonus: number;
-  bps: number;
-  influence: string;
-  creativity: string;
-  threat: string;
-  ict_index: string;
-  ea_index: number;
-  element_type: number;
-  team: number;
-}
-
-export interface ElementType {
-  id: number;
-  singular_name: string;
-  singular_name_short: string;
-  plural_name: string;
-  plural_name_short: string;
-}
-
-export interface Team {
-  id: number;
-  current_event_fixture: TeamFixture[];
-  next_event_fixture: TeamFixture[];
-  name: string;
-  code: number;
-  short_name: string;
-  unavailable: boolean;
-  strength: number;
-  position: number;
-  played: number;
-  win: number;
-  loss: number;
-  draw: number;
-  points: number;
-  form?: any;
-  link_url: string;
-  strength_overall_home: number;
-  strength_overall_away: number;
-  strength_attack_home: number;
-  strength_attack_away: number;
-  strength_defence_home: number;
-  strength_defence_away: number;
-  team_division: number;
-}
-
-export interface TeamFixture {
-  is_home: boolean;
-  month: number;
-  event_day: number;
-  id: number;
-  day: number;
-  opponent: number;
-}
-
-export interface LeagueRoot {
-  new_entries: LeagueStandings;
-  league: League;
-  standings: LeagueStandings;
-  update_status: number;
-}
-
-export interface League {
-  id: number;
-  leagueban_set: any[];
-  name: string;
-  short_name: string;
-  created: Date;
-  closed: boolean;
-  forum_disabled: boolean;
-  make_code_public: boolean;
-  rank?: any;
-  size?: any;
-  league_type: string;
-  _scoring: string;
-  reprocess_standings: boolean;
-  admin_entry?: any;
-  start_event: number;
-}
-
-export interface LeagueStandings {
-  has_next: boolean;
-  number: number;
-  results: LeagueResult[];
-}
-
-export interface LeagueResult {
-  id: number;
-  entry_name: string;
-  event_total: number;
-  player_name: string;
-  movement: string;
-  own_entry: boolean;
-  rank: number;
-  last_rank: number;
-  rank_sort: number;
-  total: number;
-  entry: number;
-  league: number;
-  start_event: number;
-  stop_event: number;
-}
-
 export interface EntryRoot {
-  chips: Chip[];
-  entry: Details;
+  chips: publicInterfaces.Chip[];
+  entry: publicInterfaces.ManagerDetails;
   leagues: EntryLeagues;
   season: EntrySeason[];
   history: Gameweek[];
@@ -202,6 +50,13 @@ export interface EntryPicksRoot {
   entry_history: Gameweek;
   event: Gameweek;
   picks: Pick[];
+}
+
+export interface ClassicLeague {
+  new_entries: publicInterfaces.ClassicLeagueStandings;
+  league: publicInterfaces.ClassicLeagueDetails;
+  standings: publicInterfaces.ClassicLeagueStandings;
+  update_status: number;
 }
 
 export interface Pick {
@@ -271,9 +126,9 @@ export interface EntrySeason {
 
 export interface EntryTransfers {
   wildcards: EntryWildcard[];
-  entry: Details;
+  entry: publicInterfaces.ManagerDetails;
   leagues: EntryLeagues;
-  history: TransferHistory[];
+  history: publicInterfaces.TransferHistory[];
 }
 
 export interface EntryWildcard {
@@ -337,7 +192,7 @@ export interface LiveEvent {
 
 export interface EventElements {
   [key: number]: {
-    stats: PlayerStats;
+    stats: publicInterfaces.PlayerStats;
   };
 }
 
@@ -357,7 +212,7 @@ export interface EventElement {
       value: number;
     };
   }>;
-  stats: PlayerStats;
+  stats: publicInterfaces.PlayerStats;
 
 }
 

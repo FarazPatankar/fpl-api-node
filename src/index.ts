@@ -1,4 +1,5 @@
-import { Entry } from './entry/entry.class';
-import { Utils } from './utils/utils.class';
+import * as entries from './api/entry';
+import * as game from './api/game';
+import * as league from './api/league';
 
-export { Entry, Utils };
+export { entries, game, league };

@@ -1,6 +1,7 @@
 import axios from 'axios';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { cache, stdCacheTTL } from '../cache/cache.service';
+import * as publicInterfaces from '../types';
 import * as interfaces from './data.interfaces';
 import { Errors } from './errors.enum';
 
@@ -35,11 +36,11 @@ export function fetchEntryTransfers(entryId: number): Promise<interfaces.EntryTr
   return fetch(`/entry/${entryId}/transfers`);
 }
 
-export function fetchElements(): Promise<interfaces.Element[]> {
+export function fetchElements(): Promise<publicInterfaces.Player[]> {
   return fetch(`/elements`);
 }
 
-export function fetchElement(elementId): Promise<interfaces.Element> {
+export function fetchElement(elementId): Promise<publicInterfaces.Player> {
   const cacheKey = `/elements/${elementId}`;
   return new Promise((resolve: any, reject) => {
     const cacheValue = cache.get(cacheKey);
@@ -60,7 +61,7 @@ export function fetchEventByNumber(eventNumber: number): Promise<interfaces.Live
   return fetchEvent(`/event/${eventNumber}/live`, eventNumber);
 }
 
-export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<interfaces.LeagueRoot> {
+export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<interfaces.ClassicLeague> {
   return fetch(`/leagues-classic-standings/${leagueId}?page=${pageNumber}`, false, {
     params: {
       'ls-page': pageNumber,

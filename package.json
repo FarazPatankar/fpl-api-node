@@ -16,7 +16,8 @@
     "task:wiki": "ts-node tasks/wiki/src/index.ts",
     "mock:data": "ts-node tasks/mock-generator/generate-data.ts",
     "mock:methods": "ts-node tasks/mock-generator/generate-methods.ts",
-    "docs": "typedoc --out ./docs-html ./src --excludeExternals --exclude \"**/*+(data.*|.enum).ts\" --excludePrivate"
+    "docs": "typedoc --out ./docs-html ./src --excludeExternals --exclude \"**/*+(data.*|.enum|cache.*|index).ts\" --excludePrivate",
+    "docs-md": "typedoc --theme markdown --readme none --mdFlavour gitbook --out ./docs ./src --excludeExternals --exclude \"**/*+(data.*|.enum|cache.*|index).ts\" --excludePrivate"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,6 @@
     "@types/node-cache": "^4.1.1",
     "async": "^2.6.0",
     "axios": "^0.18.0",
-    "bluebird": "^3.5.1",
     "lodash": "^4.17.5",
     "node-cache": "^4.2.0"
   },
@@ -64,12 +64,7 @@
     "ts-simple-ast": "^10.0.1",
     "tslint": "^5.9.1",
     "typedoc": "^0.11.1",
-    "typedoc-plugin-external-module-name": "^1.1.1",
+    "typedoc-plugin-markdown": "^1.1.0",
     "typescript": "^2.8.1"
-  },
-  "greenkeeper": {
-    "ignore": [
-      "ts-simple-ast"
-    ]
   }
 }
