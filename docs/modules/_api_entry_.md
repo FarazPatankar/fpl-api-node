@@ -28,7 +28,7 @@ Methods relating to 'entries' (fpl managers).
 ## Functions
 <a name="getgameweekhistory" id="getgameweekhistory"></a>
 
-###  getGameweekHistory
+###  getGameweekHistory {#getgameweekhistory2}
 
 ► **getGameweekHistory**(entryId: *`number`*): `Promise`.<[Gameweek](../interfaces/_types_.gameweek.md)[]>
 
