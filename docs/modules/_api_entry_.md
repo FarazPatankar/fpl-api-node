@@ -26,7 +26,7 @@ Methods relating to 'entries' (fpl managers).
 
 ---
 ## Functions
-<a id="getgameweekhistory"></a>
+<a name="getgameweekhistory" id="getgameweekhistory"></a>
 
 ###  getGameweekHistory
 
