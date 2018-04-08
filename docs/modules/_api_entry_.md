@@ -1,10 +1,6 @@
 [fpl-api-node](../README.md) > ["api/entry"](../modules/_api_entry_.md)
 
 
-
-# External module: "api/entry"
-
-
 Methods relating to 'entries' (fpl managers).
 
 **Usage:**
