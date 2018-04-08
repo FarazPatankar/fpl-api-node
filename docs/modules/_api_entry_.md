@@ -7,19 +7,6 @@ Methods relating to 'entries' (fpl managers).
 
     fplapi.entries.getManagerDetails(123).then((data) => console.log(data));
 
-# Index
-
-## Functions
-
-* [getGameweekHistory](_api_entry_.md#getgameweekhistory)
-* [getManagerDetails](_api_entry_.md#getmanagerdetails)
-* [getManagerStats](_api_entry_.md#getmanagerstats)
-* [getSeasonPicks](_api_entry_.md#getseasonpicks)
-* [getTransferHistory](_api_entry_.md#gettransferhistory)
-* [getUsedChips](_api_entry_.md#getusedchips)
-
-
-
 ---
 # Functions
 <a name="getgameweekhistory" id="getgameweekhistory"></a>
