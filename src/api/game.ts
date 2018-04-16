@@ -4,23 +4,21 @@
  * __Usage:__
  *
  * ```js
- * fplapi.entries.getPlayers().then((data) => console.log(data));
+ * fplapi.game.getPlayers().then((data) => console.log(data));
  * ```
+ *
+ * @module game
+ * @preferred
  */
 /**
  */
 
-import _ from 'lodash';
+import * as _ from 'lodash';
 
-import { cache } from '../cache/cache.service';
-import {
-
-  EventElements,
-  Gameweek,
-
-} from '../data/data.interfaces';
 import * as dataService from '../data/data.service';
-import { GameSummary, Player, PlayerStatsMap, PlayerType, Team } from '../types';
+import { Event, GameSummary, Player, PlayerStatsMap, PlayerType, Team } from './game.interfaces';
+
+export { Event, GameSummary, Player, PlayerStatsMap, PlayerType, Team };
 
 /**
  * Returns the total number of entries
@@ -67,7 +65,7 @@ export async function getPlayerTypes(): Promise<PlayerType[]> {
 /**
  * Returns a collection of all events
  */
-export async function getGameweeks(): Promise<Gameweek[]> {
+export async function getGameweeks(): Promise<Event[]> {
   const data = await dataService.getBootstrapData();
   return data.events;
 }

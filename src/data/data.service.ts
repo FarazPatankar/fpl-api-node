@@ -1,9 +1,9 @@
 import axios from 'axios';
-import _ from 'lodash';
+import * as _ from 'lodash';
+import * as gameInterfaces from '../api/game.interfaces';
 import { cache, stdCacheTTL } from '../cache/cache.service';
-import * as publicInterfaces from '../types';
+import { Errors } from './data.errors';
 import * as interfaces from './data.interfaces';
-import { Errors } from './errors.enum';
 
 /**
  * Hooks into available fpl endpoints.
@@ -36,11 +36,11 @@ export function fetchEntryTransfers(entryId: number): Promise<interfaces.EntryTr
   return fetch(`/entry/${entryId}/transfers`);
 }
 
-export function fetchElements(): Promise<publicInterfaces.Player[]> {
+export function fetchElements(): Promise<gameInterfaces.Player[]> {
   return fetch(`/elements`);
 }
 
-export function fetchElement(elementId): Promise<publicInterfaces.Player> {
+export function fetchElement(elementId): Promise<gameInterfaces.Player> {
   const cacheKey = `/elements/${elementId}`;
   return new Promise((resolve: any, reject) => {
     const cacheValue = cache.get(cacheKey);
@@ -116,7 +116,7 @@ export function fetch(path: string, cacheForever = false, config = {}): Promise<
           }
         }
       }).catch(() => {
-        console.log(path);
+        console.log('NO RESPONSE', path);
         reject(Errors.NO_RESPONSE);
       });
     }

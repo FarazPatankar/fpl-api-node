@@ -1,32 +1,33 @@
-import * as publicInterfaces from '../types';
+import * as entryInterfaces from '../api/entries.interfaces';
+import * as gameInterfaces from '../api/game.interfaces';
+import * as leagueInterfaces from '../api/leagues.interfaces';
 
 export interface BootstrappedData {
   phases: Phase[];
-  elements: publicInterfaces.Player[];
+  elements: gameInterfaces.Player[];
   'total-players': number;
   'current-event': number;
   'next-event': number;
   'last-entry-event': number;
-  teams: publicInterfaces.Team[];
-  element_types: publicInterfaces.PlayerType[];
-  events: Gameweek[];
+  teams: gameInterfaces.Team[];
+  element_types: gameInterfaces.PlayerType[];
+  events: gameInterfaces.Event[];
 }
 
-export interface Gameweek {
-  id: number;
-  name: string;
-  deadline_time: Date;
-  average_entry_score: number;
-  finished: boolean;
-  data_checked: boolean;
-  highest_scoring_entry?: number;
-  deadline_time_epoch: number;
-  deadline_time_game_offset: number;
-  deadline_time_formatted: string;
-  highest_score?: number;
-  is_previous: boolean;
-  is_current: boolean;
-  is_next: boolean;
+export interface EntryRoot {
+  chips: entryInterfaces.Chip[];
+  entry: entryInterfaces.ManagerDetails;
+  leagues: EntryLeagues;
+  season: EntrySeason[];
+  history: entryInterfaces.Gameweek[];
+}
+
+export interface EntryPicksRoot {
+  active_chip: string;
+  automatic_subs: EntryAutomaticSub[];
+  entry_history: entryInterfaces.Gameweek;
+  event: gameInterfaces.Event;
+  picks: Pick[];
 }
 
 export interface Phase {
@@ -36,26 +37,10 @@ export interface Phase {
   stop_event: number;
 }
 
-export interface EntryRoot {
-  chips: publicInterfaces.Chip[];
-  entry: publicInterfaces.ManagerDetails;
-  leagues: EntryLeagues;
-  season: EntrySeason[];
-  history: Gameweek[];
-}
-
-export interface EntryPicksRoot {
-  active_chip: string;
-  automatic_subs: EntryAutomaticSub[];
-  entry_history: Gameweek;
-  event: Gameweek;
-  picks: Pick[];
-}
-
 export interface ClassicLeague {
-  new_entries: publicInterfaces.ClassicLeagueStandings;
-  league: publicInterfaces.ClassicLeagueDetails;
-  standings: publicInterfaces.ClassicLeagueStandings;
+  new_entries: leagueInterfaces.ClassicLeagueStandings;
+  league: leagueInterfaces.ClassicLeagueDetails;
+  standings: leagueInterfaces.ClassicLeagueStandings;
   update_status: number;
 }
 
@@ -126,9 +111,9 @@ export interface EntrySeason {
 
 export interface EntryTransfers {
   wildcards: EntryWildcard[];
-  entry: publicInterfaces.ManagerDetails;
+  entry: entryInterfaces.ManagerDetails;
   leagues: EntryLeagues;
-  history: publicInterfaces.TransferHistory[];
+  history: entryInterfaces.TransferHistory[];
 }
 
 export interface EntryWildcard {
@@ -192,7 +177,7 @@ export interface LiveEvent {
 
 export interface EventElements {
   [key: number]: {
-    stats: publicInterfaces.PlayerStats;
+    stats: gameInterfaces.PlayerStats;
   };
 }
 
@@ -212,8 +197,7 @@ export interface EventElement {
       value: number;
     };
   }>;
-  stats: publicInterfaces.PlayerStats;
-
+  stats: gameInterfaces.PlayerStats;
 }
 
 export interface Formations {

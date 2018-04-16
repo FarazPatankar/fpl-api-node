@@ -7,10 +7,10 @@ const ast = new Ast();
 
 ast.addSourceFilesFromTsConfig('tsconfig.json');
 
-const mockDir = __dirname + `/mocks/methods`;
+const mockDir = __dirname + `/fixtures/methods`;
 
 export function readRawMock(name) {
-  const dir = __dirname + `/mocks/data`;
+  const dir = __dirname + `/fixtures/data`;
   return jsonfile.readFileSync(`${dir}/${name}.json`);
 }
 
@@ -48,14 +48,12 @@ export function setMock() {
 
 }
 
-function getMethods(sourceFileName, className) {
+function getMethods(sourceFileName) {
 
   const sourceFile = ast.getSourceFile(sourceFileName);
 
-  const specClass = sourceFile.getClass(className);
-
-  const methods = specClass.getStaticMethods().filter((method) => {
-    return method.getName() !== 'getPicks';
+  const methods = sourceFile.getFunctions().filter((fn) => {
+    return fn.getName() !== 'getPicks';
   });
 
   return methods;
@@ -63,7 +61,7 @@ function getMethods(sourceFileName, className) {
 
 export function doEntryMethods(callback) {
 
-  const methods = getMethods('src/entry/entry.class.ts', 'Entry');
+  const methods = getMethods('src/api/entries.ts');
 
   const entryId = 545548;
 
@@ -87,11 +85,7 @@ export function doEntryMethods(callback) {
 
 export function doUtilsMethods(callback) {
 
-  const sourceFile = ast.getSourceFile('src/game/game.class.ts');
-
-  const specClass = sourceFile.getClass('Game');
-
-  const methods = specClass.getStaticMethods();
+  const methods = getMethods('src/api/game.ts');
 
   methods.forEach((method) => {
 
@@ -109,11 +103,7 @@ export function doUtilsMethods(callback) {
 
 export function doLeagueMethods(callback) {
 
-  const sourceFile = ast.getSourceFile('src/league/league.class.ts');
-
-  const specClass = sourceFile.getClass('League');
-
-  const methods = specClass.getStaticMethods();
+  const methods = getMethods('src/api/leagues.ts');
 
   methods.forEach((method) => {
 

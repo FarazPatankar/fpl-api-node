@@ -1,54 +1,55 @@
+
+import * as path from 'path';
+
 import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import * as rimraf from 'rimraf';
 import Ast from 'ts-simple-ast';
 
-import * as path from 'path';
 import { writeMock } from './helpers';
 
-import * as mockUtils from '../../test/test.utils';
+import * as testUtils from '../../test/test.utils';
 
-import { Entry } from '../../src/entry/entry.class';
-import { Game } from '../../src/game/game.class';
-import { League } from '../../src/api/league';
+import { entries, game, leagues } from '../../src/index';
 
 const ast = new Ast();
 
 ast.addSourceFilesFromTsConfig('tsconfig.json');
 
-mockUtils.setMock();
+testUtils.setMock();
 
-const baseDir = path.join(__dirname, '/../../', 'test/mocks/methods');
+const baseDir = path.join(__dirname, '/../../', 'test/fixtures/methods');
 
-const entryMockDir = `${baseDir}/entry`;
+const entryMockDir = `${baseDir}/entries`;
 const utilsMockDir = `${baseDir}/game`;
-const leagueMockDir = `${baseDir}/league`;
+const leagueMockDir = `${baseDir}/leagues`;
 
 function generateEntryMocks() {
-  mockUtils.doEntryMethods((method, params) => {
-    Entry[method.getName()](...params).then((data) => {
+  testUtils.doEntryMethods((method, params) => {
+    entries[method.getName()](...params).then((data) => {
       writeMock(entryMockDir, method.getName(), data);
     }).catch((e) => {
-      console.log('Entry', method.getName(), e);
+      console.log('entries:', method.getName(), e);
     });
   });
 }
 
 function generateUtilsMocks() {
-  mockUtils.doUtilsMethods((method, params) => {
-    Game[method.getName()](...params).then((data) => {
+  testUtils.doUtilsMethods((method, params) => {
+    game[method.getName()](...params).then((data) => {
       writeMock(utilsMockDir, method.getName(), data);
     }).catch((e) => {
-      console.log('Game', method.getName(), e);
+      console.log('game:', method.getName(), e);
     });
   });
 }
 
 function generateLeagueMocks() {
-  mockUtils.doLeagueMethods((method, params) => {
-    League[method.getName()](...params).then((data) => {
+  testUtils.doLeagueMethods((method, params) => {
+    leagues[method.getName()](...params).then((data) => {
       writeMock(leagueMockDir, method.getName(), data);
     }).catch((e) => {
-      console.log('League', method.getName(), e);
+      console.log('leagues:', method.getName(), e);
     });
   });
 }

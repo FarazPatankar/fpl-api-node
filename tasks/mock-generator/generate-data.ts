@@ -21,7 +21,7 @@ _.times(currentGameweek, (i) => {
   paths.push(`/event/${i + 1}/live`);
 });
 
-const baseDir = __dirname + `/../../test/mocks/data`;
+const baseDir = __dirname + `/../../test/fixtures/data`;
 
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
 

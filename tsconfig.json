@@ -11,7 +11,7 @@
     "moduleResolution": "node",
     "noEmitHelpers": false,
     "noImplicitAny": false,
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "removeComments": false,
     "sourceMap": false,
     "strictNullChecks": false,
@@ -24,6 +24,12 @@
     "typeRoots": [
       "node_modules/@types"
     ]
+  },
+  "typedocOptions": {
+    "excludeExternals": true,
+    "exclude": "**/*+(data.*|.enum|cache.*|index).ts",
+    "excludePrivate": "true",
+    "readme": "./docs/introduction.md"
   },
   "include": [
     "src/**/*"

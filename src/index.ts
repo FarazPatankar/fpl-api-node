@@ -1,5 +1,9 @@
-import * as entries from './api/entry';
+import * as entries from './api/entries';
 import * as game from './api/game';
-import * as league from './api/league';
+import * as leagues from './api/leagues';
 
-export { entries, game, league };
+export { entries, game, leagues };
+
+/**
+ * This is a doc comment for "someVar".
+ */

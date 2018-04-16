@@ -4,18 +4,19 @@
  * __Usage:__
  *
  * ```js
- * fplapi.entries.getClassicLeague(leagueId).then((data) => console.log(data));
+ * fplapi.leagues.getClassicLeague(leagueId).then((data) => console.log(data));
  * ```
+ *
+ * @module leagues
+ * @preferred
  */
 /**
  */
 
-import _ from 'lodash';
-
-import { cache } from '../cache/cache.service';
-
 import * as dataService from '../data/data.service';
-import { ClassicLeague, ClassicLeagueStandings } from '../types';
+import { ClassicLeague, ClassicLeagueStandings } from './leagues.interfaces';
+
+export { ClassicLeague, ClassicLeagueStandings };
 
 /**
  * Returns specified details of a classic league
