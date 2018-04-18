@@ -1,5 +1,5 @@
-import * as entries from './api/entries/entries.api';
-import * as game from './api/game/game.api';
-import * as leagues from './api/leagues/leagues.api';
+import * as entries from './api/api.entries';
+import * as game from './api/api.game';
+import * as leagues from './api/api.leagues';
 
 export { entries, game, leagues };

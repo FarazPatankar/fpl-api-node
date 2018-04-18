@@ -1,8 +1,12 @@
-{{#if methods}}  
+{{#each modules}}
+
+# {{module}}
+
+{{#if methods}}
 
 ## Methods
 
-{{#each methods}} 
+{{#each methods}}
 <a name="{{name}}"></a>
 {{#if name}}
 ### {{name}}
@@ -31,14 +35,16 @@ Promise.{{{displayedReturnType}}}
 {{returnType}}
 {{/if}}
 
-{{/if}} 
+{{/if}}
 ___
 {{/each}}
 {{/if}}
 
+{{/each}}
+
 {{#if dataTypes}}
 
-## Data Types
+## Interfaces
 
 {{#each dataTypes}}
 
@@ -52,8 +58,8 @@ ___
 |{{name}}|{{{displayType}}}
 {{/each}}
 
-<a href="#top">Back to top</a> 
-___  
+<a href="#top">Back to top</a>
+___
 {{/each}}
 {{/if}}
 

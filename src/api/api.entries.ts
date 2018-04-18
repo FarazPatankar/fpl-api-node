@@ -5,7 +5,7 @@
 import * as async from 'async';
 
 import * as _ from 'lodash';
-import * as dataService from '../../data/data.service';
+import * as dataService from '../data/data.service';
 import {
   Chip,
   Gameweek,
@@ -15,17 +15,7 @@ import {
   SeasonPick,
   SeasonPickStats,
   TransferHistory,
-} from './entries.interfaces';
-
-export {
-  Chip,
-  Gameweek,
-  GameweekPick,
-  Manager,
-  SeasonPick,
-  SeasonPickStats,
-  TransferHistory,
-};
+} from '../interfaces';
 
 /**
  * Returns entry summary / details.

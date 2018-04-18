@@ -61,7 +61,7 @@ function getMethods(sourceFileName) {
 
 export function doEntryMethods(callback) {
 
-  const methods = getMethods('src/api/entries/entries.api.ts');
+  const methods = getMethods('src/api/api.entries.ts');
 
   const entryId = 545548;
 
@@ -85,7 +85,7 @@ export function doEntryMethods(callback) {
 
 export function doUtilsMethods(callback) {
 
-  const methods = getMethods('src/api/game/game.api.ts');
+  const methods = getMethods('src/api/api.game.ts');
 
   methods.forEach((method) => {
 
@@ -103,7 +103,7 @@ export function doUtilsMethods(callback) {
 
 export function doLeagueMethods(callback) {
 
-  const methods = getMethods('src/api/leagues/leagues.api.ts');
+  const methods = getMethods('src/api/api.leagues.ts');
 
   methods.forEach((method) => {
 

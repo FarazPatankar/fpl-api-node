@@ -2,10 +2,8 @@
  * @module leagues
  */
 
-import * as dataService from '../../data/data.service';
-import { ClassicLeague, ClassicLeagueStandings } from './leagues.interfaces';
-
-export { ClassicLeague, ClassicLeagueStandings };
+import * as dataService from '../data/data.service';
+import { ClassicLeague, ClassicLeagueStandings } from '../interfaces';
 
 /**
  * Returns specified details of a classic league

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import * as _ from 'lodash';
-import * as gameInterfaces from '../api/game/game.interfaces';
 import { cache, stdCacheTTL } from '../cache/cache.service';
+import * as interfaces from '../interfaces';
+
 import { CustomError, ErrorCode, ErrorMessage } from './data.errors';
-import * as baseInterfaces from './data.interfaces';
 
 /**
  * Hooks into available fpl endpoints.
@@ -24,27 +24,27 @@ import * as baseInterfaces from './data.interfaces';
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
 
-export function fetchEntryRoot(entryId: number): Promise<baseInterfaces.EntryRoot> {
+export function fetchEntryRoot(entryId: number): Promise<interfaces.EntryRoot> {
   return fetch(`/entry/${entryId}/history`);
 }
 
-export function fetchEntryPicksByGameweek(entryId: number, eventNumber: number): Promise<baseInterfaces.EntryPicksRoot> {
+export function fetchEntryPicksByGameweek(entryId: number, eventNumber: number): Promise<interfaces.EntryPicksRoot> {
   return fetchEvent(`/entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
 }
 
-export function fetchEntryTransfers(entryId: number): Promise<baseInterfaces.EntryTransfers> {
+export function fetchEntryTransfers(entryId: number): Promise<interfaces.EntryTransfers> {
   return fetch(`/entry/${entryId}/transfers`);
 }
 
-export function fetchElements(): Promise<gameInterfaces.Player[]> {
+export function fetchElements(): Promise<interfaces.Player[]> {
   return fetch(`/elements`);
 }
 
-export function fetchEventByNumber(eventNumber: number): Promise<baseInterfaces.LiveEvent> {
+export function fetchEventByNumber(eventNumber: number): Promise<interfaces.LiveEvent> {
   return fetchEvent(`/event/${eventNumber}/live`, eventNumber);
 }
 
-export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<baseInterfaces.ClassicLeague> {
+export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<interfaces.ClassicLeague> {
   return fetch(`/leagues-classic-standings/${leagueId}?page=${pageNumber}`, false, {
     params: {
       'ls-page': pageNumber,
@@ -52,7 +52,7 @@ export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<
   });
 }
 
-export function getBootstrapData(): Promise<baseInterfaces.BootstrappedData> {
+export function getBootstrapData(): Promise<interfaces.BootstrappedData> {
   return fetch('/bootstrap-static');
 }
 

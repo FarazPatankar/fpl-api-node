@@ -4,10 +4,8 @@
 
 import * as _ from 'lodash';
 
-import * as dataService from '../../data/data.service';
-import { Event, GameSummary, Player, PlayerStatsMap, PlayerType, Team } from './game.interfaces';
-
-export { Event, GameSummary, Player, PlayerStatsMap, PlayerType, Team };
+import * as dataService from '../data/data.service';
+import { Event, GameSummary, Player, PlayerStatsMap, PlayerType, Team } from '../interfaces';
 
 /**
  * Returns the total number of entries
