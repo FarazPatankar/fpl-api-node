@@ -43,8 +43,8 @@ export function setMock() {
       return [200, readRawMock(file)];
     })
     .onGet('/entry/545548/transfers').reply(200, readRawMock('_entry_545548_transfers'))
-    .onGet('/updating').reply(200, '<html><p>The game is being updated.</p></html>')
-    .onGet('/error').reply(200, '<html></html>');
+    .onGet('/updating').reply(200, '<html><body><p>The game is being updated.</p></body></html>')
+    .onGet('/error').reply(200, '<html><p>Page not found</p></html>');
 
 }
 
@@ -61,7 +61,7 @@ function getMethods(sourceFileName) {
 
 export function doEntryMethods(callback) {
 
-  const methods = getMethods('src/api/entries.ts');
+  const methods = getMethods('src/api/entries/entries.api.ts');
 
   const entryId = 545548;
 
@@ -85,7 +85,7 @@ export function doEntryMethods(callback) {
 
 export function doUtilsMethods(callback) {
 
-  const methods = getMethods('src/api/game.ts');
+  const methods = getMethods('src/api/game/game.api.ts');
 
   methods.forEach((method) => {
 
@@ -103,7 +103,7 @@ export function doUtilsMethods(callback) {
 
 export function doLeagueMethods(callback) {
 
-  const methods = getMethods('src/api/leagues.ts');
+  const methods = getMethods('src/api/leagues/leagues.api.ts');
 
   methods.forEach((method) => {
 

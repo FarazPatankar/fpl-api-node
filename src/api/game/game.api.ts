@@ -1,21 +1,10 @@
 /**
- * Methods relating to the game in general.
- *
- * __Usage:__
- *
- * ```js
- * fplapi.game.getPlayers().then((data) => console.log(data));
- * ```
- *
  * @module game
- * @preferred
- */
-/**
  */
 
 import * as _ from 'lodash';
 
-import * as dataService from '../data/data.service';
+import * as dataService from '../../data/data.service';
 import { Event, GameSummary, Player, PlayerStatsMap, PlayerType, Team } from './game.interfaces';
 
 export { Event, GameSummary, Player, PlayerStatsMap, PlayerType, Team };

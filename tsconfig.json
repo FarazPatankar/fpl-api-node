@@ -11,7 +11,7 @@
     "moduleResolution": "node",
     "noEmitHelpers": false,
     "noImplicitAny": false,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "removeComments": false,
     "sourceMap": false,
     "strictNullChecks": false,
@@ -19,7 +19,7 @@
     "target": "es2016",
     "lib": [
       "es2016",
-      "dom"
+      "dom",
     ],
     "typeRoots": [
       "node_modules/@types"

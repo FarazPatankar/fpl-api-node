@@ -1,24 +1,70 @@
-# API 
+# Documentation
 
-* [[entries]]: functions covering manager etc.
-* [[leagues]]: functions to get league information.
-* [[game]]: general game data reating to players, teams and events.
- 
-# TypeScript
+A simple node API wrapper for the Fantasy Premier League (fantasy.premierleague.com) web apis. 
 
-fpl-api-node includes [TypeScript](http://www.typescriptlang.org/) definitions.
+## API
 
-<!--
-# Errors
+The API is split into 3 core modules:
 
-There are 3 error scenarios.
+### [[entries]] »
 
-* NOT_FOUND
-* UPDATING
-* ERROR
-* -->
+Methods relating to FPL managers and their team entries:
 
-# Cache
+```js
+import { entries } from 'fpl-api-node';
 
-Any outgoing http requests are cached for 30 mins. Stale data suh as past gameweeks will be cached forever. 
+
+entries.getManager(entryId).then((data) => console.log(data));
+
+```
+
+### [[leagues]] »
+
+Lookup FPL classic leagues:
+
+```js
+
+import { leagues } from 'fpl-api-node';
+
+
+entries.getClassicLeague(leagueId).then((data) => console.log(data));
+
+```
+
+### [[game]] »
+
+Methods relating to genersl FPL game data such as players, teams and gameweeks:
+
+```js
+
+import { game } from 'fpl-api-node';
+
+
+game.getPlayers().then((data) => console.log(data));
+
+```
+
+## Error Codes
+
+### EFPLUPDATING
+
+The game is updating and the web apis are not available.
+
+### EFPLREQUESTNOTFOUND
+
+The requested data was not found likely because some params were invalid.
+
+### EFPLNORESPONSE
+
+There was no response.
+
+## TypeScript
+
+* fpl-api-node is packaged with [TypeScript](http://www.typescriptlang.org/) interfaces.
+
+## Cache
+
+* Outgoing http requests are cached by default for 30 mins. 
+* Requests that will never change (such as finished gameweeks) will be cached forever.
+
 

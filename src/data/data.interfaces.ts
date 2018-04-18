@@ -1,6 +1,6 @@
-import * as entryInterfaces from '../api/entries.interfaces';
-import * as gameInterfaces from '../api/game.interfaces';
-import * as leagueInterfaces from '../api/leagues.interfaces';
+import * as entryInterfaces from '../api/entries/entries.interfaces';
+import * as gameInterfaces from '../api/game/game.interfaces';
+import * as leagueInterfaces from '../api/leagues/leagues.interfaces';
 
 export interface BootstrappedData {
   phases: Phase[];
@@ -16,7 +16,7 @@ export interface BootstrappedData {
 
 export interface EntryRoot {
   chips: entryInterfaces.Chip[];
-  entry: entryInterfaces.ManagerDetails;
+  entry: entryInterfaces.Manager;
   leagues: EntryLeagues;
   season: EntrySeason[];
   history: entryInterfaces.Gameweek[];
@@ -111,7 +111,7 @@ export interface EntrySeason {
 
 export interface EntryTransfers {
   wildcards: EntryWildcard[];
-  entry: entryInterfaces.ManagerDetails;
+  entry: entryInterfaces.Manager;
   leagues: EntryLeagues;
   history: entryInterfaces.TransferHistory[];
 }

@@ -44,11 +44,11 @@ export interface Player {
   code: number;
   first_name: string;
   second_name: string;
-  squad_number?: number;
+  squad_number: number;
   news: string;
   now_cost: number;
-  chance_of_playing_this_round?: number;
-  chance_of_playing_next_round?: number;
+  chance_of_playing_this_round: number;
+  chance_of_playing_next_round: number;
   value_form: string;
   value_season: string;
   cost_change_start: number;
@@ -118,7 +118,7 @@ export interface Team {
   loss: number;
   draw: number;
   points: number;
-  form?: any;
+  form: any;
   link_url: string;
   strength_overall_home: number;
   strength_overall_away: number;
@@ -145,11 +145,11 @@ export interface Event {
   average_entry_score: number;
   finished: boolean;
   data_checked: boolean;
-  highest_scoring_entry?: number;
+  highest_scoring_entry: number;
   deadline_time_epoch: number;
   deadline_time_game_offset: number;
   deadline_time_formatted: string;
-  highest_score?: number;
+  highest_score: number;
   is_previous: boolean;
   is_current: boolean;
   is_next: boolean;

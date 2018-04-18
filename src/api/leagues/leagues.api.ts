@@ -1,19 +1,8 @@
 /**
- * Methods relating to the leagues in general.
- *
- * __Usage:__
- *
- * ```js
- * fplapi.leagues.getClassicLeague(leagueId).then((data) => console.log(data));
- * ```
- *
  * @module leagues
- * @preferred
- */
-/**
  */
 
-import * as dataService from '../data/data.service';
+import * as dataService from '../../data/data.service';
 import { ClassicLeague, ClassicLeagueStandings } from './leagues.interfaces';
 
 export { ClassicLeague, ClassicLeagueStandings };

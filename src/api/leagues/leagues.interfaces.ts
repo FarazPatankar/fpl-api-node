@@ -18,12 +18,12 @@ export interface ClassicLeagueDetails {
   closed: boolean;
   forum_disabled: boolean;
   make_code_public: boolean;
-  rank?: any;
-  size?: any;
+  rank: any;
+  size: any;
   league_type: string;
   _scoring: string;
   reprocess_standings: boolean;
-  admin_entry?: any;
+  admin_entry: any;
   start_event: number;
 }
 

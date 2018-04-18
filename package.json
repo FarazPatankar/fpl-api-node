@@ -10,12 +10,12 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "report-coverage": "codecov",
-    "test": "nyc mocha -r ts-node/register test/test.spec.ts --timeout 5000 --slow 0",
+    "test": "nyc mocha -r ts-node/register test/test.ts --timeout 5000 --slow 0",
     "prepare": "rm -rf dist && tsc",
     "prepublishOnly": "npm run prepare && npm run lint && npm run test",
     "mock:data": "ts-node tasks/mock-generator/generate-data.ts",
     "mock:methods": "ts-node tasks/mock-generator/generate-methods.ts",
-    "docs": "typedoc --theme markdown  --out ./docs/out/md --mdFlavour gitbook --mdHideSources",
+    "docs": "typedoc --theme markdown --out ./docs/out/md --mdFlavour gitbook --mdHideSources",
     "docs:html": "typedoc --out ./docs/out/html"
   },
   "repository": {
@@ -58,12 +58,12 @@
     "nyc": "^11.6.0",
     "rimraf": "^2.6.2",
     "sinon": "^4.5.0",
-    "ts-node": "^5.0.1",
+    "ts-node": "^6.0.0",
     "ts-simple-ast": "^10.3.2",
     "tslint": "^5.9.1",
     "typedoc": "^0.11.1",
     "typedoc-plugin-external-module-name": "^1.1.1",
-    "typedoc-plugin-markdown": "^1.1.1",
+    "typedoc-plugin-markdown": "^1.1.4",
     "typescript": "^2.8.1"
   }
 }

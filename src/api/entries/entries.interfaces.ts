@@ -2,9 +2,9 @@
  * @module entries
  */
 
-import { PlayerStats } from './game.interfaces';
+import { PlayerStats } from '../game/game.interfaces';
 
-export interface ManagerDetails {
+export interface Manager {
   id: number;
   player_first_name: string;
   player_last_name: string;
@@ -22,7 +22,6 @@ export interface ManagerDetails {
   total_loans_active: number;
   transfers_or_loans: string;
   deleted: boolean;
-  email: boolean;
   joined_time: Date;
   name: string;
   bank: number;
@@ -31,23 +30,10 @@ export interface ManagerDetails {
   event_transfers: number;
   event_transfers_cost: number;
   extra_free_transfers: number;
-  strategy?: any;
-  favourite_team?: any;
+  strategy: any;
+  favourite_team: any;
   started_event: number;
   player: number;
-}
-
-export interface ManagerStats {
-  overall_rank: number;
-  highest_gameweek_rank: number;
-  lowest_gameweek_rank: number;
-  overall_points: number;
-  highest_score: number;
-  lowest_score: number;
-  average_score: number;
-  total_transfer_cost: number;
-  money_in_bank: number;
-  total_value: number;
 }
 
 export interface Chip {
@@ -65,20 +51,16 @@ export interface Gameweek {
   movement: string;
   points: number;
   total_points: number;
-  rank?: number;
-  rank_sort?: number;
+  rank: number;
+  rank_sort: number;
   overall_rank: number;
-  targets?: any;
+  targets: any;
   event_transfers: number;
   event_transfers_cost: number;
   value: number;
   points_on_bench: number;
   bank: number;
   entry: number;
-  event: number;
-}
-
-export interface GameweekPicks {
   event: number;
   picks: GameweekPick[];
 }
@@ -92,8 +74,33 @@ export interface GameweekPick {
   stats: PlayerStats;
 }
 
+export interface SeasonHistory {
+  highest_gameweek_rank: number;
+  lowest_gameweek_rank: number;
+  highest_overall_rank: number;
+  lowest_overall_rank: number;
+  highest_gameweek_score: number;
+  lowest_gameweek_score: number;
+  average_score: number;
+  total_transfer_cost: number;
+  goals_scored: number;
+  yellow_cards: number;
+  own_goals: number;
+  bonus: number;
+  red_cards: number;
+  saves: number;
+  clean_sheets: number;
+  assists: number;
+  penalties_missed: number;
+  penalties_saved: number;
+  times_in_dreamteam: number;
+  picks: SeasonPick[];
+}
+
 export interface SeasonPick {
   element: number;
+  element_type: number;
+  web_name: string;
   stats: SeasonPickStats;
 }
 

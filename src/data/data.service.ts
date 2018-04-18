@@ -1,9 +1,9 @@
 import axios from 'axios';
 import * as _ from 'lodash';
-import * as gameInterfaces from '../api/game.interfaces';
+import * as gameInterfaces from '../api/game/game.interfaces';
 import { cache, stdCacheTTL } from '../cache/cache.service';
-import { Errors } from './data.errors';
-import * as interfaces from './data.interfaces';
+import { CustomError, ErrorCode, ErrorMessage } from './data.errors';
+import * as baseInterfaces from './data.interfaces';
 
 /**
  * Hooks into available fpl endpoints.
@@ -24,15 +24,15 @@ import * as interfaces from './data.interfaces';
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
 
-export function fetchEntryRoot(entryId: number): Promise<interfaces.EntryRoot> {
+export function fetchEntryRoot(entryId: number): Promise<baseInterfaces.EntryRoot> {
   return fetch(`/entry/${entryId}/history`);
 }
 
-export function fetchEntryPicksByGameweek(entryId: number, eventNumber: number): Promise<interfaces.EntryPicksRoot> {
+export function fetchEntryPicksByGameweek(entryId: number, eventNumber: number): Promise<baseInterfaces.EntryPicksRoot> {
   return fetchEvent(`/entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
 }
 
-export function fetchEntryTransfers(entryId: number): Promise<interfaces.EntryTransfers> {
+export function fetchEntryTransfers(entryId: number): Promise<baseInterfaces.EntryTransfers> {
   return fetch(`/entry/${entryId}/transfers`);
 }
 
@@ -40,28 +40,11 @@ export function fetchElements(): Promise<gameInterfaces.Player[]> {
   return fetch(`/elements`);
 }
 
-export function fetchElement(elementId): Promise<gameInterfaces.Player> {
-  const cacheKey = `/elements/${elementId}`;
-  return new Promise((resolve: any, reject) => {
-    const cacheValue = cache.get(cacheKey);
-    if (cacheValue) {
-      resolve(cacheValue);
-    } else {
-      fetchElements().then((elements) => {
-        const matchedElement = elements.find((element) => {
-          return element.id === elementId;
-        });
-        resolve(matchedElement);
-      });
-    }
-  });
-}
-
-export function fetchEventByNumber(eventNumber: number): Promise<interfaces.LiveEvent> {
+export function fetchEventByNumber(eventNumber: number): Promise<baseInterfaces.LiveEvent> {
   return fetchEvent(`/event/${eventNumber}/live`, eventNumber);
 }
 
-export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<interfaces.ClassicLeague> {
+export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<baseInterfaces.ClassicLeague> {
   return fetch(`/leagues-classic-standings/${leagueId}?page=${pageNumber}`, false, {
     params: {
       'ls-page': pageNumber,
@@ -69,14 +52,12 @@ export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<
   });
 }
 
-export function getBootstrapData(): Promise<interfaces.BootstrappedData> {
+export function getBootstrapData(): Promise<baseInterfaces.BootstrappedData> {
   return fetch('/bootstrap-static');
 }
 
 /**
  * Fetch event related request (if event has passed we can cache it forever)
- * @param path
- * @param eventNumber
  */
 function fetchEvent(path: string, eventNumber: number): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -94,8 +75,6 @@ function fetchEvent(path: string, eventNumber: number): Promise<any> {
 
 /**
  * Fetch generic request
- * @param path
- * @param ttl
  */
 export function fetch(path: string, cacheForever = false, config = {}): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -110,14 +89,13 @@ export function fetch(path: string, cacheForever = false, config = {}): Promise<
           resolve(data);
         } else {
           if (data.includes('The game is being updated')) {
-            reject(Errors.GAME_UPDATING);
+            reject(new CustomError(ErrorMessage.GAMEUPDATING, ErrorCode.GAMEUPDATING));
           } else {
-            reject(Errors.NOT_FOUND);
+            reject(new CustomError(ErrorMessage.NOTFOUND, ErrorCode.NOTFOUND));
           }
         }
       }).catch(() => {
-        console.log('NO RESPONSE', path);
-        reject(Errors.NO_RESPONSE);
+        reject(new CustomError(ErrorMessage.NORESPONSE, ErrorCode.NORESPONSE));
       });
     }
   });
