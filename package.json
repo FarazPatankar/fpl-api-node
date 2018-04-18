@@ -15,7 +15,7 @@
     "prepublishOnly": "npm run prepare && npm run lint && npm run test",
     "mock:data": "ts-node tasks/mock-generator/generate-data.ts",
     "mock:methods": "ts-node tasks/mock-generator/generate-methods.ts",
-    "docs": "typedoc --theme markdown --out ./docs/out/md --mdFlavour gitbook --mdHideSources",
+    "docs": "typedoc --theme markdown --out ./docs/out --mdFlavour gitbook --mdHideSources",
     "docs:html": "typedoc --out ./docs/out/html"
   },
   "repository": {

@@ -64,7 +64,7 @@ There was no response.
 
 ## Cache
 
-* Outgoing http requests are cached by default for 30 mins. 
+* Outgoing http requests are cached by default for 30 minutes. 
 * Requests that will never change (such as finished gameweeks) will be cached forever.
 
 
