@@ -1,0 +1,45 @@
+## Importing
+
+```js
+import { {{module}} } from 'fpl-api-node';
+```
+
+## Methods
+
+{{#each methods}}
+
+<a name="{{name}}"></a>
+
+{{#if name}}
+
+### {{name}}
+
+{{comment}}
+
+#### ▸  {{name}}({{#each params}}{{name}}{{#unless @last}}, {{/unless}}{{/each}}):```Promise```.{{{displayedReturnType}}}
+
+```js
+{{module}}.{{name}}({{#each params}}{{name}}{{#unless @last}}, {{/unless}}{{/each}}).then((data) => console.log(data));
+```
+{{#if hasParams}}
+#### Parameters:
+
+|Name|Type|
+|---|---|
+{{#each params}}
+|{{name}}|{{type}}|
+{{/each}}
+{{/if}}
+
+#### Returns:
+{{#if isObject}}
+Promise.{{{displayedReturnType}}}
+{{else}}
+{{returnType}}
+{{/if}}
+
+{{/if}}
+___
+
+
+{{/each}}

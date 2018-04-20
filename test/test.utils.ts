@@ -28,7 +28,6 @@ export function setMock() {
 
   mock
     .onGet('/bootstrap-static').reply(200, readRawMock('_bootstrap-static'))
-    .onGet('/elements').reply(200, readRawMock('_elements'))
     .onGet('/entry/545548/history').reply(200, readRawMock('_entry_545548_history'))
     .onGet(/\/entry\/545548\/event\/\d+\/picks/).reply((config) => {
       const file = config.url ? config.url.split('/').join('_') : {};
@@ -52,16 +51,12 @@ function getMethods(sourceFileName) {
 
   const sourceFile = ast.getSourceFile(sourceFileName);
 
-  const methods = sourceFile.getFunctions().filter((fn) => {
-    return fn.getName() !== 'getPicks';
-  });
-
-  return methods;
+  return sourceFile.getFunctions();
 }
 
 export function doEntryMethods(callback) {
 
-  const methods = getMethods('src/api/api.entries.ts');
+  const methods = getMethods('src/api/api.entry.ts');
 
   const entryId = 545548;
 
@@ -103,7 +98,7 @@ export function doUtilsMethods(callback) {
 
 export function doLeagueMethods(callback) {
 
-  const methods = getMethods('src/api/api.leagues.ts');
+  const methods = getMethods('src/api/api.league.ts');
 
   methods.forEach((method) => {
 

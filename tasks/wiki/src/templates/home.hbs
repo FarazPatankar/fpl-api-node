@@ -1,0 +1,21 @@
+
+## API
+
+The API is split into 3 core modules:
+
+* [entry]({{@root.baseUrl}}/{{#getModulePageName 'entry'}}{{/getModulePageName}}): methods relating to managers and their stats.
+* [league]({{@root.baseUrl}}/{{#getModulePageName 'league'}}{{/getModulePageName}}): methods to lookup leagues.
+* [game]({{@root.baseUrl}}/{{#getModulePageName 'fpl'}}{{/getModulePageName}}): methods relating to the game in general.
+
+## Exceptions
+
+Please refer to [error codes page]({{baseUrl}}) list exception scenarios.
+
+## TypeScript
+
+* fpl-api-node is packaged with TypeScript [interfaces]({{baseUrl}}).
+
+## Cache
+
+* Outgoing http requests are cached by default for 30 minutes.
+* Requests that will never change (such as finished gameweeks) will be cached forever.

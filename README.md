@@ -22,4 +22,4 @@ entries.getManager(entryId).then((data) => console.log(data));
 
 ## Documentation
 
-Further usage and API details can be found at http://www.gitbook.com.
+[Please refer to the Wiki for API docs and more](https://github.com/tgreyjs/fpl-api-node/wiki).

@@ -1,5 +1,5 @@
-import * as entries from './api/api.entries';
-import * as game from './api/api.game';
-import * as leagues from './api/api.leagues';
+import * as entry from './api/api.entry';
+import * as fpl from './api/api.game';
+import * as league from './api/api.league';
 
-export { entries, game, leagues };
+export { entry, fpl, league };

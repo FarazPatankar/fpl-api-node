@@ -1,16 +1,18 @@
 
+/**
+ * This is a quick and dirty script to generate some responses.
+ */
+
 import * as path from 'path';
 
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import * as rimraf from 'rimraf';
 import Ast from 'ts-simple-ast';
 
+import * as testUtils from '../../test/test.utils';
 import { writeMock } from './helpers';
 
-import * as testUtils from '../../test/test.utils';
-
-import { entries, game, leagues } from '../../src/index';
+import { entry, game, league } from '../../src/index';
 
 const ast = new Ast();
 
@@ -26,10 +28,10 @@ const leagueMockDir = `${baseDir}/leagues`;
 
 function generateEntryMocks() {
   testUtils.doEntryMethods((method, params) => {
-    entries[method.getName()](...params).then((data) => {
+    entry[method.getName()](...params).then((data) => {
       writeMock(entryMockDir, method.getName(), data);
     }).catch((e) => {
-      console.log('entries:', method.getName(), e);
+      console.log('entry:', method.getName(), e);
     });
   });
 }
@@ -46,14 +48,14 @@ function generateUtilsMocks() {
 
 function generateLeagueMocks() {
   testUtils.doLeagueMethods((method, params) => {
-    leagues[method.getName()](...params).then((data) => {
+    league[method.getName()](...params).then((data) => {
       writeMock(leagueMockDir, method.getName(), data);
     }).catch((e) => {
-      console.log('leagues:', method.getName(), e);
+      console.log('league:', method.getName(), e);
     });
   });
 }
 
-rimraf(entryMockDir, generateEntryMocks);
-rimraf(utilsMockDir, generateUtilsMocks);
-rimraf(leagueMockDir, generateLeagueMocks);
+generateEntryMocks();
+generateUtilsMocks();
+generateLeagueMocks();

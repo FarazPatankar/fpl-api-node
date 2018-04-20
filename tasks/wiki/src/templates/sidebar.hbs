@@ -1,0 +1,17 @@
+## API
+
+{{#each modules}}
+
+### [{{module}}»]({{@root.baseUrl}}/{{#getModulePageName module}}{{/getModulePageName}})
+
+{{#each methods}}
+* [{{name}}]({{@root.baseUrl}}/{{#getModulePageName module}}{{/getModulePageName}}#{{name}})
+{{/each}}
+
+{{/each}}
+
+## Interfaces
+
+{{#each interfaces}}
+* [{{name}}]({{@root.baseUrl}}/interfaces#{{anchorName}})
+{{/each}}

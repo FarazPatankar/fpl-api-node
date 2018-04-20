@@ -1,27 +1,27 @@
 /**
  * @module entries
  */
-
 import * as async from 'async';
 
 import * as _ from 'lodash';
 import * as dataService from '../data/data.service';
 import {
-  Chip,
-  Gameweek,
-  GameweekPick,
-  Manager,
-  SeasonHistory,
-  SeasonPick,
-  SeasonPickStats,
-  TransferHistory,
+  EntryChip,
+  EntryGameweek,
+  EntryOverview,
+  EntryPick,
+  EntryPickStats,
+  EntrySeasonStats,
+  EntryTransferHistory,
 } from '../interfaces';
+
+import {getPicks} from './api.helpers';
 
 /**
  * Returns entry summary / details.
  * @param entryId The id of entry
  */
-export async function getManager(entryId: number): Promise<Manager> {
+export async function getOverview(entryId: number): Promise<EntryOverview> {
   const data = await dataService.fetchEntryRoot(entryId);
   return data.entry;
 }
@@ -30,7 +30,7 @@ export async function getManager(entryId: number): Promise<Manager> {
  * Returns chip details of a specified entry.
  * @param entryId The id of entry
  */
-export async function getUsedChips(entryId: number): Promise<Chip[]> {
+export async function getUsedChips(entryId: number): Promise<EntryChip[]> {
   const data = await dataService.fetchEntryRoot(entryId);
   return data.chips;
 }
@@ -39,25 +39,32 @@ export async function getUsedChips(entryId: number): Promise<Chip[]> {
  * Returns gameweek history of a specified entry.
  * @param entryId The id of entry
  */
-export function getGameweekHistory(entryId: number): Promise<Gameweek[]> {
+export function getGameweekHistory(entryId: number): Promise<EntryGameweek[]> {
 
   return new Promise((resolve, reject) => {
 
-    Promise.all([dataService.fetchEntryRoot(entryId)]).then((result) => {
+    Promise.all([dataService.fetchEntryRoot(entryId), dataService.fetchGameData()]).then((result) => {
 
-      const gameweeks = result[0].history;
+      const gameweekHistory = result[0].history;
+      const elementsMap = _.keyBy(result[1].elements, 'id');
 
-      const gameweekPicks: Gameweek[] = [];
+      const gameweeks: EntryGameweek[] = [];
 
-      async.each(gameweeks, (gameweek, nextGameweek) => {
+      async.each(gameweekHistory, (gameweek, nextGameweek) => {
 
-        getPicks(entryId, gameweek.event).then((pickDataArray) => {
-          gameweekPicks.push({ ...gameweek, picks: pickDataArray });
+        getPicks(entryId, gameweek.event).then((picks) => {
+          picks = picks.map((pick) => {
+            return {
+              ...pick,
+              element_type: elementsMap[pick.element].element_type,
+            };
+          });
+          gameweeks.push({ ...gameweek, picks });
           nextGameweek();
         });
 
       }, () => {
-        resolve(gameweekPicks);
+        resolve(gameweeks);
       });
 
     });
@@ -68,20 +75,18 @@ export function getGameweekHistory(entryId: number): Promise<Gameweek[]> {
  * Returns stats and details of entry picks over the season up to the current gameweek.
  * @param entryId The id of entry
  */
-export function getSeasonHistory(entryId: number): Promise<SeasonHistory> {
+export function getSeasonStats(entryId: number): Promise<EntrySeasonStats> {
 
   return new Promise((resolve, reject) => {
 
-    Promise.all([dataService.fetchEntryRoot(entryId), dataService.fetchElements()]).then((result) => {
+    Promise.all([dataService.fetchEntryRoot(entryId), dataService.fetchGameData()]).then((result) => {
 
       const entry = result[0].entry;
       const gameweeks = result[0].history;
-      const elements = result[1];
-
-      const elementsMap = _.keyBy(elements, 'id');
+      const elementsMap = _.keyBy(result[1].elements, 'id');
 
       const averageScore = entry.summary_overall_points / entry.current_event;
-      const picks: GameweekPick[][] = [];
+      const picks: EntryPick[][] = [];
       let highestGameweekRank = 10000000;
       let lowestGameweekRank = 0;
       let highestOverallRank = 10000000;
@@ -133,9 +138,9 @@ export function getSeasonHistory(entryId: number): Promise<SeasonHistory> {
 
         const players = _.toArray(_.mapValues(groupedPlayers, (value, playerKey) => {
 
-          let pickRoot: GameweekPick;
+          let pickRoot: EntryPick;
 
-          const playerStats: SeasonPickStats = _.reduce(value, (playerStatsResult, pick): SeasonPickStats => {
+          const playerStats: EntryPickStats = _.reduce(value, (playerStatsResult, pick): EntryPickStats => {
 
             if (!pickRoot) {
               pickRoot = pick;
@@ -209,7 +214,6 @@ export function getSeasonHistory(entryId: number): Promise<SeasonHistory> {
           return {
             element: pickRoot.element,
             element_type: element.element_type,
-            web_name: element.web_name,
             stats,
           };
 
@@ -277,49 +281,7 @@ export function getSeasonHistory(entryId: number): Promise<SeasonHistory> {
  * Returns transfer history of an entry
  * @param entryId The id of entry
  */
-export async function getTransferHistory(entryId: number): Promise<TransferHistory[]> {
+export async function getTransferHistory(entryId: number): Promise<EntryTransferHistory[]> {
   const data = await dataService.fetchEntryTransfers(entryId);
   return data.history;
-}
-
-/**
- * @private
- */
-export function getPicks(entryId: number, event: number): Promise<GameweekPick[]> {
-
-  return new Promise((resolve, reject) => {
-
-    Promise.all([
-      dataService.fetchEventByNumber(event),
-      dataService.fetchEntryPicksByGameweek(entryId, event),
-    ]).then((result) => {
-
-      const eventElements = result[0].elements;
-
-      const picksRoot = result[1];
-
-      const picks = picksRoot.picks;
-
-      const pickDataArray: GameweekPick[] = [];
-
-      async.each(picks, (pick, nextPicks) => {
-
-        const stats = eventElements[pick.element].stats;
-        const item: GameweekPick = {
-          ...pick,
-          stats,
-        };
-
-        pickDataArray.push(item);
-
-        nextPicks();
-
-      }, () => {
-        resolve(pickDataArray);
-      });
-
-    });
-
-  });
-
 }

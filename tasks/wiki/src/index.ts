@@ -1,32 +1,52 @@
+/**
+ * This is a quick and dirty script in order to get some auto generated wiki docs up.
+ */
+
 import * as fs from 'fs';
 import * as Handlebars from 'handlebars';
 import * as _ from 'lodash';
 import * as path from 'path';
-import Ast, { SourceFile } from 'ts-simple-ast';
+import Ast, { InterfaceDeclaration, SourceFile } from 'ts-simple-ast';
 
 const ast = new Ast();
+
+Handlebars.registerHelper('getModulePageName', (name, options) => {
+  return getModulePageName(name);
+});
+
+function getModulePageName(name) {
+  return `API-[${name}]`;
+}
 
 ast.addSourceFilesFromTsConfig('tsconfig.json');
 
 // get reference to files
-
-const entriesFile = ast.getSourceFile('src/api/api.entries.ts');
-
-const interfaces: any = [];
-const modules = [];
+const entriesFile = ast.getSourceFile('src/api/api.entry.ts');
+const leaguesFile = ast.getSourceFile('src/api/api.league.ts');
+const gameFile = ast.getSourceFile('src/api/api.game.ts');
 
 // get data for templates
+const baseUrl = 'https://github.com/tgreyjs/wiki-test/wiki';
+const interfaces: any = [];
+const modules = [];
+const entriesData = getData(entriesFile, 'entry');
+const leaguesData = getData(leaguesFile, 'league');
+const gameData = getData(gameFile, 'fpl');
 
-const entriesData = getData(entriesFile, 'entries');
-
+// set up context
 modules.push(entriesData);
+modules.push(leaguesData);
+modules.push(gameData);
+
+// sort interfaces
 interfaces.sort(sortByName);
-console.log({ modules, interfaces });
 
 // write pages
-writePage('HOME', {}, 'home.hbs');
-writePage('API', { modules, interfaces }, 'api.hbs');
-writePage('_Sidebar', entriesData, 'sidebar.hbs');
+writePage('HOME', { baseUrl }, 'home.hbs');
+writeApis();
+writePage('Error-Codes', {}, 'error-codes.hbs');
+writePage('Interfaces', interfaces, 'interfaces.hbs');
+writePage('_Sidebar', { modules, interfaces, baseUrl }, 'sidebar.hbs');
 
 /**
  * Returns data for a template
@@ -71,10 +91,9 @@ function getData(file: SourceFile, module) {
 
     if (matchedInterface) {
       const isArray = returnInterfaceName.includes('[]');
-      displayedReturnType = '&lt;[' + matchedInterface.getName()
-        + '](#' + getTypeAnchorName(matchedInterface) + ')'
+      displayedReturnType = `&lt;[${matchedInterface.getName()}](${baseUrl}/interfaces#${getTypeAnchorName(matchedInterface)})`
         + (isArray ? '[]' : '') + '&gt;';
-      setDataType(interfaces, matchedInterface, 'src/interfaces.ts');
+      setDataType(matchedInterface, 'src/interfaces.ts');
     } else {
       displayedReturnType = `&lt;${returnInterfaceName}&gt;`;
     }
@@ -96,74 +115,75 @@ function getData(file: SourceFile, module) {
       returnType,
     });
   });
-  // interfaces.sort(sortByName);
-  interfaces.push(interfaces);
+
   methods.sort(sortByName);
 
   return { module, methods };
 
 }
 
-function writePage(name, methods, templateName) {
-  const source = fs.readFileSync(path.join(__dirname, templateName)).toString();
-  const template = Handlebars.compile(source);
-  const result = template(methods);
-  fs.writeFileSync(path.join(__dirname, `../../../../wiki-test.wiki/${name}.md`), result, 'UTF-8');
+function writeApis() {
+  modules.forEach((module) => {
+    const moduleName = module.module;
+    writePage(getModulePageName(moduleName), { module: moduleName, methods: module.methods }, 'api.hbs');
+  });
 }
 
-function setDataType(dataTypes, matchedInterface: any, filename, inttype?) {
+function writePage(name, methods, templateName) {
+  const filename = path.join(__dirname, `../out/${name}.md`);
+  const source = fs.readFileSync(path.join(__dirname, 'templates', templateName)).toString();
+  const template = Handlebars.compile(source);
+  const result = template(methods);
+  console.log(`Wrote ${filename}`);
+  fs.writeFileSync(filename, result, 'UTF-8');
+}
+
+function setDataType(matchedInterface: InterfaceDeclaration, filename, inttype?) {
 
   const data: any = [];
 
-  // need to refactor hardcoded interface name
-  if (matchedInterface.getName() === 'EventElements') {
+  // iterate over interface properties
+
+  matchedInterface.getProperties().forEach((prop) => {
+
+    // set param type definition and description
+    const typeDef = prop.getName();
+
+    // set property type as a string
+    const propType = prop.getType().getText();
+
+    if (propType.includes('any')) {
+      return;
+    }
+
+    // set property type label
+    const propLabel = propType;
+
+    // if type is an object change label
+
+    const isArray = propType.includes('[]');
+    let displayType = '```' + propLabel + '```';
+
+    // first determine if the object is an available interface
+    const typeInterface = getInterface(filename, propType.replace('[]', ''));
+    if (typeInterface) {
+      setDataType(typeInterface, filename, typeDef);
+      displayType = getDisplayType(typeInterface) + (isArray ? '[]' : '');
+    }
+
+    const isOptional = prop.hasQuestionToken();
+
     // set the element
-    const typeInterface = getInterface(filename, 'EventElement');
-    setDataType(dataTypes, typeInterface, filename, 'EventElement');
-    data.push({ displayType: getDisplayType(typeInterface), name: '[key: number]' });
-  } else {
+    data.push({ displayType, name: typeDef, isOptional });
 
-    // iterate over interface properties
-    matchedInterface.getProperties().forEach((prop) => {
+  });
 
-      // set param type definition and description
-      const typeDef = prop.getName();
-
-      // set property type as a string
-      const propType = prop.getType().getText();
-
-      if (propType.includes('any')) {
-        return;
-      }
-
-      // set property type label
-      const propLabel = propType;
-
-      // if type is an object change label
-
-      const isArray = propType.includes('[]');
-      let displayType = '```' + propLabel + '```';
-
-      // first determine if the object is an available interface
-      const typeInterface = getInterface(filename, propType.replace('[]', ''));
-      if (typeInterface) {
-        setDataType(dataTypes, typeInterface, filename, typeDef);
-        displayType = getDisplayType(typeInterface) + (isArray ? '[]' : '');
-      }
-
-      // set the element
-      data.push({ displayType, name: typeDef });
-
-    });
-
-  }
-
-  const inArray = dataTypes.find((dataType) => {
+  const inArray = interfaces.find((dataType) => {
     return dataType.name === matchedInterface.getName();
   });
 
   if (!inArray) {
-    dataTypes.push({
+    interfaces.push({
       anchorName: getTypeAnchorName(matchedInterface),
       data,
       name: matchedInterface.getName(),

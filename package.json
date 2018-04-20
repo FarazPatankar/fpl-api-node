@@ -12,9 +12,9 @@
     "test": "nyc mocha -r ts-node/register test/test.ts --timeout 5000 --slow 0",
     "prepare": "rm -rf dist && tsc",
     "prepublishOnly": "npm run prepare && npm run lint && npm run test",
-    "mock:data": "ts-node tasks/mock-generator/generate-data.ts",
-    "mock:methods": "ts-node tasks/mock-generator/generate-methods.ts",
-    "wiki": "ts-node tasks/wiki/src/index.ts"
+    "mock:data": "rm -rf test/fixtures/data/* && ts-node tasks/mock-generator/generate-data.ts",
+    "mock:methods": "rm -rf test/fixtures/methods/* && ts-node tasks/mock-generator/generate-methods.ts",
+    "wiki": "rm -rf tasks/wiki/out/* && ts-node tasks/wiki/src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -45,16 +45,17 @@
   "devDependencies": {
     "@types/axios-mock-adapter": "^1.10.0",
     "@types/chai": "^4.1.2",
+    "@types/handlebars": "^4.0.37",
     "@types/jsonfile": "^4.0.1",
     "@types/mocha": "^5.0.0",
     "@types/node": "^9.6.5",
     "@types/sinon": "^4.3.1",
     "axios-mock-adapter": "^1.15.0",
     "chai": "^4.1.2",
+    "handlebars": "^4.0.11",
     "jsonfile": "^4.0.0",
     "mocha": "^5.1.0",
     "nyc": "^11.6.0",
-    "rimraf": "^2.6.2",
     "sinon": "^4.5.0",
     "ts-node": "^6.0.0",
     "ts-simple-ast": "^10.3.2",

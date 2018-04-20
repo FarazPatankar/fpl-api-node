@@ -1,0 +1,14 @@
+{{#each this}}
+
+<a name="{{anchorName}}"></a>
+
+### {{name}}
+
+|Property|Type
+|---|---|
+{{#each data}}
+|{{name}}{{#if isOptional}} `«optional»`{{/if}}|{{{displayType}}}
+{{/each}}
+
+___
+{{/each}}

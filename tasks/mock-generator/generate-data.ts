@@ -1,3 +1,7 @@
+/**
+ * This is a quick and dirty script to generate some data.
+ */
+
 import axios from 'axios';
 import * as _ from 'lodash';
 
@@ -5,10 +9,11 @@ import * as mockUtils from '../../test/test.utils';
 import { writeMock } from './helpers';
 
 const entryId = 545548;
-const currentGameweek = 32;
+const currentGameweek = 34;
 const paths = [
   '/bootstrap-static',
   '/elements',
+  '/events',
   '/entry/545548',
   '/entry/545548/history',
   '/entry/545548/transfers',

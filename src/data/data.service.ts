@@ -24,6 +24,10 @@ import { CustomError, ErrorCode, ErrorMessage } from './data.errors';
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
 
+export function fetchGameData(): Promise<interfaces.GameData> {
+  return fetch('/bootstrap-static');
+}
+
 export function fetchEntryRoot(entryId: number): Promise<interfaces.EntryRoot> {
   return fetch(`/entry/${entryId}/history`);
 }
@@ -36,24 +40,16 @@ export function fetchEntryTransfers(entryId: number): Promise<interfaces.EntryTr
   return fetch(`/entry/${entryId}/transfers`);
 }
 
-export function fetchElements(): Promise<interfaces.Player[]> {
-  return fetch(`/elements`);
-}
-
 export function fetchEventByNumber(eventNumber: number): Promise<interfaces.LiveEvent> {
   return fetchEvent(`/event/${eventNumber}/live`, eventNumber);
 }
 
-export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<interfaces.ClassicLeague> {
+export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<interfaces.League> {
   return fetch(`/leagues-classic-standings/${leagueId}?page=${pageNumber}`, false, {
     params: {
       'ls-page': pageNumber,
     },
   });
-}
-
-export function getBootstrapData(): Promise<interfaces.BootstrappedData> {
-  return fetch('/bootstrap-static');
 }
 
 /**
@@ -65,7 +61,7 @@ function fetchEvent(path: string, eventNumber: number): Promise<any> {
     if (cacheValue) {
       resolve(cacheValue);
     } else {
-      return getBootstrapData().then((data) => {
+      return fetchGameData().then((data) => {
         const currentEvent = data['current-event'];
         resolve(fetch(path, eventNumber < currentEvent));
       });

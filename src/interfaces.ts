@@ -1,6 +1,6 @@
 // public
 
-export interface Manager {
+export interface EntryOverview {
   id: number;
   player_first_name: string;
   player_last_name: string;
@@ -17,7 +17,6 @@ export interface Manager {
   total_loans: number;
   total_loans_active: number;
   transfers_or_loans: string;
-  deleted: boolean;
   joined_time: Date;
   name: string;
   bank: number;
@@ -32,7 +31,7 @@ export interface Manager {
   player: number;
 }
 
-export interface Chip {
+export interface EntryChip {
   played_time_formatted: string;
   status: string;
   name: string;
@@ -42,7 +41,7 @@ export interface Chip {
   event: number;
 }
 
-export interface Gameweek {
+export interface EntryGameweek {
   id: number;
   movement: string;
   points: number;
@@ -58,19 +57,52 @@ export interface Gameweek {
   bank: number;
   entry: number;
   event: number;
-  picks: GameweekPick[];
+  picks: EntryPick[];
 }
 
-export interface GameweekPick {
+export interface EntryPick {
   element: number;
-  position: number;
-  is_captain: boolean;
-  is_vice_captain: boolean;
-  multiplier: number;
-  stats: PlayerStats;
+  element_type: number;
+  position?: number;
+  is_captain?: boolean;
+  is_vice_captain?: boolean;
+  stats: EntryPickStats;
 }
 
-export interface SeasonHistory {
+export interface EntryPickStats {
+  yellow_cards: number;
+  own_goals: number;
+  creativity: number;
+  goals_conceded: number;
+  bonus: number;
+  red_cards: number;
+  saves: number;
+  influence: number;
+  bps: number;
+  clean_sheets: number;
+  assists: number;
+  ict_index: number;
+  goals_scored: number;
+  threat: number;
+  penalties_missed: number;
+  total_points: number;
+  penalties_saved: number;
+  in_dreamteam: boolean;
+  minutes: number;
+
+  average_played?: number;
+  average_benched?: number;
+  average_captained?: number;
+  times_played?: number;
+  times_captained?: number;
+  times_benched?: number;
+  times_absent?: number;
+  times_in_dreamteam?: number;
+  total_captain_points?: number;
+  total_bench_points?: number;
+}
+
+export interface EntrySeasonStats {
   highest_gameweek_rank: number;
   lowest_gameweek_rank: number;
   highest_overall_rank: number;
@@ -90,30 +122,10 @@ export interface SeasonHistory {
   penalties_missed: number;
   penalties_saved: number;
   times_in_dreamteam: number;
-  picks: SeasonPick[];
+  picks: EntryPick[];
 }
 
-export interface SeasonPick {
-  element: number;
-  element_type: number;
-  web_name: string;
-  stats: SeasonPickStats;
-}
-
-export interface SeasonPickStats extends PlayerStats {
-  average_played: number;
-  average_benched: number;
-  average_captained: number;
-  times_played: number;
-  times_captained: number;
-  times_benched: number;
-  times_absent: number;
-  times_in_dreamteam: number;
-  total_captain_points: number;
-  total_bench_points: number;
-}
-
-export interface TransferHistory {
+export interface EntryTransferHistory {
   id: number;
   time_formatted: string;
   time: Date;
@@ -151,14 +163,14 @@ export interface PlayerStatsMap {
   [key: number]: PlayerStats;
 }
 
-export interface GameSummary {
+export interface FplSummary {
   total_players: number;
   current_event: number;
   last_entry_event: number;
   next_event: number;
 }
 
-export interface Player {
+export interface FplPlayer {
   id: number;
   photo: string;
   web_name: string;
@@ -218,7 +230,7 @@ export interface Player {
   team: number;
 }
 
-export interface PlayerType {
+export interface FplPlayerType {
   id: number;
   singular_name: string;
   singular_name_short: string;
@@ -226,10 +238,8 @@ export interface PlayerType {
   plural_name_short: string;
 }
 
-export interface Team {
+export interface FplTeam {
   id: number;
-  current_event_fixture: TeamFixture[];
-  next_event_fixture: TeamFixture[];
   name: string;
   code: number;
   short_name: string;
@@ -252,16 +262,7 @@ export interface Team {
   team_division: number;
 }
 
-export interface TeamFixture {
-  is_home: boolean;
-  month: number;
-  event_day: number;
-  id: number;
-  day: number;
-  opponent: number;
-}
-
-export interface Event {
+export interface FplGameweek {
   id: number;
   name: string;
   deadline_time: Date;
@@ -278,14 +279,14 @@ export interface Event {
   is_next: boolean;
 }
 
-export interface ClassicLeague {
-  new_entries: ClassicLeagueStandings;
-  league: ClassicLeagueDetails;
-  standings: ClassicLeagueStandings;
+export interface League {
+  new_entries: LeagueStandings;
+  league: LeagueOverview;
+  standings: LeagueStandings;
   update_status: number;
 }
 
-export interface ClassicLeagueDetails {
+export interface LeagueOverview {
   id: number;
   leagueban_set: any[];
   name: string;
@@ -303,7 +304,7 @@ export interface ClassicLeagueDetails {
   start_event: number;
 }
 
-export interface ClassicLeagueStandings {
+export interface LeagueStandings {
   has_next: boolean;
   number: number;
   results: LeagueResult[];
@@ -327,32 +328,32 @@ export interface LeagueResult {
 }
 
 // private
-export interface BootstrappedData {
+export interface GameData {
   phases: Phase[];
-  elements: Player[];
+  elements: FplPlayer[];
   'total-players': number;
   'current-event': number;
   'next-event': number;
   'last-entry-event': number;
-  teams: Team[];
-  element_types: PlayerType[];
-  events: Event[];
+  teams: FplTeam[];
+  element_types: FplPlayerType[];
+  events: FplGameweek[];
 }
 
 export interface EntryRoot {
-  chips: Chip[];
-  entry: Manager;
+  chips: EntryChip[];
+  entry: EntryOverview;
   leagues: EntryLeagues;
   season: EntrySeason[];
-  history: Gameweek[];
+  history: EntryGameweek[];
 }
 
 export interface EntryPicksRoot {
   active_chip: string;
   automatic_subs: EntryAutomaticSub[];
-  entry_history: Gameweek;
-  event: Event;
-  picks: Pick[];
+  entry_history: EntryGameweek;
+  event: FplGameweek;
+  picks: EntryPick[];
 }
 
 export interface Phase {
@@ -362,20 +363,20 @@ export interface Phase {
   stop_event: number;
 }
 
-export interface ClassicLeague {
-  new_entries: ClassicLeagueStandings;
-  league: ClassicLeagueDetails;
-  standings: ClassicLeagueStandings;
+export interface League {
+  new_entries: LeagueStandings;
+  league: LeagueOverview;
+  standings: LeagueStandings;
   update_status: number;
 }
-
-export interface Pick {
+/*
+export interface EntryGameweekPick {
   element: number;
   position: number;
   is_captain: boolean;
   is_vice_captain: boolean;
   multiplier: number;
-}
+}*/
 
 export interface EntryState {
   event: number;
@@ -436,9 +437,9 @@ export interface EntrySeason {
 
 export interface EntryTransfers {
   wildcards: EntryWildcard[];
-  entry: Manager;
+  entry: EntryOverview;
   leagues: EntryLeagues;
-  history: TransferHistory[];
+  history: EntryTransferHistory[];
 }
 
 export interface EntryWildcard {

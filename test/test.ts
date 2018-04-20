@@ -6,26 +6,26 @@ import * as sinon from 'sinon';
 import { cache } from '../src/cache/cache.service';
 import { ErrorCode } from '../src/data/data.errors';
 import * as dataService from '../src/data/data.service';
-import {entries, game, leagues } from '../src/index';
+import {entry, fpl, league } from '../src/index';
 import * as testUtils from './test.utils';
 
 testUtils.setMock();
 
 describe('entries module', () => {
   testUtils.doEntryMethods((method, params) => {
-    doSpec(entries, method, params, 'entries');
+    doSpec(entry, method, params, 'entries');
   });
 });
 
 describe('leagues module', () => {
   testUtils.doLeagueMethods((method, params) => {
-    doSpec(leagues, method, params, 'leagues');
+    doSpec(league, method, params, 'leagues');
   });
 });
 
 describe('game module', () => {
   testUtils.doUtilsMethods((method, params) => {
-    doSpec(game, method, params, 'game');
+    doSpec(fpl, method, params, 'game');
   });
 });
 
