@@ -12,7 +12,7 @@ import Ast from 'ts-simple-ast';
 import * as testUtils from '../../test/test.utils';
 import { writeMock } from './helpers';
 
-import { entry, game, league } from '../../src/index';
+import { entry, fpl, league } from '../../src/index';
 
 const ast = new Ast();
 
@@ -38,7 +38,7 @@ function generateEntryMocks() {
 
 function generateUtilsMocks() {
   testUtils.doUtilsMethods((method, params) => {
-    game[method.getName()](...params).then((data) => {
+    fpl[method.getName()](...params).then((data) => {
       writeMock(utilsMockDir, method.getName(), data);
     }).catch((e) => {
       console.log('game:', method.getName(), e);

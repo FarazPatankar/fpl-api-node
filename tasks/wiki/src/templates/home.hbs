@@ -4,18 +4,38 @@
 The API is split into 3 core modules:
 
 * [entry]({{@root.baseUrl}}/{{#getModulePageName 'entry'}}{{/getModulePageName}}): methods relating to managers and their stats.
-* [league]({{@root.baseUrl}}/{{#getModulePageName 'league'}}{{/getModulePageName}}): methods to lookup leagues.
-* [game]({{@root.baseUrl}}/{{#getModulePageName 'fpl'}}{{/getModulePageName}}): methods relating to the game in general.
+* [league]({{@root.baseUrl}}/{{#getModulePageName 'league'}}{{/getModulePageName}}): methods to lookup league details and entries.
+* [fpl]({{@root.baseUrl}}/{{#getModulePageName 'fpl'}}{{/getModulePageName}}): methods relating to the FPL game in general.
 
 ## Exceptions
 
-Please refer to [error codes page]({{baseUrl}}) list exception scenarios.
+* All methods return promises and exceptions should be caught in a catch handler.
+* Please refer to the [error codes]({{baseUrl}}/Error-Codes) page.
 
 ## TypeScript
 
-* fpl-api-node is packaged with TypeScript [interfaces]({{baseUrl}}).
+* fpl-api-node is packaged with TypeScript definitions.
 
-## Cache
+## Caching
 
-* Outgoing http requests are cached by default for 30 minutes.
+* By default all http requests are cached by default for 30 minutes.
 * Requests that will never change (such as finished gameweeks) will be cached forever.
+
+
+## Available fpl endpoints
+
+fpl-api-node is simply a wrapper extracting data from various endpoints.
+
+For those wanting to access these directly the available endpoints are:
+
+ * https://fantasy.premierleague.com/drf/bootstrap-static
+ * https://fantasy.premierleague.com/drf/entry/${id}
+ * https://fantasy.premierleague.com/drf/entry/${id}/history
+ * https://fantasy.premierleague.com/drf/entry/${id}/event/{$event}/picks
+ * https://fantasy.premierleague.com/drf/entry/${id}/transfers
+ * https://fantasy.premierleague.com/drf/teams
+ * https://fantasy.premierleague.com/drf/elements
+ * https://fantasy.premierleague.com/drf/events
+ * https://fantasy.premierleague.com/drf/game-settings
+ * https://fantasy.premierleague.com/drf/event/${event}/live
+ * https://fantasy.premierleague.com/drf/leagues-classic-standings/${id}

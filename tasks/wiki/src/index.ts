@@ -26,7 +26,7 @@ const leaguesFile = ast.getSourceFile('src/api/api.league.ts');
 const gameFile = ast.getSourceFile('src/api/api.game.ts');
 
 // get data for templates
-const baseUrl = 'https://github.com/tgreyjs/wiki-test/wiki';
+const baseUrl = 'https://github.com/tgreyjs/fpl-api-node/wiki';
 const interfaces: any = [];
 const modules = [];
 const entriesData = getData(entriesFile, 'entry');

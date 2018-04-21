@@ -8,7 +8,7 @@ import * as dataService from '../data/data.service';
 import { FplGameweek, FplPlayer, FplPlayerType, FplSummary, FplTeam, PlayerStatsMap } from '../interfaces';
 
 /**
- * Returns the total number of entries
+ * Returns some general game info.
  */
 export async function getSummary(): Promise<FplSummary> {
   const data = await dataService.fetchGameData();
