@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import * as dataService from '../data/data.service';
 import {
   EntryChip,
+  EntryClub,
   EntryGameweek,
   EntryOverview,
   EntryPick,
@@ -15,7 +16,8 @@ import {
   EntryTransferHistory,
 } from '../interfaces';
 
-import {getPicks} from './api.helpers';
+import { getStatsHeadings } from './api.game';
+import { getEventPicks } from './api.helpers';
 
 /**
  * Returns entry summary / details.
@@ -39,54 +41,29 @@ export async function getUsedChips(entryId: number): Promise<EntryChip[]> {
  * Returns gameweek history of a specified entry.
  * @param entryId The id of entry
  */
-export function getGameweekHistory(entryId: number): Promise<EntryGameweek[]> {
 
-  return new Promise((resolve, reject) => {
-
-    Promise.all([dataService.fetchEntryRoot(entryId), dataService.fetchGameData()]).then((result) => {
-
-      const gameweekHistory = result[0].history;
-      const elementsMap = _.keyBy(result[1].elements, 'id');
-
-      const gameweeks: EntryGameweek[] = [];
-
-      async.each(gameweekHistory, (gameweek, nextGameweek) => {
-
-        getPicks(entryId, gameweek.event).then((picks) => {
-          picks = picks.map((pick) => {
-            return {
-              ...pick,
-              element_type: elementsMap[pick.element].element_type,
-            };
-          });
-          gameweeks.push({ ...gameweek, picks });
-          nextGameweek();
-        });
-
-      }, () => {
-        resolve(gameweeks);
-      });
-
-    });
-  });
+export async function getGameweekHistory(entryId: number): Promise<EntryGameweek[]> {
+  const entry = await dataService.fetchEntryRoot(entryId);
+  return entry.history;
 }
 
 /**
  * Returns stats and details of entry picks over the season up to the current gameweek.
  * @param entryId The id of entry
  */
+
 export function getSeasonStats(entryId: number): Promise<EntrySeasonStats> {
 
   return new Promise((resolve, reject) => {
 
-    Promise.all([dataService.fetchEntryRoot(entryId), dataService.fetchGameData()]).then((result) => {
+    Promise.all([dataService.fetchEntryRoot(entryId), getSeasonPicks(entryId)]).then((result) => {
 
       const entry = result[0].entry;
       const gameweeks = result[0].history;
-      const elementsMap = _.keyBy(result[1].elements, 'id');
 
       const averageScore = entry.summary_overall_points / entry.current_event;
-      const picks: EntryPick[][] = [];
+      const picks = result[1];
+
       let highestGameweekRank = 10000000;
       let lowestGameweekRank = 0;
       let highestOverallRank = 10000000;
@@ -94,8 +71,9 @@ export function getSeasonStats(entryId: number): Promise<EntrySeasonStats> {
       let highestGameweekScore = 0;
       let lowestGameweekScore = 500;
       let totalTransferCost = 0;
+      let transferHits = 0;
 
-      async.each(gameweeks, (gameweek, nextGameweek) => {
+      gameweeks.forEach((gameweek) => {
 
         // gw ranks
         const gwRank = gameweek.rank;
@@ -125,9 +103,64 @@ export function getSeasonStats(entryId: number): Promise<EntrySeasonStats> {
         }
 
         // transfers
-        totalTransferCost = totalTransferCost + gameweek.event_transfers_cost;
+        if (gameweek.event_transfers_cost > 0) {
+          totalTransferCost = totalTransferCost + gameweek.event_transfers_cost;
+          transferHits = transferHits + gameweek.event_transfers_cost / 4;
 
-        getPicks(entryId, gameweek.event).then((pickDataArray) => {
+        }
+
+      });
+
+      resolve({
+        highest_gameweek_rank: highestGameweekRank,
+        lowest_gameweek_rank: lowestGameweekRank,
+        highest_overall_rank: highestOverallRank,
+        lowest_overall_rank: lowestOverallRank,
+        highest_gameweek_score: highestGameweekScore,
+        average_score: averageScore,
+        lowest_gameweek_score: lowestGameweekScore,
+        total_transfer_cost: totalTransferCost * -1,
+        transfer_hits: transferHits,
+      });
+
+    });
+
+  });
+}
+
+/**
+ * Returns stats and details of entry picks over the season up to the current gameweek.
+ * @param entryId The id of entry
+ */
+export function getSeasonPicks(entryId: number): Promise<any[]> {
+
+  return new Promise((resolve, reject) => {
+
+    Promise.all([dataService.fetchEntryRoot(entryId), getStatsHeadings()]).then((result) => {
+
+      const entry = result[0].entry;
+      const gameweeks = result[0].history;
+      const statHeadings = [
+        { field: 'minutes', label: 'Minutes played' },
+        { field: 'goals_scored', label: 'Goals scored' },
+        { field: 'assists', label: 'Assists' },
+        { field: 'clean_sheets', label: 'Clean sheets' },
+        { field: 'goals_conceded', label: 'Goals conceded' },
+        { field: 'own_goals', label: 'Own goals' },
+        { field: 'penalties_saved', label: 'Penalties saved' },
+        { field: 'penalties_missed', label: 'Penalties missed' },
+        { field: 'yellow_cards', label: 'Yellow cards' },
+        { field: 'red_cards', label: 'Red cards' },
+        { field: 'saves', label: 'Saves' },
+        { field: 'bonus', label: 'Bonus' },
+      ];
+      const capMins = 0;
+
+      const picks: EntryPick[][] = [];
+
+      async.each(gameweeks, (gameweek, nextGameweek) => {
+
+        getEventPicks(entryId, gameweek.event).then((pickDataArray) => {
           picks.push(pickDataArray);
           nextGameweek();
         });
@@ -136,25 +169,63 @@ export function getSeasonStats(entryId: number): Promise<EntrySeasonStats> {
 
         const groupedPlayers = _.groupBy(_.flatten(picks), 'element');
 
-        const players = _.toArray(_.mapValues(groupedPlayers, (value, playerKey) => {
+        const players = _.mapValues(groupedPlayers, (value, playerKey) => {
 
           let pickRoot: EntryPick;
+          const explain = {};
+          const captain = {};
 
-          const playerStats: EntryPickStats = _.reduce(value, (playerStatsResult, pick): EntryPickStats => {
+          const playerStats: any = {};
+
+          statHeadings.forEach((heading) => {
+            explain[heading.field] = {
+              points: 0,
+              value: 0,
+            };
+          });
+
+          statHeadings.forEach((heading) => {
+            captain[heading.field] = {
+              points: 0,
+              value: 0,
+            };
+          });
+
+          value.forEach((pick) => {
 
             if (!pickRoot) {
               pickRoot = pick;
             }
 
             function setProp(prop: string, increment = false, propOveride?: string) {
-              return playerStatsResult[prop] =
-                increment ? playerStatsResult[prop] + 1 :
-                  playerStatsResult[prop] + pick.stats[propOveride ? propOveride : prop];
+              if (playerStats[prop] === undefined) {
+                playerStats[prop] = 0;
+              }
+              playerStats[prop] =
+                increment ? playerStats[prop] + 1 :
+                  playerStats[prop] + pick.stats[propOveride ? propOveride : prop];
             }
 
-            if (pick.is_captain) {
+            if (pick.multiplier > 1) {
+
               setProp('times_captained', true);
               setProp('total_captain_points', false, 'total_points');
+
+              if (pick.explain.length > 0) {
+                pick.explain.forEach((pickExplain) => {
+                  pickExplain.forEach((innerExplain) => {
+                    Object.keys(innerExplain).forEach((key) => {
+                      captain[key].points = captain[key].points + innerExplain[key].points;
+                      captain[key].value = captain[key].value + innerExplain[key].value;
+                      if (pick.multiplier === 3) {
+                        captain[key].points = captain[key].points + innerExplain[key].points;
+                        captain[key].value = captain[key].value + innerExplain[key].value;
+                      }
+                    });
+                  });
+                });
+              }
+
             }
 
             if (pick.position <= 11 && pick.stats.minutes > 0) {
@@ -163,45 +234,24 @@ export function getSeasonStats(entryId: number): Promise<EntrySeasonStats> {
                 setProp(key);
               });
 
+              if (pick.explain.length > 0) {
+                pick.explain.forEach((pickExplain) => {
+                  pickExplain.forEach((innerExplain) => {
+                    Object.keys(innerExplain).forEach((key) => {
+                      explain[key].points = explain[key].points + innerExplain[key].points;
+                      explain[key].value = explain[key].value + innerExplain[key].value;
+                    });
+                  });
+                });
+              }
+
             } else if (pick.stats.minutes > 0) {
               setProp('times_benched', true);
               setProp('total_bench_points', false, 'total_points');
             } else {
               setProp('times_absent', true);
             }
-
-            return playerStatsResult;
-          }, {
-              yellow_cards: 0,
-              own_goals: 0,
-              creativity: 0,
-              goals_conceded: 0,
-              bonus: 0,
-              red_cards: 0,
-              saves: 0,
-              influence: 0,
-              bps: 0,
-              clean_sheets: 0,
-              assists: 0,
-              ict_index: 0,
-              goals_scored: 0,
-              threat: 0,
-              penalties_missed: 0,
-              total_points: 0,
-              penalties_saved: 0,
-              in_dreamteam: false,
-              minutes: 0,
-              average_played: 0,
-              average_benched: 0,
-              average_captained: 0,
-              times_played: 0,
-              times_captained: 0,
-              times_benched: 0,
-              times_absent: 0,
-              times_in_dreamteam: 0,
-              total_captain_points: 0,
-              total_bench_points: 0,
-            });
+          });
 
           const averages = {
             average_played: playerStats.total_points / playerStats.times_played || 0,
@@ -209,68 +259,18 @@ export function getSeasonStats(entryId: number): Promise<EntrySeasonStats> {
             average_captained: playerStats.total_captain_points / playerStats.times_captained || 0,
           };
           const stats = { ...playerStats, ...averages };
-          const element = elementsMap[pickRoot.element];
-
           return {
             element: pickRoot.element,
-            element_type: element.element_type,
+            element_type: pickRoot.element_type,
+            team_code: pickRoot.team_code,
             stats,
+            explain,
+            captain: playerStats.times_captained > 0 ? captain : {},
           };
 
-        }));
-
-        // picks
-        let goals = 0;
-        let assists = 0;
-        let bonus = 0;
-        let yellowCards = 0;
-        let redCards = 0;
-        let cleanSheets = 0;
-        let ownGoals = 0;
-        let pensMissed = 0;
-        let saves = 0;
-        let pensSaved = 0;
-        let dreamteam = 0;
-
-        players.forEach((player) => {
-
-          goals = goals + (player.stats.goals_scored > 0 ? player.stats.goals_scored : 0);
-          ownGoals = ownGoals + (player.stats.own_goals > 0 ? player.stats.own_goals : 0);
-          assists = assists + (player.stats.assists > 0 ? player.stats.assists : 0);
-          bonus = bonus + (player.stats.bonus > 0 ? player.stats.bonus : 0);
-          yellowCards = yellowCards + (player.stats.yellow_cards > 0 ? player.stats.yellow_cards : 0);
-          pensMissed = pensMissed + (player.stats.penalties_missed > 0 ? player.stats.penalties_missed : 0);
-          redCards = redCards + (player.stats.red_cards > 0 ? player.stats.red_cards : 0);
-          pensSaved = pensSaved + (player.stats.penalties_saved > 0 ? player.stats.penalties_saved : 0);
-          saves = saves + (player.stats.saves > 0 ? player.stats.saves : 0);
-          dreamteam = dreamteam + (player.stats.times_in_dreamteam > 0 ? player.stats.times_in_dreamteam : 0);
-          if (player.element_type === 1 || player.element_type === 2) {
-            cleanSheets = cleanSheets + (player.stats.clean_sheets > 0 ? player.stats.clean_sheets : 0);
-          }
         });
 
-        resolve({
-          highest_gameweek_rank: highestGameweekRank,
-          lowest_gameweek_rank: lowestGameweekRank,
-          highest_overall_rank: highestOverallRank,
-          lowest_overall_rank: lowestOverallRank,
-          highest_gameweek_score: highestGameweekScore,
-          average_score: averageScore,
-          lowest_gameweek_score: lowestGameweekScore,
-          total_transfer_cost: totalTransferCost,
-          goals_scored: goals,
-          yellow_cards: yellowCards,
-          own_goals: ownGoals,
-          bonus,
-          red_cards: redCards,
-          saves,
-          clean_sheets: cleanSheets,
-          assists,
-          penalties_missed: pensMissed,
-          penalties_saved: pensSaved,
-          times_in_dreamteam: dreamteam,
-          picks: players,
-        });
+        resolve(_.toArray(players));
 
       });
     });
@@ -285,3 +285,34 @@ export async function getTransferHistory(entryId: number): Promise<EntryTransfer
   const data = await dataService.fetchEntryTransfers(entryId);
   return data.history;
 }
+
+/**
+ * Get stats for teams, including overall and player contributions.
+ * @param entryId The id of entry
+ */
+/*
+export async function getTeamStats(entryId: number): Promise<EntryClub[]> {
+
+  const seasonPicks = await getSeasonPicks(entryId);
+
+  const teams = _.toArray(_.groupBy(seasonPicks, (player) => {
+    return player.team_code;
+  })).map((picks) => {
+
+    const totalPoints = _.reduce(picks, (sum, n) => {
+
+      return sum + n.stats.total_points;
+    }, 0);
+
+    return {
+      team_code: picks[0].team_code,
+      total_points: totalPoints,
+      players_selected: picks.length,
+      picks,
+    };
+  });
+
+  return teams;
+
+}
+*/

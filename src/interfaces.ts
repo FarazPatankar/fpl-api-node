@@ -41,6 +41,13 @@ export interface EntryChip {
   event: number;
 }
 
+export interface EntryClub {
+  team_code: number;
+  total_points: number;
+  players_selected: number;
+  picks: EntryPick[];
+}
+
 export interface EntryGameweek {
   id: number;
   movement: string;
@@ -57,7 +64,6 @@ export interface EntryGameweek {
   bank: number;
   entry: number;
   event: number;
-  picks: EntryPick[];
 }
 
 export interface EntryPick {
@@ -65,8 +71,20 @@ export interface EntryPick {
   element_type: number;
   position?: number;
   is_captain?: boolean;
+  multiplier?: number;
   is_vice_captain?: boolean;
   stats: EntryPickStats;
+  explain?: any;
+  team_code: number;
+  event: number;
+}
+
+export interface EntryPickExplain {
+  [key: string]: Array<{
+    points: number;
+    name: string;
+    value: number;
+  }>;
 }
 
 export interface EntryPickStats {
@@ -111,18 +129,8 @@ export interface EntrySeasonStats {
   lowest_gameweek_score: number;
   average_score: number;
   total_transfer_cost: number;
-  goals_scored: number;
-  yellow_cards: number;
-  own_goals: number;
-  bonus: number;
-  red_cards: number;
-  saves: number;
-  clean_sheets: number;
-  assists: number;
-  penalties_missed: number;
-  penalties_saved: number;
-  times_in_dreamteam: number;
-  picks: EntryPick[];
+  transfer_hits: number;
+
 }
 
 export interface EntryTransferHistory {
@@ -338,6 +346,19 @@ export interface GameData {
   teams: FplTeam[];
   element_types: FplPlayerType[];
   events: FplGameweek[];
+  stats: {
+    headings: Array<{
+      field: string;
+      label: string;
+      category: string;
+      abbr: string;
+    }>,
+  };
+}
+
+export interface FplStatHeadings {
+  field: string;
+  label: string;
 }
 
 export interface EntryRoot {
@@ -502,9 +523,7 @@ export interface LiveEvent {
 }
 
 export interface EventElements {
-  [key: number]: {
-    stats: PlayerStats;
-  };
+  [key: number]: EventElement;
 }
 
 export interface EventPointSource {
@@ -517,11 +536,7 @@ export interface EventPointSource {
 
 export interface EventElement {
   explain: Array<{
-    [key: string]: {
-      points: number;
-      name: string;
-      value: number;
-    };
+    [key: string]: EntryPickExplain;
   }>;
   stats: PlayerStats;
 }

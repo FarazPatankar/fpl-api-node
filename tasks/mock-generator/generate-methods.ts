@@ -1,4 +1,3 @@
-
 /**
  * This is a quick and dirty script to generate some responses.
  */
