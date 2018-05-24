@@ -1,0 +1,210 @@
+
+
+    type Query { manager(entryId: ID!): ManagerRootObject, picks(entryId: ID!): [PicksRootObject] }
+
+
+
+type Chip {
+played_time_formatted: String,
+status: String,
+name: String,
+time: String,
+chip: Int,
+entry: Int,
+event: Int,
+}
+
+type Entry {
+id: Int,
+player_first_name: String,
+player_last_name: String,
+player_region_id: Int,
+player_region_name: String,
+player_region_short_iso: String,
+summary_overall_points: Int,
+summary_overall_rank: Int,
+summary_event_points: Int,
+summary_event_rank: Int,
+joined_seconds: Int,
+current_event: Int,
+total_transfers: Int,
+total_loans: Int,
+total_loans_active: Int,
+transfers_or_loans: String,
+deleted: String,
+email: String,
+joined_time: String,
+name: String,
+bank: Int,
+value: Int,
+kit: String,
+event_transfers: Int,
+event_transfers_cost: Int,
+extra_free_transfers: Int,
+strategy: String,
+favourite_team: String,
+started_event: Int,
+player: Int,
+}
+
+type Cup {
+id: Int,
+entry_1_entry: Int,
+entry_1_name: String,
+entry_1_player_name: String,
+entry_2_entry: Int,
+entry_2_name: String,
+entry_2_player_name: String,
+is_knockout: String,
+winner: Int,
+tiebreak: String,
+own_entry: String,
+entry_1_points: Int,
+entry_1_win: Int,
+entry_1_draw: Int,
+entry_1_loss: Int,
+entry_2_points: Int,
+entry_2_win: Int,
+entry_2_draw: Int,
+entry_2_loss: Int,
+entry_1_total: Int,
+entry_2_total: Int,
+seed_value: String,
+event: Int,
+}
+
+type H2h {
+id: Int,
+entry_rank: String,
+entry_last_rank: String,
+entry_movement: String,
+entry_change: String,
+entry_can_leave: String,
+entry_can_admin: String,
+entry_can_invite: String,
+entry_can_forum: String,
+entry_code: String,
+name: String,
+is_cup: String,
+short_name: String,
+created: String,
+closed: String,
+forum_disabled: String,
+make_code_public: String,
+rank: String,
+size: String,
+league_type: String,
+_scoring: String,
+ko_rounds: Int,
+admin_entry: String,
+start_event: Int,
+}
+
+type Classic {
+id: Int,
+entry_rank: Int,
+entry_last_rank: Int,
+entry_movement: String,
+entry_change: Int,
+entry_can_leave: String,
+entry_can_admin: String,
+entry_can_invite: String,
+entry_can_forum: String,
+entry_code: String,
+name: String,
+short_name: String,
+created: String,
+closed: String,
+forum_disabled: String,
+make_code_public: String,
+rank: String,
+size: String,
+league_type: String,
+_scoring: String,
+reprocess_standings: String,
+admin_entry: Int,
+start_event: Int,
+}
+
+type Leagues {
+cup: [Cup],
+h2h: [H2h],
+classic: [Classic],
+}
+
+type Season {
+id: Int,
+season_name: String,
+total_points: Int,
+rank: Int,
+season: Int,
+player: Int,
+}
+
+type History {
+id: Int,
+movement: String,
+points: Int,
+total_points: Int,
+rank: Int,
+rank_sort: Int,
+overall_rank: Int,
+targets: String,
+event_transfers: Int,
+event_transfers_cost: Int,
+value: Int,
+points_on_bench: Int,
+bank: Int,
+entry: Int,
+event: Int,
+}
+
+type ManagerRootObject {
+chips: [Chip],
+entry: Entry,
+leagues: Leagues,
+season: [Season],
+history: [History],
+}
+
+type AutomaticSub {
+id: Int,
+element_in: Int,
+element_out: Int,
+entry: Int,
+event: Int,
+}
+
+type Event {
+id: Int,
+name: String,
+deadline_time: String,
+average_entry_score: Int,
+finished: String,
+data_checked: String,
+highest_scoring_entry: Int,
+deadline_time_epoch: Int,
+deadline_time_game_offset: Int,
+deadline_time_formatted: String,
+highest_score: Int,
+is_previous: String,
+is_current: String,
+is_next: String,
+}
+
+type Pick {
+element: Int,
+position: Int,
+is_captain: String,
+is_vice_captain: String,
+multiplier: Int,
+}
+
+type PicksRootObject {
+active_chip: String,
+automatic_subs: [AutomaticSub],
+entry_history: History,
+event: Event,
+picks: [Pick],
+}
+

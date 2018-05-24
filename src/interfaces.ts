@@ -1,4 +1,12 @@
-// public
+// ENTRY ROOT
+
+export interface EntryRoot {
+  chips: EntryChip[];
+  entry: EntryOverview;
+  leagues: EntryLeagues;
+  season: EntrySeason[];
+  history: EntryGameweek[];
+}
 
 export interface EntryOverview {
   id: number;
@@ -361,14 +369,6 @@ export interface FplStatHeadings {
   label: string;
 }
 
-export interface EntryRoot {
-  chips: EntryChip[];
-  entry: EntryOverview;
-  leagues: EntryLeagues;
-  season: EntrySeason[];
-  history: EntryGameweek[];
-}
-
 export interface EntryPicksRoot {
   active_chip: string;
   automatic_subs: EntryAutomaticSub[];
@@ -525,20 +525,18 @@ export interface LiveEvent {
 export interface EventElements {
   [key: number]: EventElement;
 }
-
+export interface EventElement {
+  explain: Array<{
+    [key: string]: EntryPickExplain;
+  }>;
+  stats: PlayerStats;
+}
 export interface EventPointSource {
   [key: string]: {
     points: number;
     name: string;
     value: number;
   };
-}
-
-export interface EventElement {
-  explain: Array<{
-    [key: string]: EntryPickExplain;
-  }>;
-  stats: PlayerStats;
 }
 
 export interface Formations {

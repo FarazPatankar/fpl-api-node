@@ -23,8 +23,6 @@ export function getEventPicks(entryId: number, event: number): Promise<EntryPick
          return pickx.is_captain === true;
         });
 
-     // console.log(captain.stats.total_points);
-
       const pickDataArray: EntryPick[] = [];
 
       async.each(picks, (pick, nextPicks) => {

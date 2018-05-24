@@ -30,7 +30,7 @@
     ],
     "max-line-length": [
       true,
-      140
+      160
     ],
     "no-angle-bracket-type-assertion": [
       false

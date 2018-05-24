@@ -1,7 +1,10 @@
 import axios from 'axios';
 import * as _ from 'lodash';
+
+import * as interfaces from '../api.interfaces';
 import { cache, stdCacheTTL } from '../cache/cache.service';
-import * as interfaces from '../interfaces';
+import * as entryInterfaces from '../entry.interfaces';
+import * as fplInterfaces from '../fpl.interfaces';
 
 import { CustomError, ErrorCode, ErrorMessage } from './data.errors';
 
@@ -24,27 +27,27 @@ import { CustomError, ErrorCode, ErrorMessage } from './data.errors';
 // set axios defaults
 axios.defaults.baseURL = 'https://fantasy.premierleague.com/drf';
 
-export function fetchGameData(): Promise<interfaces.GameData> {
+export function fetchGameData(): Promise<interfaces.FplRootObject> {
   return fetch('/bootstrap-static');
 }
 
-export function fetchEntryRoot(entryId: number): Promise<interfaces.EntryRoot> {
+export function fetchEntryRoot(entryId: number): Promise<interfaces.ManagerRootObject> {
   return fetch(`/entry/${entryId}/history`);
 }
 
-export function fetchEntryPicksByGameweek(entryId: number, eventNumber: number): Promise<interfaces.EntryPicksRoot> {
+export function fetchEntryPicksByGameweek(entryId: number, eventNumber: number): Promise<interfaces.PicksRootObject> {
   return fetchEvent(`/entry/${entryId}/event/${eventNumber}/picks`, eventNumber);
 }
 
-export function fetchEntryTransfers(entryId: number): Promise<interfaces.EntryTransfers> {
+export function fetchEntryTransfers(entryId: number): Promise<interfaces.EntryTransfersRootObject> {
   return fetch(`/entry/${entryId}/transfers`);
 }
 
-export function fetchEventByNumber(eventNumber: number): Promise<interfaces.LiveEvent> {
+export function fetchEventByNumber(eventNumber: number): Promise<interfaces.EventRootObject> {
   return fetchEvent(`/event/${eventNumber}/live`, eventNumber);
 }
 
-export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<interfaces.League> {
+export function fetchLeagueStandings(leagueId: number, pageNumber = 1): Promise<interfaces.LeagueRootObject> {
   return fetch(`/leagues-classic-standings/${leagueId}?page=${pageNumber}`, false, {
     params: {
       'ls-page': pageNumber,

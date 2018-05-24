@@ -9,4 +9,5 @@ coverage
 tasks/wiki/out
 tasks/**/*.d.ts
 tasks/**/*.js
+docs/
 
