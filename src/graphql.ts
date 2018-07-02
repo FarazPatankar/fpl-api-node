@@ -6,15 +6,12 @@ const { makeExecutableSchema } = require('graphql-tools');
 
 import { importSchema } from 'graphql-import';
 
-import {entryResolvers} from './entry.resolvers';
 import { entry } from './index';
 
 import * as async from 'async';
-import { ConstructorTypeNode } from 'ts-simple-ast';
-import * as testUtils from '../test/test.utils';
 
-testUtils.setMock();
 import * as dataService from './data/data.service';
+import { entryResolvers } from './entry.resolvers';
 import { fplResolvers } from './fpl.resolvers';
 const typeDefs = importSchema('./graphql/schema.graphql');
 
@@ -23,13 +20,24 @@ const resolvers = {
   Query:
     {
       manager(obj, args, context) {
-        return dataService.fetchEntryRoot(args.entryId).then((data) => {
-          return data;
-        });
+        console.log(args);
+        return args.entryId;
       },
 
       picks(obj, args, context) {
+        console.log('picks', args);
 
+        // return new Promise((resolve, reject) => {
+
+        dataService.fetchEntryPicksByGameweek(args.entryId, 2).then((picks) => {
+            const picksArray = [];
+            picksArray.push(picks);
+            return picksArray;
+          });
+
+       // });
+
+        /*
         return new Promise((resolve, reject) => {
 
           dataService.fetchEntryRoot(args.entryId).then((data) => {
@@ -56,7 +64,7 @@ const resolvers = {
 
           });
 
-        });
+        });*/
 
       },
 
@@ -64,7 +72,7 @@ const resolvers = {
        // return args;
       // },
     },
-  // EntryRootObject: entryResolvers,
+  ManagerRootObject: entryResolvers,
  // FplRootObject: fplResolvers,
 
 };

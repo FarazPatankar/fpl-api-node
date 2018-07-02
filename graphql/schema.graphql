@@ -1,9 +1,5 @@
 
 
-    type Query { manager(entryId: ID!): ManagerRootObject, picks(entryId: ID!): [PicksRootObject] }
-
-
-
 type Chip {
 played_time_formatted: String,
 status: String,
@@ -192,19 +188,14 @@ is_current: String,
 is_next: String,
 }
 
-type Pick {
-element: Int,
-position: Int,
-is_captain: String,
-is_vice_captain: String,
-multiplier: Int,
-}
-
 type PicksRootObject {
 active_chip: String,
 automatic_subs: [AutomaticSub],
-entry_history: History,
 event: Event,
-picks: [Pick],
+picks: String,
 }
 
+type Query {
+manager(entryId: Int): ManagerRootObject,
+picks(entryId: Int): PicksRootObject,
+}

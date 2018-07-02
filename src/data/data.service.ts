@@ -3,10 +3,12 @@ import * as _ from 'lodash';
 
 import * as interfaces from '../api.interfaces';
 import { cache, stdCacheTTL } from '../cache/cache.service';
-import * as entryInterfaces from '../entry.interfaces';
-import * as fplInterfaces from '../fpl.interfaces';
 
 import { CustomError, ErrorCode, ErrorMessage } from './data.errors';
+
+import * as testUtils from '../../test/test.utils';
+
+testUtils.setMock(axios);
 
 /**
  * Hooks into available fpl endpoints.
@@ -76,6 +78,7 @@ function fetchEvent(path: string, eventNumber: number): Promise<any> {
  * Fetch generic request
  */
 export function fetch(path: string, cacheForever = false, config = {}): Promise<any> {
+  console.log(path);
   return new Promise((resolve, reject) => {
     const cacheValue = cache.get(path);
     if (cacheValue) {

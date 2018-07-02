@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 import MockAdapter from 'axios-mock-adapter';
 import * as jsonfile from 'jsonfile';
 import Ast from 'ts-simple-ast';
@@ -11,6 +11,7 @@ const mockDir = __dirname + `/fixtures/methods`;
 
 export function readRawMock(name) {
   const dir = __dirname + `/fixtures/data`;
+  console.log('HELLOI');
   return jsonfile.readFileSync(`${dir}/${name}.json`);
 }
 
@@ -22,15 +23,16 @@ export function readMethodMock(folder, name) {
   return jsonfile.readFileSync(`${mockDir}/${folder}/${name}.json`);
 }
 
-export function setMock() {
+export function setMock(axios) {
 
   const mock = new MockAdapter(axios);
-
+  /// entry/544548/history
   mock
     .onGet('/bootstrap-static').reply(200, readRawMock('_bootstrap-static'))
     .onGet('/entry/545548/history').reply(200, readRawMock('_entry_545548_history'))
     .onGet(/\/entry\/545548\/event\/\d+\/picks/).reply((config) => {
       const file = config.url ? config.url.split('/').join('_') : {};
+      console.log(file);
       return [200, readRawMock(file)];
     })
     .onGet(/\/event\/\d+\/live/).reply((config) => {
