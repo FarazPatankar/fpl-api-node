@@ -1,19 +1,17 @@
-import { equal } from 'assert';
+
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
-import * as fs from 'fs';
+
 import * as jsonfile from 'jsonfile';
-import * as _ from 'lodash';
+
 import 'mocha';
 import * as sinon from 'sinon';
 
 import * as dataService from '../src/data.service';
 import { Errors } from '../src/errors.enum';
 import * as fplapi from '../src/index';
-import { getFileNameFromUrl, writeMock } from '../tasks/mock-generator/helpers';
-
-const normalAxios = axios.create();
+import { writeMock } from '../tasks/mock-generator/helpers';
 
 const mockDir = __dirname + `/../mocks/methods`;
 
@@ -53,7 +51,6 @@ describe('Entry data:', () => {
 
   it('should findEntry()', (done) => {
     fplapi.findEntry(entryId).then((data) => {
-      // writeMock(mockDir, 'findEntry', data);
       expect(data).to.deep.equal(readMethodMock('findEntry'));
       done();
     }).catch((e) => {
@@ -63,7 +60,6 @@ describe('Entry data:', () => {
 
   it('should findEntryEvents()', (done) => {
     fplapi.findEntryEvents(entryId).then((data) => {
-      // writeMock(mockDir, 'findEntryEvents', data);
       expect(data).to.deep.equal(readMethodMock('findEntryEvents'));
       done();
     }).catch((e) => {
@@ -73,7 +69,6 @@ describe('Entry data:', () => {
 
   it('should findEntryChips()', (done) => {
     fplapi.findEntryChips(entryId).then((data) => {
-      // writeMock(mockDir, 'findEntryChips', data);
       expect(data).to.deep.equal(readMethodMock('findEntryChips'));
       done();
     }).catch((e) => {
@@ -83,7 +78,6 @@ describe('Entry data:', () => {
 
   it('should findEntryEvent()', (done) => {
     fplapi.findEntryEvent(entryId, 1).then((data) => {
-      // writeMock(mockDir, 'findEntryEvent', data);
       expect(data).to.deep.equal(readMethodMock('findEntryEvent'));
       done();
     }).catch((e) => {
@@ -93,7 +87,6 @@ describe('Entry data:', () => {
 
   it('should findEntryPicksByEvent()', (done) => {
     fplapi.findEntryPicksByEvent(entryId, 1).then((data) => {
-      // writeMock(mockDir, 'findEntryPicksByEvent', data);
       expect(data).to.deep.equal(readMethodMock('findEntryPicksByEvent'));
       done();
     }).catch((e) => {
@@ -103,7 +96,6 @@ describe('Entry data:', () => {
 
   it('should findEntryTransferHistory', (done) => {
     fplapi.findEntryTransferHistory(entryId).then((data) => {
-      // writeMock(mockDir, 'findEntryTransferHistory', data);
       expect(data).to.deep.equal(readMethodMock('findEntryTransferHistory'));
       done();
     }).catch((e) => {
@@ -113,7 +105,6 @@ describe('Entry data:', () => {
 
   it('should findEntryPicks()', (done) => {
     fplapi.findEntryPicks(entryId).then((data) => {
-      // writeMock(mockDir, 'findEntryPicks', data);
       expect(data).to.deep.equal(readMethodMock('findEntryPicks'));
       done();
     }).catch((e) => {
@@ -124,7 +115,7 @@ describe('Entry data:', () => {
   it('should findEntryStats()', (done) => {
     fplapi.findEntryStats(entryId).then((data) => {
       writeMock(mockDir, 'findEntryStats', data);
-      // expect(data).to.deep.equal(readMethodMock('findEntryStats'));
+
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -139,7 +130,7 @@ describe('Elements data:', () => {
 
   it('should getElements()', (done) => {
     fplapi.getElements().then((data) => {
-      // writeMock(mockDir, 'getElements', data);
+
       expect(data).to.deep.equal(readMethodMock('getElements'));
       done();
     }).catch((e) => {
@@ -149,7 +140,7 @@ describe('Elements data:', () => {
 
   it('should findElementsByEvent()', (done) => {
     fplapi.findElementsByEvent(1).then((data) => {
-      // writeMock(mockDir, 'findElementsByEvent', data);
+
       expect(data).to.deep.equal(readMethodMock('findElementsByEvent'));
       done();
     }).catch((e) => {
@@ -166,7 +157,7 @@ describe('Event data:', () => {
   it('should getEvents()', (done) => {
     fplapi.getEvents().then((data) => {
       writeMock(mockDir, 'getEvents', data);
-      // expect(data).to.deep.equal(readMethodMock('getEvents'));
+
       done();
     }).catch((e) => {
       done(new Error(e));
@@ -180,7 +171,7 @@ describe('Event data:', () => {
 describe('Team data:', () => {
   it('should getTeams()', (done) => {
     fplapi.getTeams().then((data) => {
-      // writeMock(mockDir, 'getTeams', data);
+
       expect(data).to.deep.equal(readMethodMock('getTeams'));
       done();
     }).catch((e) => {
@@ -196,7 +187,7 @@ describe('Leagues:', () => {
 
   it('should findLeague', (done) => {
     fplapi.findLeague(313).then((data) => {
-      // writeMock(mockDir, 'findLeague', data);
+
       expect(data).to.deep.equal(readMethodMock('findLeague'));
       done();
     }).catch((e) => {
@@ -206,7 +197,7 @@ describe('Leagues:', () => {
 
   it('should findLeagueStandings()', (done) => {
     fplapi.findLeagueStandings(313).then((data) => {
-      // writeMock(mockDir, 'findLeagueStandings-1', data);
+
       expect(data).to.deep.equal(readMethodMock('findLeagueStandings-1'));
       done();
     }).catch((e) => {
@@ -216,7 +207,7 @@ describe('Leagues:', () => {
 
   it('should findLeagueStandings() page 2', (done) => {
     fplapi.findLeagueStandings(313, 2).then((data) => {
-      // writeMock(mockDir, 'findLeagueStandings-2', data);
+
       expect(data).to.deep.equal(readMethodMock('findLeagueStandings-2'));
       done();
     }).catch((e) => {
@@ -232,7 +223,7 @@ describe('General data:', () => {
 
   it('should getElementTypes()', (done) => {
     fplapi.getElementTypes().then((data) => {
-      // writeMock(mockDir, 'getElementTypes', data);
+
       expect(data).to.deep.equal(readMethodMock('getElementTypes'));
       done();
     }).catch((e) => {
@@ -242,7 +233,7 @@ describe('General data:', () => {
 
   it('should getTotalNumberOfEntries()', (done) => {
     fplapi.getTotalNumberOfEntries().then((data) => {
-      // writeMock(mockDir, 'getTotalNumberOfEntries', data);
+
       expect(data).to.deep.equal(readMethodMock('getTotalNumberOfEntries'));
       done();
     }).catch((e) => {
@@ -252,7 +243,7 @@ describe('General data:', () => {
 
   it('should getCurrentEventNumber()', (done) => {
     fplapi.getCurrentEventNumber().then((data) => {
-      // writeMock(mockDir, 'getCurrentEventNumber', data);
+
       expect(data).to.deep.equal(readMethodMock('getCurrentEventNumber'));
       done();
     }).catch((e) => {
@@ -267,7 +258,7 @@ describe('should handle errors: ', () => {
   let sandbox;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     sandbox.stub(dataService.cache, 'get').returns(null);
   });
 
