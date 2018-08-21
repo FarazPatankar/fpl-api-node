@@ -60,10 +60,5 @@
     "ts-simple-ast": "^13.0.0",
     "tslint": "^5.9.1",
     "typescript": "^3.0.1"
-  },
-  "greenkeeper": {
-    "ignore": [
-      "ts-simple-ast"
-    ]
   }
 }

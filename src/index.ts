@@ -15,6 +15,7 @@ import {
   EntryTransferHistory,
   Event,
   EventElements,
+  Fixture,
   League,
   LeagueStandings,
   Pick,
@@ -66,9 +67,8 @@ export async function findEntryEvent(entryId: number, eventNumber: number): Prom
 }
 
 /**
- * Returns a collection of picks for a specified event
+ * Returns a collection of picks for a specified entry
  * @param entryId The id of entry
- * @param event The event number
  */
 export function findEntryPicks(entryId: number): Promise<EntryPick[]> {
 
@@ -362,6 +362,14 @@ export async function findLeagueStandings(leagueId: number, pageNumber = 1): Pro
 // *************
 // Other
 // *************
+
+/**
+ * Returns fixtures of a particular event
+ */
+export async function findFixturesByEvent(eventNumber: number): Promise<Fixture[]> {
+  const data = await dataService.findLiveEvent(eventNumber);
+  return data.fixtures;
+}
 
 /**
  * Returns a collection of all elements.

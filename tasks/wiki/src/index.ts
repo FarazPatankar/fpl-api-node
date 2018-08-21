@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as Handlebars from 'handlebars';
-import * as _ from 'lodash';
 import * as path from 'path';
 import Ast, { SourceFile } from 'ts-simple-ast';
 
