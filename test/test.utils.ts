@@ -22,6 +22,8 @@ export function readMethodMock(folder, name) {
   return jsonfile.readFileSync(`${mockDir}/${folder}/${name}.json`);
 }
 
+const entryId = 2762616;
+
 export function setMock() {
 
   const mock = new MockAdapter(axios);
@@ -29,8 +31,8 @@ export function setMock() {
   mock
     .onGet('/bootstrap-static').reply(200, readRawMock('_bootstrap-static'))
     .onGet('/elements').reply(200, readRawMock('_elements'))
-    .onGet('/entry/545548/history').reply(200, readRawMock('_entry_545548_history'))
-    .onGet(/\/entry\/545548\/event\/\d+\/picks/).reply((config) => {
+    .onGet(`/entry/${entryId}/history`).reply(200, readRawMock(`_entry_${entryId}_history`))
+    .onGet(`/\/entry\/${entryId}\/event\/\d+\/picks/`).reply((config) => {
       const file = config.url ? config.url.split('/').join('_') : {};
       return [200, readRawMock(file)];
     })
@@ -42,7 +44,7 @@ export function setMock() {
       const file = config.url ? config.url.split('/').join('_') : {};
       return [200, readRawMock(file)];
     })
-    .onGet('/entry/545548/transfers').reply(200, readRawMock('_entry_545548_transfers'))
+    .onGet(`/entry/${entryId}/transfers`).reply(200, readRawMock(`_entry_${entryId}_transfers`))
     .onGet('/updating').reply(200, '<html><body><p>The game is being updated.</p></body></html>')
     .onGet('/error').reply(200, '<html><p>Page not found</p></html>');
 
@@ -62,8 +64,6 @@ function getMethods(sourceFileName) {
 export function doEntryMethods(callback) {
 
   const methods = getMethods('src/api/entries/entries.api.ts');
-
-  const entryId = 545548;
 
   methods.forEach((method) => {
 

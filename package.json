@@ -13,7 +13,7 @@
     "test": "nyc mocha -r ts-node/register test/test.ts --timeout 5000 --slow 0",
     "prepare": "rm -rf dist && tsc",
     "prepublishOnly": "npm run prepare && npm run lint && npm run test",
-    "mock:data": "ts-node tasks/mock-generator/generate-data.ts",
+    "mock:data": "rm -rf test/fixtures/data && ts-node tasks/mock-generator/generate-data.ts",
     "mock:methods": "ts-node tasks/mock-generator/generate-methods.ts",
     "docs": "typedoc --theme markdown --out ./docs/out/md --mdFlavour gitbook --mdHideSources",
     "docs:html": "typedoc --out ./docs/out/html"

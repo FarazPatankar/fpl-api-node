@@ -4,14 +4,14 @@ import * as _ from 'lodash';
 import * as mockUtils from '../../test/test.utils';
 import { writeMock } from './helpers';
 
-const entryId = 545548;
-const currentGameweek = 32;
+const entryId = 2762616;
+const currentGameweek = 3;
 const paths = [
   '/bootstrap-static',
   '/elements',
-  '/entry/545548',
-  '/entry/545548/history',
-  '/entry/545548/transfers',
+  `/entry/${entryId}`,
+  `/entry/${entryId}/history`,
+  `/entry/${entryId}/transfers`,
   '/leagues-classic-standings/313?page=1',
   '/leagues-classic-standings/313?page=2',
 ];

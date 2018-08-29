@@ -32,6 +32,7 @@ export {
  * @param entryId The id of entry
  */
 export async function getManager(entryId: number): Promise<Manager> {
+  console.log(entryId);
   const data = await dataService.fetchEntryRoot(entryId);
   return data.entry;
 }
